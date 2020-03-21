@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TransformCase</title>
+        <script src="../dist/transformCase.js"></script>
+        <link rel="stylesheet" type="text/css" href="demo.css" />
+        <script>
+window.transforms = []
+window.transforms.push( transformCase(`camelCasedInput`, {
+    someOption: 'redundant'
+}) )
+window.transforms.push( transformCase(`A human sentence, with punctuation marks.`) )
+
+window.transforms.push( transformCase(` lowercase comment
+   with redundant whitespace`) )
+window.transforms.push( transformCase(`customCasePreservingTEXT`, {
+    preserve: ['TEXT'],
+}) )
+window.transforms.push( transformCase(`customCaseReplacingTEXT`, {
+    replace: {'ReplacingTEXT': 'WithPHRASE'},
+}) )
+
+addCell = function (tagName, content) {
+    let cell = document.createElement(tagName)
+    cell.textContent = content
+    return cell
+}
+
+window.onload = function () {
+    const trs = document.getElementsByTagName('tr')
+    transforms.forEach(transform => {
+        console.log(transform)
+        trs[0].appendChild(addCell('th', transform.orgin.input))
+        trs[1].appendChild(addCell('td', JSON.stringify(transform.words)))
+        trs[2].appendChild(addCell('td', transform.camelCase()))
+        trs[3].appendChild(addCell('td', transform.humanTitle()))
+    })
+}
+        </script>
+    </head>
+    <body>
+
+<table>
+    <caption>Transform case</caption>
+    <thead>
+        <tr><th>input</th></tr>
+    </thead>
+    <tbody>
+        <tr><th>words</th></tr>
+        <tr><th>camelCase()</th></tr>
+        <tr><th>humanTitle()</th></tr>
+    </tbody>
+</table>
+
+    </body>
+</html>
