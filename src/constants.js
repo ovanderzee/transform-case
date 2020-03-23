@@ -12,6 +12,8 @@ const INTAKE_OPTIONS = {
     delimitLowerUpper: true,
     delimitNumberLetter: false,
     delimitUpperLower: false,
+    delimitUpperUpperLower: true,
+    delimitUpperUpperNumber: true,
     delimitOutput: ' ',
 }
 

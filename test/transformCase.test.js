@@ -21,6 +21,37 @@ describe('preserve keeps a lettercombination as a word and protects the case', (
     })
 })
 
+describe('delimiting a puts up an array of words', () => {
+    test('to deal with a letter - number transition', () => {
+        const delimitCase = new TransformCase('max14')
+
+        expect(delimitCase.words[0]).toBe('max')
+        expect(delimitCase.words[1]).toBe('14')
+    })
+    test('to deal with a lowercase - uppercase transition', () => {
+        const delimitCase = new TransformCase('OnScreenness')
+
+        expect(delimitCase.words[0]).toBe('On')
+        expect(delimitCase.words[1]).toBe('Screenness')
+    })
+    test('to deal with a number - letter transition', () => {
+        const delimitCase = new TransformCase('4Four')
+
+        expect(delimitCase.words[0]).toBe('4Four')
+    })
+    test('to deal with a uppercase - lowercase transition', () => {
+        const delimitCase = new TransformCase('Capital')
+
+        expect(delimitCase.words[0]).toBe('Capital')
+    })
+    test('to deal with a uppercase - uppercase plus lowers transition', () => {
+        const delimitCase = new TransformCase('ISpy')
+
+        expect(delimitCase.words[0]).toBe('I')
+        expect(delimitCase.words[1]).toBe('Spy')
+    })
+})
+
 describe('camelCase is a pattern', () => {
     test('with only common letters', () => {
         const camel = new TransformCase(

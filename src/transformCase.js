@@ -29,14 +29,26 @@ const clean = (line, delimiter) => {
  * @param {Object} options
  * @returns {String} Need to insert a delimiter
  */
-const insertDelimiter = (prev, curr, options) => {
-    let letNum, lowUp, numLet, upLow
+const insertDelimiter = (prev, curr, next, options) => {
+    let letNum, lowUp, numLet, upLow, upUpLow, upUpNum
     letNum = options.delimitLetterNumber && isLetter(prev) && isDigit(curr)
     lowUp = options.delimitLowerUpper && isLower(prev) && isUpper(curr)
     numLet = options.delimitNumberLetter && isDigit(prev) && isLetter(curr)
     upLow = options.delimitUpperLower && isUpper(prev) && isLower(curr)
-    // console.log(prev, curr, letNum, lowUp, numLet, upLow)
-    return letNum || lowUp || numLet || upLow
+    upUpLow =
+        options.delimitUpperUpperLower &&
+        isUpper(prev) &&
+        isUpper(curr) &&
+        isLower(next)
+    upUpNum =
+        options.delimitUpperUpperNumber &&
+        isUpper(prev) &&
+        isUpper(curr) &&
+        isLower(next)
+
+    let delimit = letNum || lowUp || numLet || upLow || upUpLow || upUpNum
+    // if (delimit) console.log(`delimit ${prev} - ${curr}${next}`)
+    return delimit
 }
 
 /* Put seperator before each concatenated word
@@ -45,9 +57,10 @@ const insertDelimiter = (prev, curr, options) => {
  * @returns {String} phrase of seperated words
  */
 const delimitWords = (line, options) => {
+    // console.log(`delimit ${line} using\n`, options)
     let phrase = line[0]
     for (let i = 1; i < line.length; i++) {
-        if (insertDelimiter(line[i - 1], line[i], options)) {
+        if (insertDelimiter(line[i - 1], line[i], line[i + 1] || '', options)) {
             phrase += options.delimitOutput
         }
         phrase += line[i]
