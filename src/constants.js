@@ -4,6 +4,7 @@
  * @member {Object} replace - {toReplace1: replacement1, toReplace2: replacement2}
  */
 const INTAKE_OPTIONS = {
+    delimit: [],
     preserve: [],
     replace: {},
     delimitInput: '',

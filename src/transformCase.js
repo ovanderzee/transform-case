@@ -86,6 +86,7 @@ const TransformCase = function(line, userOptions) {
     this.orgin.isPureAlphaNumeric = isPureAlphaNumeric(this.orgin.normalised)
     let revised = this.orgin.normalised
 
+    // distinguish between technical from linguistic transforms
     let delimiter
     if (options.delimitInput) {
         // delimit by given character
@@ -108,12 +109,13 @@ const TransformCase = function(line, userOptions) {
         }
     }
 
-    // preserve - these strings must be kept together - should be a human word
-    if (options.preserve.length) {
-        options.preserve.forEach(preserve => {
+    // preserve, delimit - these strings must be kept together - should be a human word
+    const kepings = [].concat(options.preserve, options.delimit)
+    if (kepings.length) {
+        kepings.forEach(keep => {
             revised = revised.replace(
-                new RegExp(preserve, 'g'),
-                delimiter + preserve + delimiter,
+                new RegExp(keep, 'g'),
+                delimiter + keep + delimiter,
             )
         })
         revised = clean(revised, delimiter)

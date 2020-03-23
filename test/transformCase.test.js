@@ -1,5 +1,26 @@
 import { TransformCase } from '../src/transformCase'
 
+describe('delimit keeps a lettercombination as a word and processes according to the pattern', () => {
+    const delimit = new TransformCase('CSSFontFaceRule', { delimit: ['CSS'] })
+    test('to be a word', () => {
+        expect(delimit.humanTitle()).toBe('CSS Font Face Rule')
+    })
+    test('to be converted to fit the pattern', () => {
+        expect(delimit.camelCase()).toBe('cssFontFaceRule')
+    })
+})
+
+describe('preserve keeps a lettercombination as a word and protects the case', () => {
+    const preserve = new TransformCase('DOMRect', { preserve: ['DOM'] })
+    test('to be a word', () => {
+        expect(preserve.humanTitle()).toBe('DOM Rect')
+        expect(preserve.camelCase()).toBe('DOMRect')
+    })
+    test('to break a pattern rule', () => {
+        expect(preserve.camelCase()).not.toBe('domRect')
+    })
+})
+
 describe('camelCase is a pattern', () => {
     test('with only common letters', () => {
         const camel = new TransformCase(

@@ -12,10 +12,14 @@ window.transforms.push( transformCase(`camelCasedInput`, {
 window.transforms.push( transformCase(`A human sentence, with punctuation marks.`) )
 
 window.transforms.push( transformCase(` lowercase comment
-   with redundant whitespace`) )
-window.transforms.push( transformCase(`customCasePreservingTEXT`, {
-    preserve: ['TEXT'],
+    with redundant whitespace`) )
+window.transforms.push( transformCase(`CUSTOMCaseDelimiting`, {
+    delimit: ['CUSTOM'],
 }) )
+window.transforms.push( transformCase(`CUSTOMCasePreserving`, {
+    preserve: ['CUSTOM'],
+}) )
+
 window.transforms.push( transformCase(`customCaseReplacingTEXT`, {
     replace: {'ReplacingTEXT': 'WithPHRASE'},
 }) )

@@ -15,9 +15,22 @@ and an es-module (module folder):
 
 ## Usage
 
-transformCase('markMyWords').humanTitle() will render: 'Mark My Words'.
+Call the module with an output pattern like this:
 
-transformCase('A sentence, text for humans.').camelCase() will render: 'aSentenceTextForHumans'.
+    transformCase('markMyWords').humanTitle() will render: 'Mark My Words'.
+
+    transformCase('A sentence, text for humans.').camelCase() will render: 'aSentenceTextForHumans'.
+
+With a second argument, an options object can be passed:
+
+    {
+        delimit: [word1, word2, ...],
+        preserve: [word1, word2, ...],
+        replace: {word1: replacement1, word2: replacement2, ...}
+    }
+    delimit: {Array} - keeps a letter-combination as a word which will be processesed according to the pattern
+    preserve: {Array} - keeps a letter-combination as a word and protects the case
+    replace: {Object} - replaces a letter-combination as if the original input had been different
 
 ## Demo
 
