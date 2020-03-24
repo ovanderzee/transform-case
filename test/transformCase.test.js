@@ -37,7 +37,8 @@ describe('delimiting a puts up an array of words', () => {
     test('to deal with a number - letter transition', () => {
         const delimitCase = new TransformCase('4Four')
 
-        expect(delimitCase.words[0]).toBe('4Four')
+        expect(delimitCase.words[0]).toBe('4')
+        expect(delimitCase.words[1]).toBe('Four')
     })
     test('to deal with a uppercase - lowercase transition', () => {
         const delimitCase = new TransformCase('Capital')
@@ -62,6 +63,27 @@ describe('camelCase is a pattern', () => {
 
         expect(nonWordMatch).toBeFalsy()
         expect(wordMatch.length).toBe(camel.length)
+    })
+    test('the first word is all lowercase', () => {
+        const camelTest = new TransformCase('This sentence, text for humans.')
+        const camelCase = camelTest.camelCase()
+        const len1 = camelTest.words[0].length
+        const firstWord = camelCase.substr(0, len1)
+
+        expect(firstWord).toBe(firstWord.toLowerCase())
+    })
+    test('the next words is capitalised lowercase', () => {
+        const camelTest = new TransformCase('A sentence, text for humans.')
+        const camelCase = camelTest.camelCase()
+        const len1 = camelTest.words[0].length
+        const len2 = camelTest.words[1].length
+
+        const secondWord = camelCase.substr(len1, len2 - 1)
+        const secondWord1 = secondWord.charAt(0)
+        const secondWordN = secondWord.substr(1)
+
+        expect(secondWord1).toBe(secondWord1.toUpperCase())
+        expect(secondWordN).toBe(secondWordN.toLowerCase())
     })
 })
 

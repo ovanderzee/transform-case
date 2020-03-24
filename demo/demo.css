@@ -1,30 +1,45 @@
 body {
     font: caption;
+    font-size: 14px;
+    line-height: 1.333;
+    background: #222;
+    color: #eee;
 }
 caption {
-    font-size: 1.73em;
-    border-bottom: 1px solid #333;
-    text-align: left
+    font-size: 22px;
+    text-align: left;
 }
 table {
     border-spacing: 0;
 }
 th, td {
+    background: #888;
+    border-top: 1px solid #bbc;
+    border-bottom: 1px solid #022;
     max-width: 8em;
-    padding: 2px 4px;
+    padding: .4em .6em;
     word-break: break-word;
     vertical-align: top;
 }
+th:nth-child(2n),
+td:nth-child(2n) {
+    background: #555;
+}
+th {
+    font-weight: normal;
+}
+th:first-child {
+    border-left: 1px solid #bbc;
+    color: #022;
+}
 thead th {
-    border-bottom: 1px solid #666
+    border-width: 2px;
 }
-tbody td,
-tbody th {
-    border-bottom: 1px solid #ccc
+td:first-child {
+    border-right: 1px solid #022;
+    color: #022;
 }
-tr * {
-    background: #fff
-}
-tr *:nth-child(2n) {
-    background: #ccc
+td {
+    color: #eef;
+    letter-spacing: .25px;
 }

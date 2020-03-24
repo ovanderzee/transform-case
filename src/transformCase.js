@@ -4,8 +4,8 @@ import {
     isLower,
     isUpper,
     isPureAlphaNumeric,
-} from './utilities.js'
-import { INTAKE_OPTIONS, RENDER_MODEL } from './constants.js'
+} from './utilities'
+import { INTAKE_OPTIONS, RENDER_MODEL } from './constants'
 
 /*
  * Clean the line from extraneous characters
@@ -30,7 +30,7 @@ const clean = (line, delimiter) => {
  * @returns {String} Need to insert a delimiter
  */
 const insertDelimiter = (prev, curr, next, options) => {
-    let letNum, lowUp, numLet, upLow, upUpLow, upUpNum
+    let letNum, lowUp, numLet, upLow, upUpLow
     letNum = options.delimitLetterNumber && isLetter(prev) && isDigit(curr)
     lowUp = options.delimitLowerUpper && isLower(prev) && isUpper(curr)
     numLet = options.delimitNumberLetter && isDigit(prev) && isLetter(curr)
@@ -40,13 +40,8 @@ const insertDelimiter = (prev, curr, next, options) => {
         isUpper(prev) &&
         isUpper(curr) &&
         isLower(next)
-    upUpNum =
-        options.delimitUpperUpperNumber &&
-        isUpper(prev) &&
-        isUpper(curr) &&
-        isLower(next)
 
-    let delimit = letNum || lowUp || numLet || upLow || upUpLow || upUpNum
+    let delimit = letNum || lowUp || numLet || upLow || upUpLow
     // if (delimit) console.log(`delimit ${prev} - ${curr}${next}`)
     return delimit
 }

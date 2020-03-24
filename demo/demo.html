@@ -6,13 +6,11 @@
         <link rel="stylesheet" type="text/css" href="demo.css" />
         <script>
 window.transforms = []
-window.transforms.push( transformCase(`camelCasedInput`, {
-    someOption: 'redundant'
-}) )
+window.transforms.push( transformCase(`camelCasedInput`) )
 window.transforms.push( transformCase(`A human sentence, with punctuation marks.`) )
 
-window.transforms.push( transformCase(` lowercase comment
-    with redundant whitespace`) )
+window.transforms.push( transformCase(` with
+    redundant whitespace`) )
 
 window.transforms.push( transformCase(`CUSTOMCaseAuto`) )
 window.transforms.push( transformCase(`CUSTOMCaseDelimiting`, {
@@ -41,7 +39,7 @@ window.onload = function () {
     transforms.forEach(transform => {
         console.log(transform)
         trs[0].appendChild(addCell('th', transform.orgin.input))
-        trs[1].appendChild(addCell('td', JSON.stringify(transform.words)))
+        trs[1].appendChild(addCell('td', transform.phrase))
         trs[2].appendChild(addCell('td', transform.camelCase()))
         trs[3].appendChild(addCell('td', transform.humanTitle()))
     })
@@ -56,7 +54,7 @@ window.onload = function () {
         <tr><th>input</th></tr>
     </thead>
     <tbody>
-        <tr><th>words</th></tr>
+        <tr><th>normalised</th></tr>
         <tr><th>camelCase()</th></tr>
         <tr><th>humanTitle()</th></tr>
     </tbody>

@@ -10,10 +10,9 @@ const INTAKE_OPTIONS = {
     delimitInput: '',
     delimitLetterNumber: true,
     delimitLowerUpper: true,
-    delimitNumberLetter: false,
+    delimitNumberLetter: true,
     delimitUpperLower: false,
     delimitUpperUpperLower: true,
-    delimitUpperUpperNumber: true,
     delimitOutput: ' ',
 }
 
