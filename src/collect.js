@@ -5,7 +5,8 @@ import {
     isUpper,
     isPureAlphaNumeric,
 } from './utilities'
-import { INTAKE_OPTIONS, RENDER_MODEL } from './constants'
+import { INTAKE_OPTIONS } from './constants'
+import { patterns } from './render'
 
 /*
  * Clean the line from extraneous characters
@@ -63,43 +64,36 @@ const delimitWords = (line, options) => {
     return phrase
 }
 
-const normaliseQuotes = line => {
-    return line.replace(/‘’`/g, "'").replace(/“”/g, '"')
-}
-
-const removePunctuation = line => {
-    return normaliseQuotes(line).replace(/[…,:;[\](){}\-‐–—'".!?]/g, '')
-}
-
 /**
  * Transform a camelcase object-key to title
  * @param {String} line
  * @param {Object} options
  */
 const TransformCase = function(line, userOptions) {
+    console.log(' line ', line, ' userOptions ', userOptions)
     if (!line) return
-
+    let self = {}
     const options = Object.assign({}, INTAKE_OPTIONS, userOptions)
 
     // prepare
-    this.orgin = {
+    self.orgin = {
         input: line,
     }
     line = line.trim().replace(/\s+/g, ' ')
     if (options.delimitInput) {
-        this.orgin.normalised = clean(line, options.delimitInput)
+        self.orgin.normalised = clean(line, options.delimitInput)
     } else {
-        this.orgin.normalised = line
+        self.orgin.normalised = line
     }
-    this.orgin.isPureAlphaNumeric = isPureAlphaNumeric(this.orgin.normalised)
-    let revised = this.orgin.normalised
+    self.orgin.isPureAlphaNumeric = isPureAlphaNumeric(self.orgin.normalised)
+    let revised = self.orgin.normalised
 
     // distinguish between technical from linguistic transforms
     let delimiter
     if (options.delimitInput) {
         // delimit by given character
         delimiter = options.delimitInput
-    } else if (this.orgin.isPureAlphaNumeric) {
+    } else if (self.orgin.isPureAlphaNumeric) {
         // delimit by case transition
         delimiter = options.delimitOutput
     } else {
@@ -132,63 +126,24 @@ const TransformCase = function(line, userOptions) {
     // produce an array with words
     if (options.delimitInput) {
         // delimit by given character
-        this.phrase = revised
-        this.words = revised.split(options.delimitInput)
-    } else if (this.orgin.isPureAlphaNumeric) {
+        self.phrase = revised
+        self.words = revised.split(options.delimitInput)
+    } else if (self.orgin.isPureAlphaNumeric) {
         // delimit by case transition
         let parts = revised.split(options.delimitOutput)
-        this.phrase = parts
+        self.phrase = parts
             .map(pt =>
                 options.preserve.includes(pt) ? pt : delimitWords(pt, options),
             )
             .join(options.delimitOutput)
-        this.words = this.phrase.split(options.delimitOutput)
+        self.words = self.phrase.split(options.delimitOutput)
     } else {
         // delimit by non-letter-non-digit character
-        this.phrase = revised
-        this.words = revised.split(options.delimitOutput)
+        self.phrase = revised
+        self.words = revised.split(options.delimitOutput)
     }
 
-    const toLower = word => word.toLowerCase()
-    const toUpper = word => word.toUpperCase()
-
-    const transform = model => {
-        let transformation = this.words.map((word, index) => {
-            if (index === 0) {
-                return options.preserve.includes(word)
-                    ? word
-                    : model.firstWordFirstChar(word.substr(0, 1)) +
-                          model.firstWordNextChars(word.substr(1))
-            } else {
-                return options.preserve.includes(word)
-                    ? word
-                    : model.nextWordsFirstChar(word.substr(0, 1)) +
-                          model.nextWordsNextChars(word.substr(1))
-            }
-        })
-        return model.postProcess(transformation.join(model.delimitOutput))
-    }
-
-    this.camelCase = () => {
-        const model = Object.assign({}, RENDER_MODEL, {
-            postProcess: removePunctuation,
-            delimitOutput: '',
-            firstWordFirstChar: toLower,
-            firstWordNextChars: toLower,
-            nextWordsFirstChar: toUpper,
-            nextWordsNextChars: toLower,
-        })
-        return transform(model)
-    }
-
-    this.humanTitle = () => {
-        const model = Object.assign({}, RENDER_MODEL, {
-            delimitOutput: ' ',
-            firstWordFirstChar: toUpper,
-            nextWordsFirstChar: toUpper,
-        })
-        return transform(model)
-    }
+    return Object.assign(self, patterns(self.words, options))
 }
 
 export { TransformCase }

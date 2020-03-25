@@ -1,8 +1,8 @@
-import { TransformCase } from './transformCase'
+import { TransformCase } from './collect'
 
 var index = function(input, options) {
     if (!options) options = {}
-    return new TransformCase(input, options)
+    return TransformCase(input, options)
 }
 
 export default index
