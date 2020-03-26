@@ -72,4 +72,10 @@ const isPureAlphaNumeric = line => {
     )
 }
 
-export { isDigit, isLetter, isLower, isUpper, isPureAlphaNumeric }
+const isExactMatch = (word, regex) => {
+    const match = word.match(regex)
+    const result = match && match[0] === word
+    return result
+}
+
+export { isDigit, isLetter, isLower, isUpper, isPureAlphaNumeric, isExactMatch }

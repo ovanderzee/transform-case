@@ -19,6 +19,13 @@ describe('preserve keeps a lettercombination as a word and protects the case', (
     test('to break a pattern rule', () => {
         expect(preserve.camelCase()).not.toBe('domRect')
     })
+    test('works with RegExp', () => {
+        const preserve = new TransformCase('preserveMax2006andMAX2017', {
+            preserve: [/Max\d{4}/gi],
+        })
+
+        expect(preserve.humanTitle()).toBe('Preserve Max2006 And MAX2017')
+    })
 })
 
 describe('delimiting a puts up an array of words', () => {

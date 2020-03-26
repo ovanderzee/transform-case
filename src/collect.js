@@ -4,6 +4,7 @@ import {
     isLower,
     isUpper,
     isPureAlphaNumeric,
+    isExactMatch,
 } from './utilities'
 import { INTAKE_OPTIONS } from './constants'
 import { patterns } from './render'
@@ -65,6 +66,15 @@ const delimitWords = (line, options) => {
     return phrase
 }
 
+/* Change all 'units' in regex to deal with variable digits
+ * @param {String || RegExp} unit
+ * @returns {RegExp}
+ */
+const stringToRegexp = unit => {
+    if (typeof unit === 'string') return new RegExp(unit, 'g')
+    if (unit instanceof RegExp) return unit
+}
+
 /**
  * Transform a camelcase object-key to title
  * @param {String} line
@@ -112,14 +122,11 @@ const TransformCase = function(line, userOptions) {
         }
     }
 
-    // preserve, delimit - these strings must be kept together - should be a human word
+    // preserve, delimit - these strings must be kept together - should be like a human word
     const units = [].concat(options.preserve, options.delimit)
     if (units.length) {
         units.forEach(unit => {
-            revised = revised.replace(
-                new RegExp(unit, 'g'),
-                delimiter + unit + delimiter,
-            )
+            revised = revised.replace(unit, delimiter + '$&' + delimiter)
         })
         revised = clean(revised, delimiter)
     }
@@ -133,8 +140,10 @@ const TransformCase = function(line, userOptions) {
         // delimit by case transition
         let parts = revised.split(options.delimitOutput)
         self.phrase = parts
-            .map(pt =>
-                options.preserve.includes(pt) ? pt : delimitWords(pt, options),
+            .map(part =>
+                options.preserve.some(regex => isExactMatch(part, regex))
+                    ? part
+                    : delimitWords(part, options),
             )
             .join(options.delimitOutput)
         self.words = self.phrase.split(options.delimitOutput)

@@ -26,7 +26,9 @@ window.transforms.push( transformCase(`customCaseReplacingTEXT`, {
 }) )
 
 window.transforms.push( transformCase(`1Number2Chunk`) )
-
+window.transforms.push( transformCase(`preserveMax2006andMAX2017`, {
+    preserve: [/Max\d{4}/ig],
+}) )
 
 addCell = function (tagName, content) {
     let cell = document.createElement(tagName)

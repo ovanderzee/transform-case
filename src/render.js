@@ -1,3 +1,4 @@
+import { isExactMatch } from './utilities'
 import { RENDER_MODEL } from './constants'
 
 /**
@@ -41,12 +42,12 @@ const patterns = function(words, options) {
     const transform = model => {
         let transformation = words.map((word, index) => {
             if (index === 0) {
-                return options.preserve.includes(word)
+                return options.preserve.some(regex => isExactMatch(word, regex))
                     ? word
                     : model.firstWordFirstChar(word.substr(0, 1)) +
                           model.firstWordNextChars(word.substr(1))
             } else {
-                return options.preserve.includes(word)
+                return options.preserve.some(regex => isExactMatch(word, regex))
                     ? word
                     : model.nextWordsFirstChar(word.substr(0, 1)) +
                           model.nextWordsNextChars(word.substr(1))

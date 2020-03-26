@@ -24,15 +24,15 @@ Call the module with an output pattern like this:
 With a second argument, an options object can be passed:
 
     {
-        delimit: [word1, word2, ...],
-        preserve: [word1, word2, ...],
+        delimit: [word-or-regex1, word-or-regex2, ...],
+        preserve: [word-or-regex1, word-or-regex2, ...],
         replace: {word1: replacement1, word2: replacement2, ...}
     }
     delimit: {Array}
-        keeps a letter-combination as a delimited word,
+        keeps a letter-combination or a regular expression match as a delimited word,
         the word will be processed according to the pattern
     preserve: {Array}
-        keeps a letter-combination as a delimited word and protects the case
+        keeps a letter-combination or a regular expression match as a delimited word and protects the case
     replace: {Object}
         replaces each occurrence of a letter-combination,
         as if the original input had been different
