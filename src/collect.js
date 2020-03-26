@@ -10,6 +10,7 @@ import { patterns } from './render'
 
 /*
  * Clean the line from extraneous characters
+ * @private
  * @param {String} line
  * @param {String} delimiter
  * @returns {String} cleaned line
@@ -25,6 +26,7 @@ const clean = (line, delimiter) => {
 }
 
 /* Test need to insert a delimiter
+ * @private
  * @param {String} prev - previous character
  * @param {String} curr - current character
  * @param {Object} options
@@ -43,17 +45,16 @@ const insertDelimiter = (prev, curr, next, options) => {
         isLower(next)
 
     let delimit = letNum || lowUp || numLet || upLow || upUpLow
-    // if (delimit) console.log(`delimit ${prev} - ${curr}${next}`)
     return delimit
 }
 
 /* Put seperator before each concatenated word
+ * @private
  * @param {String} line
  * @param {Object} options
  * @returns {String} phrase of seperated words
  */
 const delimitWords = (line, options) => {
-    // console.log(`delimit ${line} using\n`, options)
     let phrase = line[0]
     for (let i = 1; i < line.length; i++) {
         if (insertDelimiter(line[i - 1], line[i], line[i + 1] || '', options)) {
@@ -68,9 +69,9 @@ const delimitWords = (line, options) => {
  * Transform a camelcase object-key to title
  * @param {String} line
  * @param {Object} options
+ * @returns {Object} - the 'prototype' / methods and some variables
  */
 const TransformCase = function(line, userOptions) {
-    console.log(' line ', line, ' userOptions ', userOptions)
     if (!line) return
     let self = {}
     const options = Object.assign({}, INTAKE_OPTIONS, userOptions)
@@ -112,12 +113,12 @@ const TransformCase = function(line, userOptions) {
     }
 
     // preserve, delimit - these strings must be kept together - should be a human word
-    const kepings = [].concat(options.preserve, options.delimit)
-    if (kepings.length) {
-        kepings.forEach(keep => {
+    const units = [].concat(options.preserve, options.delimit)
+    if (units.length) {
+        units.forEach(unit => {
             revised = revised.replace(
-                new RegExp(keep, 'g'),
-                delimiter + keep + delimiter,
+                new RegExp(unit, 'g'),
+                delimiter + unit + delimiter,
             )
         })
         revised = clean(revised, delimiter)

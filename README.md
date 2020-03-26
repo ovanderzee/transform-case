@@ -28,19 +28,27 @@ With a second argument, an options object can be passed:
         preserve: [word1, word2, ...],
         replace: {word1: replacement1, word2: replacement2, ...}
     }
-    delimit: {Array} - keeps a letter-combination as a word,
-        the word will be processesed according to the pattern
-    preserve: {Array} - keeps a letter-combination as a word and protects the case
-    replace: {Object} - replaces each occurrence of a letter-combination,
+    delimit: {Array}
+        keeps a letter-combination as a delimited word,
+        the word will be processed according to the pattern
+    preserve: {Array}
+        keeps a letter-combination as a delimited word and protects the case
+    replace: {Object}
+        replaces each occurrence of a letter-combination,
         as if the original input had been different
 
-Options for undelimited input (only letters and numbers)
+Options for pure alphanumeric input
 
-    delimitLetterNumber: {Boolean} - delimit when a letter is followed by a number (default: true)
-    delimitLowerUpper: {Boolean} - delimit when a lowercase is followed by a uppercase (default: true)
-    delimitNumberLetter: {Boolean} - delimit when a number is followed by a letter (default: false)
-    delimitUpperLower: {Boolean} - delimit when a uppercase is followed by a lowercase (default: false)
-    delimitUpperUpperLower: {Boolean} - delimit when a uppercase is followed by a uppercase plus lowercase (default: true)
+    delimitLetterNumber: {Boolean}
+        delimit when a letter is followed by a number (default: true)
+    delimitLowerUpper: {Boolean}
+        delimit when a lowercase is followed by a uppercase (default: true)
+    delimitNumberLetter: {Boolean}
+        delimit when a number is followed by a letter (default: true)
+    delimitUpperLower: {Boolean}
+        delimit when a uppercase is followed by a lowercase (default: false)
+    delimitUpperUpperLower: {Boolean}
+        delimit when a uppercase is followed by a uppercase plus lowercase (default: true)
 
 ## Demo
 

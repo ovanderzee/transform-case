@@ -3,6 +3,9 @@ import { RENDER_MODEL } from './constants'
 /**
  * Convert curly single quotes and backticks to straight single quotes,
  * convert curly double quotes to straight double quotes
+ * @private
+ * @param {String} line
+ * @returns {String} normalised string
  */
 const normaliseQuotes = line => {
     return line.replace(/‘’`/g, "'").replace(/“”/g, '"')
@@ -10,16 +13,31 @@ const normaliseQuotes = line => {
 
 /**
  * Remove all puctuation from a string
+ * @private
+ * @param {String} line
+ * @returns {String} stripped string
  */
 const removePunctuation = line => {
     return normaliseQuotes(line).replace(/[…,:;[\](){}\-‐–—'".!?]/g, '')
 }
 
+/**
+ * Transform helper functions
+ * @private
+ * @param {String} word
+ * @returns {String} transformed word
+ */
 const asIs = word => word
 const toLower = word => word.toLowerCase()
 const toUpper = word => word.toUpperCase()
 
 const patterns = function(words, options) {
+    /**
+     * Iterative transformation
+     * @private
+     * @param {Object} model
+     * @returns {String} transformed words
+     */
     const transform = model => {
         let transformation = words.map((word, index) => {
             if (index === 0) {
@@ -37,6 +55,11 @@ const patterns = function(words, options) {
         return model.postProcess(transformation.join(model.delimitOutput))
     }
 
+    /**
+     * camelCase pattern
+     * @param {Object} model
+     * @returns {String} transformed words
+     */
     const camelCase = () => {
         const model = Object.assign({}, RENDER_MODEL, {
             postProcess: removePunctuation,
@@ -49,6 +72,11 @@ const patterns = function(words, options) {
         return transform(model)
     }
 
+    /**
+     * humanTitle pattern
+     * @param {Object} model
+     * @returns {String} transformed words
+     */
     const humanTitle = () => {
         const model = Object.assign({}, RENDER_MODEL, {
             delimitOutput: ' ',

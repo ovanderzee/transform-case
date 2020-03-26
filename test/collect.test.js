@@ -45,7 +45,7 @@ describe('delimiting a puts up an array of words', () => {
 
         expect(delimitCase.words[0]).toBe('Capital')
     })
-    test('to deal with a uppercase - uppercase plus lowers transition', () => {
+    test('to deal with a uppercase - uppercase plus lowercase transition', () => {
         const delimitCase = new TransformCase('ISpy')
 
         expect(delimitCase.words[0]).toBe('I')
