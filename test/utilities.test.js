@@ -4,6 +4,7 @@ import {
     isLower,
     isUpper,
     isPureAlphaNumeric,
+    isExactMatch,
 } from '../src/utilities'
 
 describe('isDigit accepts any integer number', () => {
@@ -180,5 +181,23 @@ describe('isPureAlphaNumeric accepts any combination of letters or digits', () =
         expect(isPureAlphaNumeric(null)).toBeFalsy()
         expect(isPureAlphaNumeric({})).toBeFalsy()
         expect(isPureAlphaNumeric({ a: 1, b: 2, c: 3 })).toBeFalsy()
+    })
+})
+
+describe('In isExactMatch the match covers the entire string', () => {
+    test('multiple strings can match one regular expression', () => {
+        const word1 = 'deltaE1976'
+        const word2 = 'deltaE2000'
+        const regex = /delta[EL]\d{4}/
+
+        expect(isExactMatch(word1, regex)).toBeTruthy()
+        expect(isExactMatch(word2, regex)).toBeTruthy()
+    })
+
+    test('the string may not match partly', () => {
+        const word = 'partly'
+        const regex = /part/
+
+        expect(isExactMatch(word, regex)).toBeFalsy()
     })
 })

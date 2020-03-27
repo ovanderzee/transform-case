@@ -101,17 +101,14 @@ const TransformCase = function(line, userOptions) {
 
     // distinguish between technical from linguistic transforms
     let delimiter
-    if (options.delimitInput) {
-        // delimit by given character
-        delimiter = options.delimitInput
-    } else if (self.orgin.isPureAlphaNumeric) {
+    if (self.orgin.isPureAlphaNumeric) {
+        // assume technical phrase, or this is one human word
         // delimit by case transition
         delimiter = options.delimitOutput
     } else {
-        // delimit by non-letter-non-digit character
-        // most abundant nonAlphaNumeric as delimiter?
-        // intersect used nonAlphaNumerics and a most popular list?
-        delimiter = options.delimitOutput
+        // assume human input or technical/coded when input delimiter is given
+        // delimit by specified delimiter, (default: a space)
+        delimiter = options.delimitInput || options.delimitOutput
     }
 
     // replace regardsless of delimiting
@@ -132,26 +129,25 @@ const TransformCase = function(line, userOptions) {
     }
 
     // produce an array with words
-    if (options.delimitInput) {
-        // delimit by given character
-        self.phrase = revised
-        self.words = revised.split(options.delimitInput)
-    } else if (self.orgin.isPureAlphaNumeric) {
+    if (self.orgin.isPureAlphaNumeric) {
+        // assume technical phrase, or this is one human word
         // delimit by case transition
-        let parts = revised.split(options.delimitOutput)
+        let parts = revised.split(delimiter)
         self.phrase = parts
             .map(part =>
                 options.preserve.some(regex => isExactMatch(part, regex))
                     ? part
                     : delimitWords(part, options),
             )
-            .join(options.delimitOutput)
-        self.words = self.phrase.split(options.delimitOutput)
+            .join(delimiter)
+        self.words = self.phrase.split(delimiter)
     } else {
-        // delimit by non-letter-non-digit character
+        // assume human input or technical/coded when input delimiter is given
+        // delimit by specified delimiter, (default: a space)
         self.phrase = revised
-        self.words = revised.split(options.delimitOutput)
+        self.words = revised.split(delimiter)
     }
+
 
     return Object.assign(self, patterns(self.words, options))
 }

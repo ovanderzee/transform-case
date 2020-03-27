@@ -67,11 +67,18 @@ const isPureAlphaNumeric = line => {
         line &&
         line.split &&
         !line.split('').some(char => {
-            return !isLetter(char) && !isDigit(char)
+            return !(isLetter(char) || isDigit(char))
         })
     )
 }
 
+/**
+ * Check for a match covering the string entirely
+ * @private
+ * @param {String} word
+ * @param {RegExp} regex
+ * @returns {Boolean}
+ */
 const isExactMatch = (word, regex) => {
     const match = word.match(regex)
     const result = match && match[0] === word
