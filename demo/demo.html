@@ -6,45 +6,63 @@
         <link rel="stylesheet" type="text/css" href="demo.css" />
         <script>
 window.transforms = []
-window.transforms.push( transformCase(`camelCasedInput`) )
-window.transforms.push( transformCase(`A human sentence, with punctuation marks.`) )
+var options = new Object()
+window.transforms.push( [options, transformCase(`camelCasedInput`, options)] )
+var options = new Object()
+window.transforms.push( [options, transformCase(`A human sentence, with punctuation marks.`, options)] )
 
-window.transforms.push( transformCase(` with
-    redundant whitespace`) )
+var options = new Object()
+window.transforms.push( [options, transformCase(` with
+    redundant whitespace`, options)] )
 
-window.transforms.push( transformCase(`CUSTOMCaseAuto`) )
-window.transforms.push( transformCase(`CUSTOMCaseDelimiting`, {
-    delimit: ['CUSTOM'],
-}) )
+var options = new Object()
+window.transforms.push( [options, transformCase(`CUSTOMCaseAuto`, options)] )
+var options = {delimit: ['CUSTOM'],}
+window.transforms.push( [options, transformCase(`CUSTOMCaseDelimiting`, options)] )
 
-window.transforms.push( transformCase(`CUSTOMCasePreserving`, {
-    preserve: ['CUSTOM'],
-}) )
+var options = {preserve: ['CUSTOM'],}
+window.transforms.push( [options, transformCase(`CUSTOMCasePreserving`, options)] )
 
-window.transforms.push( transformCase(`customCaseReplacingTEXT`, {
-    replace: {'ReplacingTEXT': 'WithPHRASE'},
-}) )
+var options = {replace: {'ReplacingTEXT': 'WithPHRASE'},}
+window.transforms.push( [options, transformCase(`customCaseReplacingTEXT`, options)] )
 
-window.transforms.push( transformCase(`1Number2Chunk`) )
-window.transforms.push( transformCase(`preserveMax2006andMAX2017`, {
-    preserve: [/Max\d{4}/ig],
-}) )
+var options = new Object()
+window.transforms.push( [options, transformCase(`1Number2Chunk`, options)] )
+var options = {preserve: [/Max\d{4}/ig],}
+window.transforms.push( [options, transformCase(`preserveMax2006andMAX2017`, options)] )
 
-addCell = function (tagName, content) {
+const addCell = function (tagName, content) {
     let cell = document.createElement(tagName)
     cell.textContent = content
     return cell
 }
 
+const readable = function (options) {
+    const objEntries = Object.entries(options)
+    for (let [key, value] of objEntries) {
+        if (value instanceof Array) {
+            for (let [index, member] of value.entries()) {
+                if (member instanceof RegExp) {
+                    value[index] = member.toString()
+                }
+            }
+        }
+    }
+    return options
+}
+
 window.onload = function () {
     const trs = document.getElementsByTagName('tr')
-    transforms.forEach(transform => {
+    for (let [index, value] of transforms.entries()) {
+        let options = readable(value[0])
+        let transform = value[1]
         console.log(transform)
         trs[0].appendChild(addCell('th', transform.orgin.input))
-        trs[1].appendChild(addCell('td', transform.phrase))
-        trs[2].appendChild(addCell('td', transform.camelCase()))
-        trs[3].appendChild(addCell('td', transform.humanTitle()))
-    })
+        trs[1].appendChild(addCell('td', JSON.stringify(options)))
+        trs[2].appendChild(addCell('td', transform.phrase))
+        trs[3].appendChild(addCell('td', transform.camelCase()))
+        trs[4].appendChild(addCell('td', transform.humanTitle()))
+    }
 }
         </script>
     </head>
@@ -54,6 +72,7 @@ window.onload = function () {
     <caption>Transform case</caption>
     <thead>
         <tr><th>input</th></tr>
+        <tr><th>options</th></tr>
     </thead>
     <tbody>
         <tr><th>normalised</th></tr>

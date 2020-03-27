@@ -33,8 +33,12 @@ th:first-child {
     border-left: 1px solid #bbc;
     color: #022;
 }
-thead th {
-    border-width: 2px;
+thead tr:first-child th {
+    border-top-width: 2px;
+}
+thead tr:last-child th,
+thead tr:last-child td {
+    border-bottom-width: 2px;
 }
 td:first-child {
     border-right: 1px solid #022;
