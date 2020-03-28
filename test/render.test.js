@@ -32,6 +32,12 @@ describe('camelCase is a pattern', () => {
         expect(secondWord1).toBe(secondWord1.toUpperCase())
         expect(secondWordN).toBe(secondWordN.toLowerCase())
     })
+    test('replace delimiter between numbers with an underscore to help seperate them', () => {
+        const camelTest = new TransformCase('We use version 11.7.2.')
+        const camelCase = camelTest.camelCase()
+
+        expect(camelCase).toBe('weUseVersion11_7_2')
+    })
 })
 
 describe('humanTitle is a pattern', () => {

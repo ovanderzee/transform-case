@@ -31,6 +31,9 @@ window.transforms.push( [options, transformCase(`1Number2Chunk`, options)] )
 var options = {preserve: [/Max\d{4}/ig],}
 window.transforms.push( [options, transformCase(`preserveMax2006andMAX2017`, options)] )
 
+var options = {}
+window.transforms.push( [options, transformCase(`The numbers stand off in version 0.1.0`, options)] )
+
 const addCell = function (tagName, content) {
     let cell = document.createElement(tagName)
     cell.textContent = content

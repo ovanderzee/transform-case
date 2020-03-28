@@ -148,7 +148,6 @@ const TransformCase = function(line, userOptions) {
         self.words = revised.split(delimiter)
     }
 
-
     return Object.assign(self, patterns(self.words, options))
 }
 

@@ -28,14 +28,18 @@ const INTAKE_OPTIONS = {
 
 /*
  * Render model, with do-nothing-functions, to be exchanged by the pattern fimally
- * @member {Function} postProcess - strip function for pure alphaNumeric patterns
+ * @member {Function} preprocess
+      do operations in fresh words array, for pure alphaNumeric patterns
+ * @member {Function} postProcess
+      do operations in string, just before delivery, for pure alphaNumeric patterns
  * @member {Function} firstWordFirstChar - transform word parts
  * @member {Function} firstWordNextChars - transform word parts
  * @member {Function} nextWordsFirstChar - transform word parts
  * @member {Function} nextWordsNextChars - transform word parts
  */
 const RENDER_MODEL = {
-    postProcess: word => word,
+    preprocess: words => words,
+    postProcess: line => line,
     firstWordFirstChar: word => word,
     firstWordNextChars: word => word,
     nextWordsFirstChar: word => word,

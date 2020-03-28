@@ -2,6 +2,24 @@ import { isExactMatch } from './utilities'
 import { RENDER_MODEL } from './constants'
 
 /**
+ * Solve the problem that concatenated numbers loose menaing:
+ * delimit the numbers with the delimiter that matches /\w/
+ * @private
+ * @param {Array} words
+ * @returns {Array} enhanced words
+ */
+const wordDelimitNumbers = words => {
+    const delimitedNumbers = /(\d)[-:,./](\d)/g
+    return words.map(word =>
+        word.match(delimitedNumbers)
+            ? word
+                  .replace(delimitedNumbers, '$1_$2')
+                  .replace(delimitedNumbers, '$1_$2')
+            : word,
+    )
+}
+
+/**
  * Convert curly single quotes and backticks to straight single quotes,
  * convert curly double quotes to straight double quotes
  * @private
@@ -13,7 +31,7 @@ const normaliseQuotes = line => {
 }
 
 /**
- * Remove all puctuation from a string
+ * Remove all punctuation from a string
  * @private
  * @param {String} line
  * @returns {String} stripped string
@@ -40,7 +58,8 @@ const patterns = function(words, options) {
      * @returns {String} transformed words
      */
     const transform = model => {
-        let transformation = words.map((word, index) => {
+        const currentWords = model.preprocess(words)
+        const transformation = currentWords.map((word, index) => {
             if (index === 0) {
                 return options.preserve.some(regex => isExactMatch(word, regex))
                     ? word
@@ -63,6 +82,7 @@ const patterns = function(words, options) {
      */
     const camelCase = () => {
         const model = Object.assign({}, RENDER_MODEL, {
+            preprocess: wordDelimitNumbers,
             postProcess: removePunctuation,
             delimitOutput: '',
             firstWordFirstChar: toLower,
