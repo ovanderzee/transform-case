@@ -1,5 +1,7 @@
 import { isExactMatch } from './utilities'
 import { RENDER_MODEL } from './constants'
+//import yads from '../node_modules/yads/index.js'
+import yads from 'yads'
 
 /**
  * Solve the problem that concatenated numbers loose menaing:
@@ -38,6 +40,16 @@ const normaliseQuotes = line => {
  */
 const removePunctuation = line => {
     return normaliseQuotes(line).replace(/[…,:;[\](){}\-‐–—'".!?]/g, '')
+}
+
+/**
+ * Exchange all diacritics for their base character(s)
+ * @private
+ * @param {String} line
+ * @returns {String} changed string
+ */
+const simplifyDiacritics = line => {
+    return yads.combining(line)
 }
 
 /**
@@ -83,7 +95,11 @@ const patterns = function(words, options) {
     const camelCase = () => {
         const model = Object.assign({}, RENDER_MODEL, {
             preprocess: wordDelimitNumbers,
-            postProcess: removePunctuation,
+            postProcess: function(line) {
+                line = removePunctuation(line)
+                line = simplifyDiacritics(line)
+                return line
+            },
             delimitOutput: '',
             firstWordFirstChar: toLower,
             firstWordNextChars: toLower,

@@ -66,15 +66,6 @@ const delimitWords = (line, options) => {
     return phrase
 }
 
-/* Change all 'units' in regex to deal with variable digits
- * @param {String || RegExp} unit
- * @returns {RegExp}
- */
-const stringToRegexp = unit => {
-    if (typeof unit === 'string') return new RegExp(unit, 'g')
-    if (unit instanceof RegExp) return unit
-}
-
 /**
  * Transform a camelcase object-key to title
  * @param {String} line

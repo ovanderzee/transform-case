@@ -1,5 +1,7 @@
 // rollup.config.js
 import { terser } from 'rollup-plugin-terser'
+import commonjs from '@rollup/plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve'
 
 const name = 'transformCase'
 
@@ -20,6 +22,11 @@ export default {
     },
   ],
   plugins: [
+    resolve(),
+    commonjs({
+      // to read umd dependencies
+      include: 'node_modules/**',
+    }),
     terser(),
   ],
 }

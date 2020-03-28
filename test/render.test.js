@@ -38,6 +38,16 @@ describe('camelCase is a pattern', () => {
 
         expect(camelCase).toBe('weUseVersion11_7_2')
     })
+    test('replace diacritics', () => {
+        const camelTest = new TransformCase(
+            'Cañón, coöperation, exposé, façade, résumé, all have diacritics',
+        )
+        const camelCase = camelTest.camelCase()
+
+        expect(camelCase).toBe(
+            'canonCooperationExposeFacadeResumeAllHaveDiacritics',
+        )
+    })
 })
 
 describe('humanTitle is a pattern', () => {

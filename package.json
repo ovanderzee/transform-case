@@ -37,7 +37,11 @@
         "url": "https://github.com/ovanderzee/transform-case/issues"
     },
     "homepage": "https://github.com/ovanderzee/transform-case#readme",
-    "dependencies": {},
+    "dependencies": {
+        "@rollup/plugin-commonjs": "^11.0.2",
+        "@rollup/plugin-node-resolve": "^7.1.1",
+        "yads": "^1.0.6"
+    },
     "devDependencies": {
         "@babel/core": "^7.9.0",
         "@babel/preset-env": "^7.9.0",
