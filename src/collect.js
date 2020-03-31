@@ -10,20 +10,36 @@ import { INTAKE_OPTIONS } from './constants'
 import { patterns } from './render'
 
 /*
- * Clean the line from extraneous characters
+ * remove extraneous and doubled characters
  * @private
  * @param {String} line
- * @param {String} delimiter
+ * @param {String} char
  * @returns {String} cleaned line
  */
-const clean = (line, delimiter) => {
-    const leading = new RegExp('^' + delimiter)
-    const trailing = new RegExp(delimiter + '$')
-    const doubling = new RegExp(delimiter + delimiter, 'g')
+const dedupe = (line, char) => {
+    const leading = new RegExp('^' + char)
+    const trailing = new RegExp(char + '$')
+    const doubling = new RegExp(char + char, 'g')
     return line
+        .replace(doubling, char)
+        .replace(doubling, char)
+        .replace(doubling, char)
         .replace(leading, '')
         .replace(trailing, '')
-        .replace(doubling, delimiter)
+}
+
+/*
+ * Transform whitespace to spaces, then clear all control characters
+ * @private
+ * @param {String} line
+ * @returns {String} cleaned line
+ */
+const tidy = line => {
+    const controlChars = new RegExp('[\u0000-\u001f,\u007f-\u009f]')
+    return line
+        .trim()
+        .replace(/\s+/g, ' ')
+        .replace(controlChars, '')
 }
 
 /* Test need to insert a delimiter
@@ -81,14 +97,13 @@ const TransformCase = function(line, userOptions) {
     self.orgin = {
         input: line,
     }
-    line = line.trim().replace(/\s+/g, ' ')
     if (options.delimitInput) {
-        self.orgin.normalised = clean(line, options.delimitInput)
+        self.orgin.standardised = dedupe(tidy(line), options.delimitInput)
     } else {
-        self.orgin.normalised = line
+        self.orgin.standardised = tidy(line)
     }
-    self.orgin.isPureAlphaNumeric = isPureAlphaNumeric(self.orgin.normalised)
-    let revised = self.orgin.normalised
+    self.orgin.isPureAlphaNumeric = isPureAlphaNumeric(self.orgin.standardised)
+    let revised = self.orgin.standardised
 
     // distinguish between technical from linguistic transforms
     let delimiter
@@ -116,7 +131,7 @@ const TransformCase = function(line, userOptions) {
         units.forEach(unit => {
             revised = revised.replace(unit, delimiter + '$&' + delimiter)
         })
-        revised = clean(revised, delimiter)
+        revised = dedupe(revised, delimiter)
     }
 
     // produce an array with words

@@ -1,5 +1,27 @@
 import { TransformCase } from '../src/collect'
 
+describe('there will be no unexpected characters in the output', () => {
+    //               null   tab    esc   0space  bom
+    const input = 'A\u0000B\u0009C\u001bD\u200bE\ufeffF'
+    const output = new TransformCase(input).phrase
+
+    test('all whitespace becomes an ordinary space', () => {
+        // about tab and zero-space
+        expect(input.match(/\s/g).length).toBe(output.match(/ /g).length)
+    })
+    test('control characters are filtered', () => {
+        // about null, zero-space and byte-order-mark
+        expect(input.length).toBeGreaterThan(output.length)
+    })
+
+    const untrimmed = `  X
+      Y    `
+    const trimmed = new TransformCase(untrimmed).phrase
+    test('leading and trailing spaces are trimmed', () => {
+        expect(trimmed).toBe('X Y')
+    })
+})
+
 describe('delimit keeps a lettercombination as a word and processes according to the pattern', () => {
     const delimit = new TransformCase('CSSFontFaceRule', { delimit: ['CSS'] })
     test('to be a word', () => {

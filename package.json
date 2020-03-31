@@ -25,7 +25,8 @@
         "title",
         "titlecase",
         "title-case",
-        "case"
+        "case",
+        "front-end"
     ],
     "author": "Onno van der Zee",
     "license": "ISC",
