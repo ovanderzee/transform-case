@@ -1,13 +1,23 @@
+* {
+    box-sizing: border-box;
+}
 body {
     font: caption;
     font-size: 14px;
     line-height: 1.333;
     background: #222;
     color: #eee;
+    margin: 1em;
 }
-caption {
+section {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+h2 {
     font-size: 22px;
+    font-weight: 400;
     text-align: left;
+    margin: 0;
 }
 table {
     border-spacing: 0;
@@ -16,7 +26,7 @@ th, td {
     background: #888;
     border-top: 1px solid #bbc;
     border-bottom: 1px solid #022;
-    max-width: 8em;
+    width: 8em;
     padding: .4em .6em;
     text-align: left;
     word-break: break-word;
@@ -25,6 +35,10 @@ th, td {
 th:nth-child(2n),
 td:nth-child(2n) {
     background: #555;
+}
+tr > *:not(:first-child) {
+    cursor: url(scroll-horizontal.png), ew-resize;
+
 }
 th {
     font-weight: 500;

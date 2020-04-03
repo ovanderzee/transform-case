@@ -56,6 +56,8 @@ const readable = function (options) {
 }
 
 window.onload = function () {
+    let tableWidth = (transforms.length + 1) * 112
+    document.querySelector('table').style.width = tableWidth + 'px'
     const trs = document.getElementsByTagName('tr')
     for (let [index, value] of transforms.entries()) {
         let options = readable(value[0])
@@ -67,23 +69,42 @@ window.onload = function () {
         trs[3].appendChild(addCell('td', transform.camelCase()))
         trs[4].appendChild(addCell('td', transform.humanTitle()))
     }
+    let fixedHeadings = []
+    for (let tr of trs) {
+        let headCell = tr.querySelector('th')
+        let headStyle = window.getComputedStyle(headCell)
+        let headCopy = headCell.cloneNode(true)
+        headCopy.style.width = `${headCell.clientWidth}px`
+        let vBorder = parseInt(headStyle.borderTopWidth) + parseInt(headStyle.borderBottomWidth)
+        headCopy.style.height = `${headCell.clientHeight + vBorder}px`
+        headCopy.style.background = headStyle.background
+        fixedHeadings.push(headCopy)
+    }
+    for (let index = 0; index < trs.length; index++) {
+        let headCell = trs[index].querySelector('th')
+        let headCopy = fixedHeadings[index]
+        headCopy.style.position = 'absolute'
+        trs[index].insertBefore(headCopy, headCell)
+    }
 }
         </script>
     </head>
     <body>
+        <h2>Transform case</h2>
+        <section>
 
 <table>
-    <caption>Transform case</caption>
     <thead>
         <tr><th>input</th></tr>
         <tr><th>options</th></tr>
     </thead>
     <tbody>
-        <tr><th>normalised</th></tr>
+        <tr><th>standardised</th></tr>
         <tr><th>camelCase()</th></tr>
         <tr><th>humanTitle()</th></tr>
     </tbody>
 </table>
 
+        </section>
     </body>
 </html>
