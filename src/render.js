@@ -1,7 +1,7 @@
 import { isExactMatch } from './utilities'
 import { RENDER_MODEL } from './constants'
 //import yads from '../node_modules/yads/index.js'
-import yads from 'yads'
+import asciiFolder from 'fold-to-ascii'
 
 /**
  * Solve the problem that concatenated numbers loose menaing:
@@ -44,13 +44,13 @@ const removePunctuation = line => {
 }
 
 /**
- * Exchange all diacritics for their base character(s)
+ * Remove all diacritics and decompose ligatures
  * @private
  * @param {String} line
  * @returns {String} changed string
  */
-const simplifyDiacritics = line => {
-    return yads.combining(line)
+const simplifyVariations = line => {
+    return asciiFolder.foldReplacing(line)
 }
 
 /**
@@ -92,7 +92,7 @@ const patterns = function(words, options) {
         preprocess: delimitNumbers,
         postProcess: function(line) {
             line = removePunctuation(line)
-            line = simplifyDiacritics(line)
+            line = simplifyVariations(line)
             return line
         },
     }

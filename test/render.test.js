@@ -109,7 +109,6 @@ describe('snakeCase is a pattern', () => {
         )
         const omCop = compositions.snakeCase()
 
-        //expect(omCop).toBe('flaeijshod')
-        expect(omCop).toBe('ﬂ_ae_ĳ_l_h_o_d')
+        expect(omCop).toBe('fl_ae_ij_s_h_o_d')
     })
 })

@@ -1,8 +1,8 @@
 # TransformCase
 
-Here is the case and seperation transformer that is of use
-when your texts do not confine to english.
-TransformCase will work with diacritics as well as curly quotes.
+Here is the case and seperation transformer that
+transliterates diacriticals and ligatures
+when your texts originate from other languages than english.
 
 ## Install
 
