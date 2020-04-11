@@ -38,16 +38,6 @@ describe('camelCase is a pattern', () => {
 
         expect(camelCase).toBe('weUseVersion11_7_2')
     })
-    test('replace diacritics', () => {
-        const camelTest = new TransformCase(
-            'Cañón, coöperation, exposé, façade, résumé, all have diacritics',
-        )
-        const camelCase = camelTest.camelCase()
-
-        expect(camelCase).toBe(
-            'canonCooperationExposeFacadeResumeAllHaveDiacritics',
-        )
-    })
 })
 
 describe('humanTitle is a pattern', () => {
@@ -67,5 +57,59 @@ describe('humanTitle is a pattern', () => {
             .map(word => word.charAt(0))
 
         expect(wordStartSequence.join().match(/[a-z]/)).toBeFalsy()
+    })
+})
+
+describe('snakeCase is a pattern', () => {
+    test('with only regexp-word letters', () => {
+        const snake = new TransformCase(
+            'A sentence, text for humans.',
+        ).snakeCase()
+        const nonWordMatch = snake.match(/\W/g)
+        const wordMatch = snake.match(/[a-zA-Z0-9_]/g)
+
+        expect(nonWordMatch).toBeFalsy()
+        expect(wordMatch.length).toBe(snake.length)
+    })
+    test('the first word is all lowercase', () => {
+        const snakeTest = new TransformCase('This sentence, text for humans.')
+        const snakeCase = snakeTest.snakeCase()
+        const len1 = snakeTest.words[0].length
+        const firstWord = snakeCase.substr(0, len1)
+
+        expect(firstWord).toBe(firstWord.toLowerCase())
+    })
+    test('the next words are all lowercase', () => {
+        const snakeTest = new TransformCase('A sentence, text for humans.')
+        const snakeCase = snakeTest.snakeCase()
+        const len1 = snakeTest.words[0].length
+        const len2 = snakeTest.words[1].length
+
+        const secondWord = snakeCase.substr(len1, len2 - 1)
+        const secondWord1 = secondWord.charAt(0)
+        const secondWordN = secondWord.substr(1)
+
+        expect(secondWord1).toBe(secondWord1.toLowerCase())
+        expect(secondWordN).toBe(secondWordN.toLowerCase())
+    })
+    test('remove diacritics', () => {
+        const diacriticals = new TransformCase(
+            'Cañón, coöperation, exposé, façade, résumé, all have diacritics',
+        )
+        const aidIda = diacriticals.snakeCase()
+
+        expect(aidIda).toBe(
+            'canon_cooperation_expose_facade_resume_all_have_diacritics',
+        )
+    })
+    test('decompose ligatures and dighraphs, replace lettervariations with their baseletter', () => {
+        const compositions = new TransformCase(
+            // fl    ae     ij     longS h-stroke o-slash d-stroke
+            '\ufb02 \u00e6 \u0133 \u017f \u0127  \u00f8  \u0111    ',
+        )
+        const omCop = compositions.snakeCase()
+
+        //expect(omCop).toBe('flaeijshod')
+        expect(omCop).toBe('ﬂ_ae_ĳ_l_h_o_d')
     })
 })

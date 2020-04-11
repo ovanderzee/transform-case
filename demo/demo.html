@@ -68,6 +68,7 @@ window.onload = function () {
         trs[2].appendChild(addCell('td', transform.phrase))
         trs[3].appendChild(addCell('td', transform.camelCase()))
         trs[4].appendChild(addCell('td', transform.humanTitle()))
+        trs[5].appendChild(addCell('td', transform.snakeCase()))
     }
     let fixedHeadings = []
     for (let tr of trs) {
@@ -102,6 +103,7 @@ window.onload = function () {
         <tr><th>standardised</th></tr>
         <tr><th>camelCase()</th></tr>
         <tr><th>humanTitle()</th></tr>
+        <tr><th>snakeCase()</th></tr>
     </tbody>
 </table>
 

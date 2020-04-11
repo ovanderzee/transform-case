@@ -5,18 +5,19 @@ import yads from 'yads'
 
 /**
  * Solve the problem that concatenated numbers loose menaing:
- * delimit the numbers with the delimiter that matches /\w/
+ * delimit the numbers with the output delimiter or the delimiter that matches /\w/
  * @private
  * @param {Array} words
  * @returns {Array} enhanced words
  */
-const wordDelimitNumbers = words => {
+const delimitNumbers = (words, delimitOutput) => {
     const delimitedNumbers = /(\d)[-:,./](\d)/g
+    let delimiter = delimitOutput || '_'
     return words.map(word =>
         word.match(delimitedNumbers)
             ? word
-                  .replace(delimitedNumbers, '$1_$2')
-                  .replace(delimitedNumbers, '$1_$2')
+                  .replace(delimitedNumbers, `$1${delimiter}$2`)
+                  .replace(delimitedNumbers, `$1${delimiter}$2`)
             : word,
     )
 }
@@ -70,7 +71,7 @@ const patterns = function(words, options) {
      * @returns {String} transformed words
      */
     const transform = model => {
-        const currentWords = model.preprocess(words)
+        const currentWords = model.preprocess(words, model.delimitOutput)
         const transformation = currentWords.map((word, index) => {
             if (index === 0) {
                 return options.preserve.some(regex => isExactMatch(word, regex))
@@ -87,19 +88,22 @@ const patterns = function(words, options) {
         return model.postProcess(transformation.join(model.delimitOutput))
     }
 
+    const techProcessing = {
+        preprocess: delimitNumbers,
+        postProcess: function(line) {
+            line = removePunctuation(line)
+            line = simplifyDiacritics(line)
+            return line
+        },
+    }
+
     /**
      * camelCase pattern
      * @param {Object} model
      * @returns {String} transformed words
      */
     const camelCase = () => {
-        const model = Object.assign({}, RENDER_MODEL, {
-            preprocess: wordDelimitNumbers,
-            postProcess: function(line) {
-                line = removePunctuation(line)
-                line = simplifyDiacritics(line)
-                return line
-            },
+        const model = Object.assign({}, RENDER_MODEL, techProcessing, {
             delimitOutput: '',
             firstWordFirstChar: toLower,
             firstWordNextChars: toLower,
@@ -123,9 +127,26 @@ const patterns = function(words, options) {
         return transform(model)
     }
 
+    /**
+     * snakeCase pattern
+     * @param {Object} model
+     * @returns {String} transformed words
+     */
+    const snakeCase = () => {
+        const model = Object.assign({}, RENDER_MODEL, techProcessing, {
+            delimitOutput: '_',
+            firstWordFirstChar: toLower,
+            firstWordNextChars: toLower,
+            nextWordsFirstChar: toLower,
+            nextWordsNextChars: toLower,
+        })
+        return transform(model)
+    }
+
     return {
         camelCase: camelCase,
         humanTitle: humanTitle,
+        snakeCase: snakeCase,
     }
 }
 
