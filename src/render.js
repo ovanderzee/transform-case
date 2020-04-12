@@ -82,21 +82,28 @@ const patternRendering = function(words, options) {
                           model.nextWordsNextChars(word.substr(1))
             }
         })
-        return model.postProcess(transformation.join(model.delimitOutput))
+        const line = transformation.join(model.delimitOutput)
+        return model.postProcess(line, model.delimitOutput)
     }
 
     const techProcessing = {
-        preprocess: delimitNumbers,
-        postProcess: function(line) {
-            line = removePunctuation(line)
+        preprocess: function(word, delimitOutput) {
+            word = delimitNumbers(word, delimitOutput)
+            word = removePunctuation(word)
+            return word
+        },
+        postProcess: function(line, delimitOutput) {
             line = simplifyVariations(line)
             return line
         },
     }
 
     /**
+     * RegExp-word patterns
+     */
+
+    /**
      * camelCase pattern
-     * @param {Object} model
      * @returns {String} transformed words
      */
     const camelCase = () => {
@@ -111,8 +118,11 @@ const patternRendering = function(words, options) {
     }
 
     /**
+     * Human, linguistic patterns
+     */
+
+    /**
      * humanTitle pattern
-     * @param {Object} model
      * @returns {String} transformed words
      */
     const humanTitle = () => {
@@ -125,13 +135,18 @@ const patternRendering = function(words, options) {
     }
 
     /**
-     * snakeCase pattern
-     * @param {Object} model
-     * @returns {String} transformed words
+     * delimitedLowerCase patterns
      */
-    const snakeCase = () => {
+
+    /**
+     * delimitedLowerCase base pattern
+     * @private
+     * @param {String} delimimter
+     * @returns {String} delimitedLowerCase transformed words
+     */
+    const delimitedLowerCase = delimimter => {
         const model = Object.assign({}, RENDER_MODEL, techProcessing, {
-            delimitOutput: '_',
+            delimitOutput: delimimter,
             firstWordFirstChar: toLower,
             firstWordNextChars: toLower,
             nextWordsFirstChar: toLower,
@@ -140,10 +155,30 @@ const patternRendering = function(words, options) {
         return transform(model)
     }
 
+    const dotCase = () => {
+        return delimitedLowerCase('.')
+    }
+    const paramCase = () => {
+        return delimitedLowerCase('-')
+    }
+    const pathCase = () => {
+        return delimitedLowerCase('/')
+    }
+    const snakeCase = () => {
+        return delimitedLowerCase('_')
+    }
+    const spaceCase = () => {
+        return delimitedLowerCase(' ')
+    }
+
     return {
         camelCase: camelCase,
         humanTitle: humanTitle,
+        dotCase: dotCase,
+        paramCase: paramCase,
+        pathCase: pathCase,
         snakeCase: snakeCase,
+        spaceCase: spaceCase,
     }
 }
 

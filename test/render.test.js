@@ -60,7 +60,7 @@ describe('humanTitle is a pattern', () => {
     })
 })
 
-describe('snakeCase is a pattern', () => {
+describe('snakeCase is a delimitedLowerCase pattern', () => {
     test('with only regexp-word letters', () => {
         const snake = new TransformCase(
             'A sentence, text for humans.',
@@ -110,5 +110,17 @@ describe('snakeCase is a pattern', () => {
         const omCop = compositions.snakeCase()
 
         expect(omCop).toBe('fl_ae_ij_s_h_o_d')
+    })
+})
+
+describe('conversion of delimitedLowerCase patterns', () => {
+    test('example matches', () => {
+        const dlcTest = new TransformCase('This sentence, text for humans.')
+
+        expect(dlcTest.dotCase()).toBe('this.sentence.text.for.humans')
+        expect(dlcTest.paramCase()).toBe('this-sentence-text-for-humans')
+        expect(dlcTest.pathCase()).toBe('this/sentence/text/for/humans')
+        expect(dlcTest.snakeCase()).toBe('this_sentence_text_for_humans')
+        expect(dlcTest.spaceCase()).toBe('this sentence text for humans')
     })
 })

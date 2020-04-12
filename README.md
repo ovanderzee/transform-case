@@ -21,7 +21,16 @@ Call the module with an output pattern like this:
 
     transformCase('A sentence, text for humans.').camelCase() will render: 'aSentenceTextForHumans'.
 
+    transformCase('A sentence, text for humans.').dotCase() will render: 'a.sentence.text.for.humans'.
+
+    transformCase('A sentence, text for humans.').paramCase() will render: 'a-sentence-text-for-humans'.
+
+    transformCase('A sentence, text for humans.').pathCase() will render: 'a/sentence/text/for/humans'.
+
     transformCase('A sentence, text for humans.').snakeCase() will render: 'a_sentence_text_for_humans'.
+
+    transformCase('A sentence, text for humans.').spaceCase() will render: 'a sentence text for humans'.
+
 
 With a second argument, an options object can be passed:
 
