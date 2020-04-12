@@ -7,7 +7,7 @@ import {
     isExactMatch,
 } from './utilities'
 import { INTAKE_OPTIONS } from './constants'
-import { patterns } from './render'
+import { patternRendering } from './render'
 
 /*
  * remove extraneous and doubled characters
@@ -154,7 +154,7 @@ const TransformCase = function(line, userOptions) {
         self.words = revised.split(delimiter)
     }
 
-    return Object.assign(self, patterns(self.words, options))
+    return Object.assign(self, patternRendering(self.words, options))
 }
 
 export { TransformCase }

@@ -1,25 +1,22 @@
 import { isExactMatch } from './utilities'
 import { RENDER_MODEL } from './constants'
-//import yads from '../node_modules/yads/index.js'
 import asciiFolder from 'fold-to-ascii'
 
 /**
  * Solve the problem that concatenated numbers loose menaing:
  * delimit the numbers with the output delimiter or the delimiter that matches /\w/
  * @private
- * @param {Array} words
+ * @param {String} word
  * @returns {Array} enhanced words
  */
-const delimitNumbers = (words, delimitOutput) => {
+const delimitNumbers = (word, delimitOutput) => {
     const delimitedNumbers = /(\d)[-:,./](\d)/g
-    let delimiter = delimitOutput || '_'
-    return words.map(word =>
-        word.match(delimitedNumbers)
-            ? word
-                  .replace(delimitedNumbers, `$1${delimiter}$2`)
-                  .replace(delimitedNumbers, `$1${delimiter}$2`)
-            : word,
-    )
+    const delimiter = delimitOutput || '_'
+    return word.match(delimitedNumbers)
+        ? word
+              .replace(delimitedNumbers, `$1${delimiter}$2`)
+              .replace(delimitedNumbers, `$1${delimiter}$2`)
+        : word
 }
 
 /**
@@ -63,7 +60,7 @@ const asIs = word => word
 const toLower = word => word.toLowerCase()
 const toUpper = word => word.toUpperCase()
 
-const patterns = function(words, options) {
+const patternRendering = function(words, options) {
     /**
      * Iterative transformation
      * @private
@@ -71,8 +68,8 @@ const patterns = function(words, options) {
      * @returns {String} transformed words
      */
     const transform = model => {
-        const currentWords = model.preprocess(words, model.delimitOutput)
-        const transformation = currentWords.map((word, index) => {
+        const transformation = words.map((word, index) => {
+            word = model.preprocess(word, model.delimitOutput)
             if (index === 0) {
                 return options.preserve.some(regex => isExactMatch(word, regex))
                     ? word
@@ -150,4 +147,4 @@ const patterns = function(words, options) {
     }
 }
 
-export { patterns }
+export { patternRendering }

@@ -30,8 +30,8 @@ var options = new Object()
 window.transforms.push( [options, transformCase(`1Number2Chunk`, options)] )
 var options = {preserve: [/Max\d{4}/ig],}
 window.transforms.push( [options, transformCase(`preserveMax2006andMAX2017`, options)] )
-var options = {}
-window.transforms.push( [options, transformCase(`The numbers stand off in version 0.1.0`, options)] )
+var options = {delimitInput: '_'}
+window.transforms.push( [options, transformCase(`the_numbers_stand_off_in_version_0.1.0`, options)] )
 var options = {}
 window.transforms.push( [options, transformCase(`Cañón, coöperation, exposé,  façade, résumé, all have diacritics`, options)] )
 

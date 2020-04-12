@@ -7,8 +7,8 @@ when your texts originate from other languages than english.
 ## Install
 
 Install the package as npm package. Provided are
-a umd-formatted file (dist folder)
-and an es-module (module folder):
+a umd-formatted file (dist folder) to require or just read
+and an es-module (module folder) to import:
 
     "dist/transformCase.js",
     "module/transformCase.js",
