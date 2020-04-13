@@ -99,22 +99,32 @@ const patternRendering = function(words, options) {
     }
 
     /**
-     * RegExp-word patterns
+     * cap-marked regexp word
      */
 
     /**
-     * camelCase pattern
+     * capMarkedRegexpWord pattern
+     * @param {Function} firstWordFirstChar
+     * @param {Function} nextWordsFirstChar
+     * @private
      * @returns {String} transformed words
      */
-    const camelCase = () => {
+    const capMarkedRegexpWord = (firstWordFirstChar, nextWordsFirstChar) => {
         const model = Object.assign({}, RENDER_MODEL, techProcessing, {
             delimitOutput: '',
-            firstWordFirstChar: toLower,
+            firstWordFirstChar: firstWordFirstChar,
             firstWordNextChars: toLower,
-            nextWordsFirstChar: toUpper,
+            nextWordsFirstChar: nextWordsFirstChar,
             nextWordsNextChars: toLower,
         })
         return transform(model)
+    }
+
+    const camelCase = () => {
+        return capMarkedRegexpWord(toLower, toUpper)
+    }
+    const pascalCase = () => {
+        return capMarkedRegexpWord(toUpper, toUpper)
     }
 
     /**
@@ -173,6 +183,7 @@ const patternRendering = function(words, options) {
 
     return {
         camelCase: camelCase,
+        pascalCase: pascalCase,
         humanTitle: humanTitle,
         dotCase: dotCase,
         paramCase: paramCase,

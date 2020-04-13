@@ -1,6 +1,6 @@
 import { TransformCase } from '../src/collect'
 
-describe('camelCase is a pattern', () => {
+describe('camelCase is a capMarkedRegexpWord pattern', () => {
     test('with only common letters', () => {
         const camel = new TransformCase(
             'A sentence, text for humans.',
@@ -37,6 +37,15 @@ describe('camelCase is a pattern', () => {
         const camelCase = camelTest.camelCase()
 
         expect(camelCase).toBe('weUseVersion11_7_2')
+    })
+})
+
+describe('conversion of capMarkedRegexpWord patterns', () => {
+    test('example matches', () => {
+        const cmrwTest = new TransformCase('We use version 11.7.2.')
+
+        expect(cmrwTest.camelCase()).toBe('weUseVersion11_7_2')
+        expect(cmrwTest.pascalCase()).toBe('WeUseVersion11_7_2')
     })
 })
 

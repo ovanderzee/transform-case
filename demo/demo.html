@@ -64,12 +64,13 @@ window.onload = function () {
         trs[1].appendChild(addCell('td', JSON.stringify(options).replace(/[{[:;]/g, '$& ').replace(/[}\]]/g, ' $&')))
         trs[2].appendChild(addCell('td', transform.phrase))
         trs[3].appendChild(addCell('td', transform.camelCase()))
-        trs[4].appendChild(addCell('td', transform.humanTitle()))
-        trs[5].appendChild(addCell('td', transform.dotCase()))
-        trs[6].appendChild(addCell('td', transform.paramCase()))
-        trs[7].appendChild(addCell('td', transform.pathCase()))
-        trs[8].appendChild(addCell('td', transform.snakeCase()))
-        trs[9].appendChild(addCell('td', transform.spaceCase()))
+        trs[4].appendChild(addCell('td', transform.pascalCase()))
+        trs[5].appendChild(addCell('td', transform.humanTitle()))
+        trs[6].appendChild(addCell('td', transform.dotCase()))
+        trs[7].appendChild(addCell('td', transform.paramCase()))
+        trs[8].appendChild(addCell('td', transform.pathCase()))
+        trs[9].appendChild(addCell('td', transform.snakeCase()))
+        trs[10].appendChild(addCell('td', transform.spaceCase()))
     }
     let fixedHeadings = []
     for (let tr of trs) {
@@ -102,6 +103,7 @@ window.onload = function () {
     </thead>
     <tbody>
         <tr><th method-type="cap-marked regexp word">camelCase()</th></tr>
+        <tr><th>pascalCase()</th></tr>
     </tbody>
     <tbody>
         <tr><th method-type="human">humanTitle()</th></tr>

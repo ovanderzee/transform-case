@@ -17,9 +17,11 @@ and an es-module (module folder) to import:
 
 Call the module with an output pattern like this:
 
-    transformCase('markMyWords').humanTitle() will render: 'Mark My Words'.
-
     transformCase('A sentence, text for humans.').camelCase() will render: 'aSentenceTextForHumans'.
+
+    transformCase('A sentence, text for humans.').pascalCase() will render: 'ASentenceTextForHumans'.
+
+    transformCase('markMyWords').humanTitle() will render: 'Mark My Words'.
 
     transformCase('A sentence, text for humans.').dotCase() will render: 'a.sentence.text.for.humans'.
 
