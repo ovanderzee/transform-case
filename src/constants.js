@@ -4,7 +4,6 @@
  *    @member {String || RegExp}
  * @member {Array} preserve - units to be kept together and be protected - should be like a human word
  *    @member {String || RegExp}
- * @member {Object} replace - {toReplace1: replacement1, toReplace2: replacement2}
  * @member {String} delimitInput - character to delimit input
  * @member {Boolean} delimitLetterNumber - insert delimiter in this transition in pure alphaNumeric patterns
  * @member {Boolean} delimitLowerUpper - insert delimiter in this transition in pure alphaNumeric patterns
@@ -16,7 +15,6 @@
 const INTAKE_OPTIONS = {
     delimit: [],
     preserve: [],
-    replace: {},
     delimitInput: '',
     delimitLetterNumber: true,
     delimitLowerUpper: true,

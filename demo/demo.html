@@ -23,9 +23,6 @@ window.transforms.push( [options, transformCase(`CUSTOMCaseDelimiting`, options)
 var options = {preserve: ['CUSTOM'],}
 window.transforms.push( [options, transformCase(`CUSTOMCasePreserving`, options)] )
 
-var options = {replace: {'ReplacingTEXT': 'WithPHRASE'},}
-window.transforms.push( [options, transformCase(`customCaseReplacingTEXT`, options)] )
-
 var options = new Object()
 window.transforms.push( [options, transformCase(`1Number2Chunk`, options)] )
 var options = {preserve: [/Max\d{4}/ig],}

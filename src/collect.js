@@ -117,14 +117,6 @@ const TransformCase = function(line, userOptions) {
         delimiter = options.delimitInput || options.delimitOutput
     }
 
-    // replace regardsless of delimiting
-    const replaceEntries = Object.entries(options.replace)
-    if (options.replace && replaceEntries.length) {
-        for (let [key, value] of replaceEntries) {
-            revised = revised.replace(new RegExp(key, 'g'), value)
-        }
-    }
-
     // preserve, delimit - these strings must be kept together - should be like a human word
     const units = [].concat(options.preserve, options.delimit)
     if (units.length) {
