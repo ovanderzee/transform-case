@@ -76,10 +76,9 @@ window.onload = function () {
         let headCell = tr.querySelector('th')
         let headStyle = window.getComputedStyle(headCell)
         let headCopy = headCell.cloneNode(true)
-        headCopy.style.width = `${headCell.clientWidth}px`
+        headCopy.style.width = `${headCell.clientWidth + headStyle.borderLeftWidth}px`
         let vBorder = parseInt(headStyle.borderTopWidth) + parseInt(headStyle.borderBottomWidth)
         headCopy.style.height = `${headCell.clientHeight + vBorder}px`
-        headCopy.style.background = headStyle.background
         fixedHeadings.push(headCopy)
     }
     for (let index = 0; index < trs.length; index++) {
@@ -99,12 +98,16 @@ window.onload = function () {
     <thead>
         <tr><th>input</th></tr>
         <tr><th>options</th></tr>
+        <tr><th>standardised</th></tr>
     </thead>
     <tbody>
-        <tr><th>standardised</th></tr>
-        <tr><th>camelCase()</th></tr>
-        <tr><th>humanTitle()</th></tr>
-        <tr><th>dotCase()</th></tr>
+        <tr><th method-type="cap-marked regexp word">camelCase()</th></tr>
+    </tbody>
+    <tbody>
+        <tr><th method-type="human">humanTitle()</th></tr>
+    </tbody>
+    <tbody>
+        <tr><th method-type="delimited lowercase">dotCase()</th></tr>
         <tr><th>paramCase()</th></tr>
         <tr><th>pathCase()</th></tr>
         <tr><th>snakeCase()</th></tr>
