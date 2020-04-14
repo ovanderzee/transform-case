@@ -25,6 +25,7 @@ These will render:
     textIntake.dotCase()     // ==> 'a.sentence.text.for.humans'
     textIntake.paramCase()   // ==> 'a-sentence-text-for-humans'
     textIntake.pathCase()    // ==> 'a/sentence/text/for/humans'
+    textIntake.searchCase()   // ==> 'a+sentence+text+for+humans'
     textIntake.snakeCase()   // ==> 'a_sentence_text_for_humans'
     textIntake.spaceCase()   // ==> 'a sentence text for humans'
 

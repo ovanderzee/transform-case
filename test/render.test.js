@@ -69,6 +69,23 @@ describe('humanTitle is a pattern', () => {
     })
 })
 
+describe('humanSentence is a pattern', () => {
+    test('with punctuation', () => {
+        const sentence = new TransformCase(
+            'A sentence, text for humans.',
+        ).humanSentence()
+
+        expect(sentence.includes('.')).toBeTruthy()
+    })
+    test('where only the first word starts with a capital', () => {
+        const sentence = new TransformCase(
+            'A sentence, text for humans.',
+        ).humanSentence()
+
+        expect(sentence.match(/^[A-Z][a-z ,;:.]+/)).toBeTruthy()
+    })
+})
+
 describe('snakeCase is a delimitedLowerCase pattern', () => {
     test('with only regexp-word letters', () => {
         const snake = new TransformCase(
@@ -129,6 +146,7 @@ describe('conversion of delimitedLowerCase patterns', () => {
         expect(dlcTest.dotCase()).toBe('this.sentence.text.for.humans')
         expect(dlcTest.paramCase()).toBe('this-sentence-text-for-humans')
         expect(dlcTest.pathCase()).toBe('this/sentence/text/for/humans')
+        expect(dlcTest.searchCase()).toBe('this+sentence+text+for+humans')
         expect(dlcTest.snakeCase()).toBe('this_sentence_text_for_humans')
         expect(dlcTest.spaceCase()).toBe('this sentence text for humans')
     })

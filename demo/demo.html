@@ -66,11 +66,13 @@ window.onload = function () {
         trs[3].appendChild(addCell('td', transform.camelCase()))
         trs[4].appendChild(addCell('td', transform.pascalCase()))
         trs[5].appendChild(addCell('td', transform.humanTitle()))
-        trs[6].appendChild(addCell('td', transform.dotCase()))
-        trs[7].appendChild(addCell('td', transform.paramCase()))
-        trs[8].appendChild(addCell('td', transform.pathCase()))
-        trs[9].appendChild(addCell('td', transform.snakeCase()))
-        trs[10].appendChild(addCell('td', transform.spaceCase()))
+        trs[6].appendChild(addCell('td', transform.humanSentence()))
+        trs[7].appendChild(addCell('td', transform.dotCase()))
+        trs[8].appendChild(addCell('td', transform.paramCase()))
+        trs[9].appendChild(addCell('td', transform.pathCase()))
+        trs[10].appendChild(addCell('td', transform.searchCase()))
+        trs[11].appendChild(addCell('td', transform.snakeCase()))
+        trs[12].appendChild(addCell('td', transform.spaceCase()))
     }
     let fixedHeadings = []
     for (let tr of trs) {
@@ -107,11 +109,13 @@ window.onload = function () {
     </tbody>
     <tbody>
         <tr><th method-type="human">humanTitle()</th></tr>
+        <tr><th>humanSentence()</th></tr>
     </tbody>
     <tbody>
         <tr><th method-type="delimited lowercase">dotCase()</th></tr>
         <tr><th>paramCase()</th></tr>
         <tr><th>pathCase()</th></tr>
+        <tr><th>searchCase()</th></tr>
         <tr><th>snakeCase()</th></tr>
         <tr><th>spaceCase()</th></tr>
     </tbody>

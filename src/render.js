@@ -132,6 +132,21 @@ const patternRendering = function(words, options) {
      */
 
     /**
+     * humanSentence pattern
+     * @returns {String} transformed words
+     */
+    const humanSentence = () => {
+        const model = Object.assign({}, RENDER_MODEL, {
+            delimitOutput: ' ',
+            firstWordFirstChar: toUpper,
+            firstWordNextChars: toLower,
+            nextWordsFirstChar: toLower,
+            nextWordsNextChars: toLower,
+        })
+        return transform(model)
+    }
+
+    /**
      * humanTitle pattern
      * @returns {String} transformed words
      */
@@ -174,6 +189,9 @@ const patternRendering = function(words, options) {
     const pathCase = () => {
         return delimitedLowerCase('/')
     }
+    const searchCase = () => {
+        return delimitedLowerCase('+')
+    }
     const snakeCase = () => {
         return delimitedLowerCase('_')
     }
@@ -184,10 +202,12 @@ const patternRendering = function(words, options) {
     return {
         camelCase: camelCase,
         pascalCase: pascalCase,
+        humanSentence: humanSentence,
         humanTitle: humanTitle,
         dotCase: dotCase,
         paramCase: paramCase,
         pathCase: pathCase,
+        searchCase: searchCase,
         snakeCase: snakeCase,
         spaceCase: spaceCase,
     }
