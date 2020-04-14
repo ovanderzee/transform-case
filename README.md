@@ -2,37 +2,39 @@
 
 Here is the case and seperation transformer that
 transliterates diacriticals and ligatures
-when your texts originate from other languages than english.
+when your texts are in a Latin script other than modern english.
 
 ## Install
 
 Install the package as npm package. Provided are
-a umd-formatted file (dist folder) to require or just read
-and an es-module (module folder) to import:
-
-    "dist/transformCase.js",
-    "module/transformCase.js",
+a umd-formatted file in the dist folder to require or just read
+and an es-module in the module folder to import.
 
 ## Usage
 
-Call the module with an output pattern like this:
+A human text can be transformed to a systematic phrase like this:
 
-    transformCase('A sentence, text for humans.').camelCase() will render: 'aSentenceTextForHumans'.
+    transformCase('A sentence, text for humans.').camelCase()
 
-    transformCase('A sentence, text for humans.').pascalCase() will render: 'ASentenceTextForHumans'.
+These will render:
 
-    transformCase('markMyWords').humanTitle() will render: 'Mark My Words'.
+    const textIntake = transformCase('A sentence, text for humans.')
 
-    transformCase('A sentence, text for humans.').dotCase() will render: 'a.sentence.text.for.humans'.
+    textIntake.camelCase()   // ==> 'aSentenceTextForHumans'
+    textIntake.pascalCase()  // ==> 'ASentenceTextForHumans'
+    textIntake.dotCase()     // ==> 'a.sentence.text.for.humans'
+    textIntake.paramCase()   // ==> 'a-sentence-text-for-humans'
+    textIntake.pathCase()    // ==> 'a/sentence/text/for/humans'
+    textIntake.snakeCase()   // ==> 'a_sentence_text_for_humans'
+    textIntake.spaceCase()   // ==> 'a sentence text for humans'
 
-    transformCase('A sentence, text for humans.').paramCase() will render: 'a-sentence-text-for-humans'.
+A systematic text can be transformed to a human phrase like this:
 
-    transformCase('A sentence, text for humans.').pathCase() will render: 'a/sentence/text/for/humans'.
+    const textIntake = transformCase('camelCasedInput')
+    textIntake.humanSentence()  // ==> 'Camel cased input'
 
-    transformCase('A sentence, text for humans.').snakeCase() will render: 'a_sentence_text_for_humans'.
-
-    transformCase('A sentence, text for humans.').spaceCase() will render: 'a sentence text for humans'.
-
+    const textIntake2 = transformCase('snake_cased_input', {"delimitInput": "_"})
+    textIntake2.humanTitle()     // ==> 'Snake Cased Input'
 
 With a second argument, an options object can be passed:
 
@@ -62,3 +64,26 @@ Options for pure alphanumeric input
 ## Demo
 
 .../transform-case/demo/demo.html
+
+## Transformation process
+
+This module has two steps, an intake and a render step.
+
+The intake step
+deduplicates whitespace in a space character,
+removes control characters,
+finds a delimiter,
+isolates delimit and preserve options
+and ends with an array of words.
+
+The render step is merely choosing a pattern to treat the array of words.
+There are three groups of similar patterns:
+
+Cap-marked regexp word (camelCase, pascalCase)
+Human, linguistic (humanSentence, humanTitle)
+delimited lowercase (dotCase, paramCase, etcetera)
+
+Apart from the human group, in all patterns
+punctuation is stripped,
+diacritics are stripped,
+ligatures are decomposed

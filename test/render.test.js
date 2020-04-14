@@ -113,8 +113,8 @@ describe('snakeCase is a delimitedLowerCase pattern', () => {
     })
     test('decompose ligatures and dighraphs, replace lettervariations with their baseletter', () => {
         const compositions = new TransformCase(
-            // fl    ae     ij     longS h-stroke o-slash d-stroke
-            '\ufb02 \u00e6 \u0133 \u017f \u0127  \u00f8  \u0111    ',
+            // fl    ae     ij     longS h-stroke o-slash eth
+            '\ufb02 \u00e6 \u0133 \u017f \u0127  \u00f8  \u00f0   ',
         )
         const omCop = compositions.snakeCase()
 
