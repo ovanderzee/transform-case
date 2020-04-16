@@ -199,6 +199,43 @@ const patternRendering = function(words, options) {
         return delimitedLowerCase(' ')
     }
 
+    /*
+     * other variable related patterns
+     */
+
+    /**
+     * constantCase base pattern
+     * @param {String} delimimter
+     * @returns {String} constantCase transformed words
+     */
+    const constantCase = delimimter => {
+        const model = Object.assign({}, RENDER_MODEL, techProcessing, {
+            delimitOutput: '_',
+            firstWordFirstChar: toUpper,
+            firstWordNextChars: toUpper,
+            nextWordsFirstChar: toUpper,
+            nextWordsNextChars: toUpper,
+        })
+        return transform(model)
+    }
+
+    /**
+     * headerCase base pattern
+     * @private
+     * @param {String} delimimter
+     * @returns {String} headerCase transformed words
+     */
+    const headerCase = delimimter => {
+        const model = Object.assign({}, RENDER_MODEL, techProcessing, {
+            delimitOutput: '-',
+            firstWordFirstChar: toUpper,
+            firstWordNextChars: toLower,
+            nextWordsFirstChar: toUpper,
+            nextWordsNextChars: toLower,
+        })
+        return transform(model)
+    }
+
     return {
         camelCase: camelCase,
         pascalCase: pascalCase,
@@ -210,6 +247,8 @@ const patternRendering = function(words, options) {
         searchCase: searchCase,
         snakeCase: snakeCase,
         spaceCase: spaceCase,
+        constantCase: constantCase,
+        headerCase: headerCase,
     }
 }
 

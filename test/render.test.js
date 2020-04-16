@@ -151,3 +151,12 @@ describe('conversion of delimitedLowerCase patterns', () => {
         expect(dlcTest.spaceCase()).toBe('this sentence text for humans')
     })
 })
+
+describe('conversion of other technical patterns', () => {
+    test('example matches', () => {
+        const otherTest = new TransformCase('This sentence, text for humans.')
+
+        expect(otherTest.constantCase()).toBe('THIS_SENTENCE_TEXT_FOR_HUMANS')
+        expect(otherTest.headerCase()).toBe('This-Sentence-Text-For-Humans')
+    })
+})

@@ -28,6 +28,8 @@ These will render:
     textIntake.searchCase()   // ==> 'a+sentence+text+for+humans'
     textIntake.snakeCase()   // ==> 'a_sentence_text_for_humans'
     textIntake.spaceCase()   // ==> 'a sentence text for humans'
+    textIntake.constantCase()// ==> 'THIS_SENTENCE_TEXT_FOR_HUMANS'
+    textIntake.headerCase()  // ==> 'This-Sentence-Text-For-Humans'
 
 A systematic text can be transformed to a human phrase like this:
 
