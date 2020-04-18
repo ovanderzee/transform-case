@@ -33,19 +33,19 @@ describe('camelCase is a capMarkedRegexpWord pattern', () => {
         expect(secondWordN).toBe(secondWordN.toLowerCase())
     })
     test('replace delimiter between numbers with an underscore to help seperate them', () => {
-        const camelTest = new TransformCase('We use version 11.7.2.')
+        const camelTest = new TransformCase('By the way, use version 11.7.2.')
         const camelCase = camelTest.camelCase()
 
-        expect(camelCase).toBe('weUseVersion11_7_2')
+        expect(camelCase).toBe('byTheWayUseVersion11_7_2')
     })
 })
 
 describe('conversion of capMarkedRegexpWord patterns', () => {
     test('example matches', () => {
-        const cmrwTest = new TransformCase('We use version 11.7.2.')
+        const cmrwTest = new TransformCase('By the way, use version 11.7.2.')
 
-        expect(cmrwTest.camelCase()).toBe('weUseVersion11_7_2')
-        expect(cmrwTest.pascalCase()).toBe('WeUseVersion11_7_2')
+        expect(cmrwTest.camelCase()).toBe('byTheWayUseVersion11_7_2')
+        expect(cmrwTest.pascalCase()).toBe('ByTheWayUseVersion11_7_2')
     })
 })
 
@@ -141,22 +141,22 @@ describe('snakeCase is a delimitedLowerCase pattern', () => {
 
 describe('conversion of delimitedLowerCase patterns', () => {
     test('example matches', () => {
-        const dlcTest = new TransformCase('This sentence, text for humans.')
+        const dlcTest = new TransformCase('By the way, use version 11.7.2.')
 
-        expect(dlcTest.dotCase()).toBe('this.sentence.text.for.humans')
-        expect(dlcTest.paramCase()).toBe('this-sentence-text-for-humans')
-        expect(dlcTest.pathCase()).toBe('this/sentence/text/for/humans')
-        expect(dlcTest.searchCase()).toBe('this+sentence+text+for+humans')
-        expect(dlcTest.snakeCase()).toBe('this_sentence_text_for_humans')
-        expect(dlcTest.spaceCase()).toBe('this sentence text for humans')
+        expect(dlcTest.dotCase()).toBe('by.the.way.use.version.11.7.2')
+        expect(dlcTest.paramCase()).toBe('by-the-way-use-version-11-7-2')
+        expect(dlcTest.pathCase()).toBe('by/the/way/use/version/11/7/2')
+        expect(dlcTest.searchCase()).toBe('by+the+way+use+version+11+7+2')
+        expect(dlcTest.snakeCase()).toBe('by_the_way_use_version_11_7_2')
+        expect(dlcTest.spaceCase()).toBe('by the way use version 11 7 2')
     })
 })
 
 describe('conversion of other technical patterns', () => {
     test('example matches', () => {
-        const otherTest = new TransformCase('This sentence, text for humans.')
+        const otherTest = new TransformCase('By the way, use version 11.7.2.')
 
-        expect(otherTest.constantCase()).toBe('THIS_SENTENCE_TEXT_FOR_HUMANS')
-        expect(otherTest.headerCase()).toBe('This-Sentence-Text-For-Humans')
+        expect(otherTest.constantCase()).toBe('BY_THE_WAY_USE_VERSION_11_7_2')
+        expect(otherTest.headerCase()).toBe('By-The-Way-Use-Version-11-7-2')
     })
 })
