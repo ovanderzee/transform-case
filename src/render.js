@@ -3,7 +3,7 @@ import { RENDER_MODEL } from './constants'
 import asciiFolder from 'fold-to-ascii'
 
 /**
- * Solve the problem that concatenated numbers loose menaing:
+ * Solve the problem that concatenated numbers loose meaning:
  * delimit the numbers with the output delimiter or the delimiter that matches /\w/
  * @private
  * @param {String} word
@@ -103,7 +103,7 @@ const patternRendering = function(words, options) {
      */
 
     /**
-     * capMarkedRegexpWord pattern
+     * capMarkedRegexpWord base pattern
      * @param {Function} firstWordFirstChar
      * @param {Function} nextWordsFirstChar
      * @private
@@ -204,11 +204,11 @@ const patternRendering = function(words, options) {
      */
 
     /**
-     * constantCase base pattern
+     * constantCase pattern
      * @param {String} delimimter
      * @returns {String} constantCase transformed words
      */
-    const constantCase = delimimter => {
+    const constantCase = () => {
         const model = Object.assign({}, RENDER_MODEL, techProcessing, {
             delimitOutput: '_',
             firstWordFirstChar: toUpper,
@@ -220,12 +220,12 @@ const patternRendering = function(words, options) {
     }
 
     /**
-     * headerCase base pattern
+     * headerCase pattern
      * @private
      * @param {String} delimimter
      * @returns {String} headerCase transformed words
      */
-    const headerCase = delimimter => {
+    const headerCase = () => {
         const model = Object.assign({}, RENDER_MODEL, techProcessing, {
             delimitOutput: '-',
             firstWordFirstChar: toUpper,
