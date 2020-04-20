@@ -9,7 +9,7 @@ import {
 import { INTAKE_OPTIONS } from './constants'
 import { patternRendering } from './render'
 
-/*
+/**
  * remove extraneous and doubled characters
  * @private
  * @param {String} line
@@ -28,7 +28,7 @@ const dedupe = (line, char) => {
         .replace(trailing, '')
 }
 
-/*
+/**
  * Transform whitespace to spaces, then clear all control characters
  * @private
  * @param {String} line
@@ -42,7 +42,8 @@ const tidy = line => {
         .replace(controlChars, '')
 }
 
-/* Test need to insert a delimiter
+/**
+ * Test need to insert a delimiter in pureAlphaNumeric input
  * @private
  * @param {String} prev - previous character
  * @param {String} curr - current character
@@ -65,7 +66,8 @@ const insertDelimiter = (prev, curr, next, options) => {
     return delimit
 }
 
-/* Put seperator before each concatenated word
+/**
+ * Put seperator before each concatenated word, in pureAlphaNumeric input
  * @private
  * @param {String} line
  * @param {Object} options
