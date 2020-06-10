@@ -14,30 +14,36 @@ and an es-module in the module folder to import.
 
 A human text can be transformed to a systematic phrase like this:
 
-    transformCase('A sentence, text for humans.').camelCase()
+```js
+transformCase('A sentence, text for humans.').camelCase()
+```
 
 These will render:
 
-    const textIntake = transformCase('A sentence, text for humans.')
+```js
+const textIntake = transformCase('A sentence, text for humans.')
 
-    textIntake.camelCase()   // ==> 'aSentenceTextForHumans'
-    textIntake.pascalCase()  // ==> 'ASentenceTextForHumans'
-    textIntake.dotCase()     // ==> 'a.sentence.text.for.humans'
-    textIntake.paramCase()   // ==> 'a-sentence-text-for-humans'
-    textIntake.pathCase()    // ==> 'a/sentence/text/for/humans'
-    textIntake.searchCase()   // ==> 'a+sentence+text+for+humans'
-    textIntake.snakeCase()   // ==> 'a_sentence_text_for_humans'
-    textIntake.spaceCase()   // ==> 'a sentence text for humans'
-    textIntake.constantCase()// ==> 'THIS_SENTENCE_TEXT_FOR_HUMANS'
-    textIntake.headerCase()  // ==> 'This-Sentence-Text-For-Humans'
+textIntake.camelCase()   // ==> 'aSentenceTextForHumans'
+textIntake.pascalCase()  // ==> 'ASentenceTextForHumans'
+textIntake.dotCase()     // ==> 'a.sentence.text.for.humans'
+textIntake.paramCase()   // ==> 'a-sentence-text-for-humans'
+textIntake.pathCase()    // ==> 'a/sentence/text/for/humans'
+textIntake.searchCase()   // ==> 'a+sentence+text+for+humans'
+textIntake.snakeCase()   // ==> 'a_sentence_text_for_humans'
+textIntake.spaceCase()   // ==> 'a sentence text for humans'
+textIntake.constantCase()// ==> 'THIS_SENTENCE_TEXT_FOR_HUMANS'
+textIntake.headerCase()  // ==> 'This-Sentence-Text-For-Humans'
+```
 
 A systematic text can be transformed to a human phrase like this:
 
-    const textIntake = transformCase('camelCasedInput')
-    textIntake.humanSentence()  // ==> 'Camel cased input'
+```js
+const textIntake = transformCase('camelCasedInput')
+textIntake.humanSentence()  // ==> 'Camel cased input'
 
-    const textIntake2 = transformCase('snake_cased_input', {"delimitInput": "_"})
-    textIntake2.humanTitle()     // ==> 'Snake Cased Input'
+const textIntake2 = transformCase('snake_cased_input', {delimitInput: '_'})
+textIntake2.humanTitle()     // ==> 'Snake Cased Input'
+```
 
 With a second argument, an options object can be passed:
 
@@ -46,10 +52,12 @@ With a second argument, an options object can be passed:
         preserve: [word-or-regex1, word-or-regex2, ...],
     }
     delimit: {Array}
-        keeps a letter-combination or a regular expression match as a delimited word,
+        keeps a letter-combination or a regular expression match
+        as a delimited word,
         the word will be processed according to the pattern
     preserve: {Array}
-        keeps a letter-combination or a regular expression match as a delimited word and protects the case
+        keeps a letter-combination or a regular expression match
+        as a delimited word and protects the case
 
 Options for pure alphanumeric input
 
