@@ -1,4 +1,4 @@
-import { isExactMatch } from './utilities'
+import { isExactMatch } from 'my-lib'
 import { RENDER_MODEL } from './constants'
 import asciiFolder from 'fold-to-ascii'
 

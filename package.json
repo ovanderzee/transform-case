@@ -8,9 +8,9 @@
         "test": "test"
     },
     "scripts": {
-        "prebuild": "clear-folder dist module && prettier './{src,test}/*.js' --write",
+        "prebuild": "cf dist module && prettier './{src,test}/*.js' --write",
         "build": "rollup --config",
-        "coverage": "clear-folder coverage && jest --coverage",
+        "coverage": "cf coverage && jest --coverage",
         "once": "npm run test && npm run build",
         "pretest": "eslint {src,test}/*.js",
         "test": "jest",
@@ -48,7 +48,8 @@
     },
     "homepage": "https://github.com/ovanderzee/transform-case#readme",
     "dependencies": {
-        "fold-to-ascii": "^5.0.0"
+        "fold-to-ascii": "^5.0.0",
+        "my-lib": "^1.3.0"
     },
     "devDependencies": {
         "@babel/core": "^7.10.2",

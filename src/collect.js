@@ -3,9 +3,9 @@ import {
     isLetter,
     isLower,
     isUpper,
-    isPureAlphaNumeric,
+    isAlphaNumeric,
     isExactMatch,
-} from './utilities'
+} from 'my-lib'
 import { INTAKE_OPTIONS } from './constants'
 import { patternRendering } from './render'
 
@@ -104,12 +104,12 @@ const TransformCase = function(line, userOptions) {
     } else {
         self.orgin.standardised = tidy(line)
     }
-    self.orgin.isPureAlphaNumeric = isPureAlphaNumeric(self.orgin.standardised)
+    self.orgin.isAlphaNumeric = isAlphaNumeric(self.orgin.standardised)
     let revised = self.orgin.standardised
 
     // distinguish between technical from linguistic transforms
     let delimiter
-    if (self.orgin.isPureAlphaNumeric) {
+    if (self.orgin.isAlphaNumeric) {
         // assume technical phrase, or this is one human word
         // delimit by case transition
         delimiter = options.delimitOutput
@@ -129,7 +129,7 @@ const TransformCase = function(line, userOptions) {
     }
 
     // produce an array with words
-    if (self.orgin.isPureAlphaNumeric) {
+    if (self.orgin.isAlphaNumeric) {
         // assume technical phrase, or this is one human word
         // delimit by case transition
         let parts = revised.split(delimiter)

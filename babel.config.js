@@ -1,7 +1,4 @@
-// run this command (or npm equivalent)
-// npm i -D @babel/core @babel/preset-env
-
-// add babel.cofig.js
+// babel.config.js
 module.exports = function (api) {
   api.cache(true);
 
@@ -11,5 +8,5 @@ module.exports = function (api) {
 
   return {
     presets
-  };
+  }
 }
