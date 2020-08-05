@@ -23,12 +23,23 @@ describe('there will be no unexpected characters in the output', () => {
 })
 
 describe('delimit keeps a lettercombination as a word and processes according to the pattern', () => {
-    const delimit = new TransformCase('CSSFontFaceRule', { delimit: ['CSS'] })
+    const normal = new TransformCase('Forever thinking')
     test('to be a word', () => {
-        expect(delimit.humanTitle()).toBe('CSS Font Face Rule')
+        expect(normal.humanTitle()).toBe('Forever Thinking')
+    })
+    const delimit = new TransformCase('Forever thinking', { delimit: ['thin'] })
+    test('to be a word', () => {
+        expect(delimit.humanTitle()).toBe('Forever Thin King')
     })
     test('to be converted to fit the pattern', () => {
-        expect(delimit.camelCase()).toBe('cssFontFaceRule')
+        expect(delimit.camelCase()).toBe('foreverThinKing')
+    })
+    test('works with RegExp', () => {
+        const delimit = new TransformCase('fastfistfust', {
+            delimit: [/f\w{1}st/gi],
+        })
+
+        expect(delimit.snakeCase()).toBe('fast_fist_fust')
     })
 })
 
@@ -69,10 +80,15 @@ describe('delimiting a puts up an array of words', () => {
         expect(delimitCase.words[0]).toBe('4')
         expect(delimitCase.words[1]).toBe('Four')
     })
-    test('to deal with a uppercase - lowercase transition', () => {
+    test('not to deal with a uppercase - lowercase transition', () => {
         const delimitCase = new TransformCase('Capital')
 
         expect(delimitCase.words[0]).toBe('Capital')
+    })
+    test('not to deal with a uppercase - uppercase transition', () => {
+        const delimitCase = new TransformCase('CSSFontFaceRule')
+
+        expect(delimitCase.words[0]).toBe('CSS')
     })
     test('to deal with a uppercase - uppercase plus lowercase transition', () => {
         const delimitCase = new TransformCase('ISpy')
