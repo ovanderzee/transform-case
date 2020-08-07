@@ -32,7 +32,7 @@ describe('delimitChunks extracts new words from delimited text', () => {
     })
 
     test('with a regular expression', () => {
-        const chunks = [/w[aeiou]+th/]
+        const chunks = [/w[aeiou]+th/g]
 
         expect(delimitChunks(lineIn, chunks, ' ')).toBe(
             'A fair weath er affair with despair',
@@ -40,7 +40,7 @@ describe('delimitChunks extracts new words from delimited text', () => {
     })
 
     test('with multiple chunks', () => {
-        const chunks = ['air', /w[aeiou]+th/]
+        const chunks = ['air', /w[aeiou]+th/g]
 
         expect(delimitChunks(lineIn, chunks, ' ')).toBe(
             'A f air weath er aff air with desp air',
