@@ -104,13 +104,18 @@ const patternRendering = function(words, options) {
     const transform = model => {
         const transformation = words.map((word, index) => {
             word = model.preprocess(word, model.delimitOutput)
+            const toPreserve = options.preserve.some(regex =>
+                isExactMatch(word, regex),
+            )
             if (index === 0) {
-                return options.preserve.some(regex => isExactMatch(word, regex))
+                // first word
+                return toPreserve
                     ? word
                     : model.firstWordFirstChar(word.substr(0, 1)) +
                           model.firstWordNextChars(word.substr(1))
             } else {
-                return options.preserve.some(regex => isExactMatch(word, regex))
+                // successive words
+                return toPreserve
                     ? word
                     : model.nextWordsFirstChar(word.substr(0, 1)) +
                           model.nextWordsNextChars(word.substr(1))
@@ -133,18 +138,18 @@ const patternRendering = function(words, options) {
         },
     }
 
-    /**
-     * cap-marked regexp word
-     */
+    /****************************************
+     * cap-marked words
+     ****************************************/
 
     /**
-     * capMarkedRegexpWord base pattern
+     * capMarkedWords base pattern
      * @param {Function} firstWordFirstChar
      * @param {Function} nextWordsFirstChar
      * @private
      * @returns {String} transformed words
      */
-    const capMarkedRegexpWord = (firstWordFirstChar, nextWordsFirstChar) => {
+    const capMarkedWords = (firstWordFirstChar, nextWordsFirstChar) => {
         const model = Object.assign({}, RENDER_MODEL, techProcessing, {
             delimitOutput: '',
             firstWordFirstChar: firstWordFirstChar,
@@ -156,15 +161,15 @@ const patternRendering = function(words, options) {
     }
 
     const camelCase = () => {
-        return capMarkedRegexpWord(toLower, toUpper)
+        return capMarkedWords(toLower, toUpper)
     }
     const pascalCase = () => {
-        return capMarkedRegexpWord(toUpper, toUpper)
+        return capMarkedWords(toUpper, toUpper)
     }
 
-    /**
+    /****************************************
      * Human, linguistic patterns
-     */
+     ****************************************/
 
     /**
      * humanSentence pattern
@@ -194,9 +199,9 @@ const patternRendering = function(words, options) {
         return transform(model)
     }
 
-    /**
+    /****************************************
      * delimitedLowerCase patterns
-     */
+     ****************************************/
 
     /**
      * delimitedLowerCase base pattern
@@ -234,9 +239,9 @@ const patternRendering = function(words, options) {
         return delimitedLowerCase(' ')
     }
 
-    /*
+    /****************************************
      * other variable related patterns
-     */
+     ****************************************/
 
     /**
      * constantCase pattern

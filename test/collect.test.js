@@ -22,16 +22,16 @@ describe('there will be no unexpected characters in the output', () => {
     })
 })
 
-describe('delimit keeps a lettercombination as a word and processes according to the pattern', () => {
-    const normal = new TransformCase('Forever thinking')
-    test('to be a word', () => {
+describe(`delimit option keeps a lettercombination as a word
+        and processes it according to the pattern`, () => {
+    const phrase = 'Forever thinking'
+    const normal = new TransformCase(phrase)
+    test('outcome without options', () => {
         expect(normal.humanTitle()).toBe('Forever Thinking')
     })
-    const delimit = new TransformCase('Forever thinking', { delimit: ['thin'] })
-    test('to be a word', () => {
+    const delimit = new TransformCase(phrase, { delimit: ['thin'] })
+    test('to create a new word', () => {
         expect(delimit.humanTitle()).toBe('Forever Thin King')
-    })
-    test('to be converted to fit the pattern', () => {
         expect(delimit.camelCase()).toBe('foreverThinKing')
     })
     test('works with RegExp', () => {
@@ -39,25 +39,31 @@ describe('delimit keeps a lettercombination as a word and processes according to
             delimit: [/f\w{1}st/gi],
         })
 
-        expect(delimit.snakeCase()).toBe('fast_fist_fust')
+        expect(delimit.humanTitle()).toBe('Fast Fist Fust')
     })
 })
 
-describe('preserve keeps a lettercombination as a word and protects the case', () => {
-    const preserve = new TransformCase('DOMRect', { preserve: ['DOM'] })
-    test('to be a word', () => {
-        expect(preserve.humanTitle()).toBe('DOM Rect')
-        expect(preserve.camelCase()).toBe('DOMRect')
+describe(`preserve option keeps a lettercombination as a word
+        and protects it's case`, () => {
+    const phrase = 'DOMRectangle'
+    const normal = new TransformCase(phrase)
+    test('outcome without options', () => {
+        expect(normal.humanTitle()).toBe('DOM Rectangle')
+        expect(normal.pascalCase()).toBe('DomRectangle')
     })
-    test('to break a pattern rule', () => {
-        expect(preserve.camelCase()).not.toBe('domRect')
+    const preserve = new TransformCase('DOMRectangle', { preserve: ['angle'] })
+    test('to create a new word', () => {
+        expect(preserve.humanTitle()).toBe('DOM Rect angle')
+    })
+    test('to be tricky in a cap-marked transformation', () => {
+        expect(preserve.pascalCase()).toBe('DomRectangle')
     })
     test('works with RegExp', () => {
-        const preserve = new TransformCase('preserveMax2006andMAX2017', {
-            preserve: [/Max\d{4}/gi],
+        const preserve = new TransformCase('fastfistfust', {
+            preserve: [/f\w{1}st/gi],
         })
 
-        expect(preserve.humanTitle()).toBe('Preserve Max2006 And MAX2017')
+        expect(preserve.humanTitle()).toBe('fast fist fust')
     })
 })
 
