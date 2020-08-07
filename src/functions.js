@@ -76,16 +76,55 @@ const delimitWords = (line, options) => {
 }
 
 /**
- * Put seperator before each concatenated word, in pureAlphaNumeric input
+ * Find optional delimit and preserved chunks and delimit these,
+ * Do not delimit a string that was delimited before
  * @private
  * @param {String} line
  * @param {Object} options
+ * @param {String} delimiter
  * @returns {String} phrase of seperated words
  */
-const delimitChunks = (line, units, delimiter) => {
-    units.forEach(unit => {
-        line = line.replace(unit, delimiter + '$&' + delimiter)
+const delimitChunks = (line, chunks, delimiter) => {
+    // mask with unprotected slots
+    let mask = new Array(line.length)
+    mask.fill(true)
+
+    chunks.forEach(chunk => {
+        // work reversed to keep the matched indexes useable
+        const matches = Array.from(line.matchAll(chunk)).reverse()
+
+        matches.forEach(match => {
+            const till = match.index + match[0].length
+
+            // see if characters were not 'reserved' by other chunks
+            let isCleared = true
+            for (let i = match.index; i < till; i++) {
+                isCleared = isCleared && mask[i]
+            }
+
+            if (isCleared) {
+                // on spot replace
+                const leading = line.substr(0, match.index)
+                const trailing = line.substr(till)
+                line = leading + delimiter + match[0] + delimiter + trailing
+
+                // mark changed characters
+                for (let i = match.index; i < till; i++) {
+                    mask[i] = false
+                }
+                // mark space for delimiters of any length
+                for (let i = 0; i < delimiter.length * 2; i++) {
+                    mask.splice(till, 0, false)
+                }
+                console.assert(
+                    mask.length === line.length,
+                    `mask (${mask.length}) updated according line (${line},
+                    ${line.length})`,
+                )
+            }
+        })
     })
+
     line = dedupe(line, delimiter)
     return line
 }
