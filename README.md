@@ -2,7 +2,7 @@
 
 Here is the case and seperation transformer that
 transliterates diacriticals and ligatures
-when your texts are in a Latin script other than modern english.
+when your texts are in any Latin script.
 
 ## Install
 
@@ -90,9 +90,9 @@ and ends with an array of words.
 The render step is merely choosing a pattern to treat the array of words.
 There are three groups of similar patterns:
 
-Cap-marked regexp word (camelCase, pascalCase)
-Human, linguistic (humanSentence, humanTitle)
-delimited lowercase (dotCase, paramCase, etcetera)
+* Cap-marked words (camelCase, pascalCase)
+* Human, linguistic (humanSentence, humanTitle)
+* Delimited lowercase (dotCase, paramCase, etcetera)
 
 Apart from the human group, in all patterns
 punctuation is stripped,
