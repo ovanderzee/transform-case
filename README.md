@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.com/ovanderzee/transform-case.svg?branch=master)](https://travis-ci.com/ovanderzee/transform-case)
+[![Coverage Status](https://coveralls.io/repos/github/ovanderzee/transform-case/badge.svg?branch=master)](https://coveralls.io/github/ovanderzee/transform-case?branch=master)
+
 # TransformCase
 
 Here is the case and seperation transformer that
