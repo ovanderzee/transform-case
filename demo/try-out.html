@@ -7,6 +7,7 @@
             :root {
                 --gutter: 6em;
                 --vertical-padding: .1667em;
+                --aside-color: #66c;
             }
             body {
                 background: #ccc;
@@ -15,7 +16,7 @@
                 margin: 1em auto;
             }
             h2 {
-                color: #66c;
+                color: var(--aside-color);
             }
             textarea, select, .output {
                 display: block;
@@ -32,7 +33,7 @@
                 padding: var(--vertical-padding) 0;
                 width: calc(.86 * var(--gutter));
                 display: inline-block;
-                color: #66c;
+                color: var(--aside-color);
                 font-style: italic;
             }
 
@@ -62,11 +63,11 @@
             }
             methodSelect.onchange = showTime
             entryText.oninput = function () {
-                this.style.height = this.scrollHeight + 'px'
+                this.style.height = this.scrollHeight + 4 + 'px'
                 stdPhrase.innerHTML = transformCase(entryText.value).phrase
                 showTime()
             }
-            showTime()
+            entryText.oninput()
         };
         </script>
     </head>
