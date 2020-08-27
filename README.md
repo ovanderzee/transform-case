@@ -78,7 +78,7 @@ Options for pure alphanumeric input
 ## Demo
 
 .../transform-case/demo/demo.html
-.../transform-case/demo/try-out.html
+.../transform-case/demo/play.html
 
 ## Transformation process
 
