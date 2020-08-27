@@ -1,5 +1,9 @@
 import { isExactMatch } from 'my-lib'
-import { RENDER_MODEL } from './constants'
+import {
+    RENDER_MODEL,
+    NUMERIC_DELIMITERS,
+    PUNCTUATION_CHARS,
+} from './constants'
 import asciiFolder from 'fold-to-ascii'
 
 /**
@@ -10,8 +14,7 @@ import asciiFolder from 'fold-to-ascii'
  * @returns {Array} enhanced words
  */
 const delimitNumbers = (word, delimitOutput) => {
-    const allNumericDelimiters = '-:,./'
-    const currentNumericDelimiters = allNumericDelimiters.replace(
+    const currentNumericDelimiters = NUMERIC_DELIMITERS.replace(
         delimitOutput,
         '',
     )
@@ -22,6 +25,7 @@ const delimitNumbers = (word, delimitOutput) => {
         'g',
     )
 
+    // delimit numbers with an underscore, even in capMarkedWords
     const delimiter = delimitOutput || '_'
     return word.match(currentNumericDelimiterRegex)
         ? word
@@ -48,17 +52,20 @@ const normaliseQuotes = line => {
  * @returns {String} stripped string
  */
 const removePunctuation = (line, delimitOutput) => {
-    const allPunctuation = '…,:;[\\](){}\\-‐–—\'".!?'
-    const currentPunctuation = allPunctuation
-        .replace('\\' + delimitOutput, '')
-        .replace(delimitOutput, '')
+    const currentPunctuation = PUNCTUATION_CHARS.replace(
+        '\\' + delimitOutput,
+        '',
+    ).replace(delimitOutput, '')
 
     // remove all punctuation between non-digits
-    const allPunctRegex = new RegExp('(\\D)[' + allPunctuation + '](\\D)', 'g')
+    const allPunctRegex = new RegExp(
+        '(\\D)[' + PUNCTUATION_CHARS + '](\\D)',
+        'g',
+    )
     // remove all leading punctuation
-    const leadPunctRegex = new RegExp('^[' + allPunctuation + ']', '')
+    const leadPunctRegex = new RegExp('^[' + PUNCTUATION_CHARS + ']', '')
     // remove all trailing punctuation
-    const trailPunctRegex = new RegExp('[' + allPunctuation + ']$', '')
+    const trailPunctRegex = new RegExp('[' + PUNCTUATION_CHARS + ']$', '')
     // remove all punctuation but the delimiter between digits
     const currentPunctRegex = new RegExp(
         '(\\d)[' + currentPunctuation + '](\\d)',
@@ -206,12 +213,12 @@ const patternRendering = function(words, options) {
     /**
      * delimitedLowerCase base pattern
      * @private
-     * @param {String} delimimter
+     * @param {String} delimitOutput
      * @returns {String} delimitedLowerCase transformed words
      */
-    const delimitedLowerCase = delimimter => {
+    const delimitedLowerCase = delimitOutput => {
         const model = Object.assign({}, RENDER_MODEL, techProcessing, {
-            delimitOutput: delimimter,
+            delimitOutput: delimitOutput,
             firstWordFirstChar: toLower,
             firstWordNextChars: toLower,
             nextWordsFirstChar: toLower,

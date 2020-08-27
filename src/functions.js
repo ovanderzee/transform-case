@@ -1,4 +1,5 @@
 import { isDigit, isLetter, isLower, isUpper } from 'my-lib'
+import { REGEXP_SPECIAL_CHARS } from './constants'
 
 /**
  * remove extraneous and doubled characters
@@ -8,6 +9,8 @@ import { isDigit, isLetter, isLower, isUpper } from 'my-lib'
  * @returns {String} cleaned line
  */
 const dedupe = (line, char) => {
+    // escape sensitive chars:
+    if (REGEXP_SPECIAL_CHARS.includes(char)) char = '\\' + char
     const leading = new RegExp('^' + char)
     const trailing = new RegExp(char + '$')
     const doubling = new RegExp(char + char, 'g')

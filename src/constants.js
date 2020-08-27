@@ -44,4 +44,14 @@ const RENDER_MODEL = {
     nextWordsNextChars: word => word,
 }
 
-export { INTAKE_OPTIONS, RENDER_MODEL }
+const REGEXP_SPECIAL_CHARS = '()*+?[\\'
+const NUMERIC_DELIMITERS = '-:,./'
+const PUNCTUATION_CHARS = '…,:;[\\](){}\\-‐–—\'".!?'
+
+export {
+    INTAKE_OPTIONS,
+    RENDER_MODEL,
+    REGEXP_SPECIAL_CHARS,
+    NUMERIC_DELIMITERS,
+    PUNCTUATION_CHARS,
+}
