@@ -44,7 +44,9 @@ A systematic text can be transformed to a human phrase like this:
 const textIntake = transformCase('camelCasedInput')
 textIntake.humanSentence()  // ==> 'Camel cased input'
 
-const textIntake2 = transformCase('snake_cased_input', {delimitInput: '_'})
+const textIntake2 = transformCase(
+    'snake_cased_input', {delimitInput: '_'}
+)
 textIntake2.humanTitle()     // ==> 'Snake Cased Input'
 ```
 
@@ -77,8 +79,8 @@ Options for pure alphanumeric input
 
 ## Demo
 
-.../transform-case/demo/demo.html
-.../transform-case/demo/play.html
+    .../transform-case/demo/demo.html
+    .../transform-case/demo/play.html
 
 ## Transformation process
 

@@ -51,6 +51,7 @@
                 yieldText.innerHTML = transformCase(entryText.value, getOptions())[methodSelect.value]()
             }
             entryText.oninput = function () {
+                this.style.height = ''
                 this.style.height = this.scrollHeight + 4 + 'px'
                 showTime()
             }
