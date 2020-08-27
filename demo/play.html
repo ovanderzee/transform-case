@@ -16,18 +16,13 @@
                 methodSelect.innerHTML += `<option>${method[0]}</option>`
             });
             const entryText = document.getElementById('entry')
-            const exitText = document.getElementById('exit')
+            const yieldText = document.getElementById('yield')
 
             const delimit = document.getElementById('delimit')
             const preserve = document.getElementById('preserve')
             const delimitInput = document.getElementById('delimitInput')
             delimiters.forEach(delimit => {
-                delimitInput.innerHTML += `<option value="${delimit}">
-                    ${delimit === ' ' ? '(space)' : delimit}</option>`
-            });
-            const delimitOutput = document.getElementById('delimitOutput')
-            delimiters.forEach(delimit => {
-                delimitOutput.innerHTML += `<option value="${delimit}"
+                delimitInput.innerHTML += `<option value="${delimit}"
                     ${delimit === ' ' ? ' selected ' : ''}>
                     ${delimit === ' ' ? '(space)' : delimit}</option>`
             });
@@ -42,7 +37,6 @@
                 options.delimit = delimit.value ? [delimit.value] : []
                 options.preserve = preserve.value ? [preserve.value] : []
                 options.delimitInput = delimitInput.value
-                options.delimitOutput = delimitOutput.value
                 options.delimitLetterNumber = delimitLetterNumber.checked
                 options.delimitLowerUpper = delimitLowerUpper.checked
                 options.delimitNumberLetter = delimitNumberLetter.checked
@@ -54,7 +48,7 @@
             const showTime = function () {
                 console.log('standardisation')
                 console.log('words', transformCase(entryText.value).words)
-                exitText.innerHTML = transformCase(entryText.value, getOptions())[methodSelect.value]()
+                yieldText.innerHTML = transformCase(entryText.value, getOptions())[methodSelect.value]()
             }
             entryText.oninput = function () {
                 this.style.height = this.scrollHeight + 4 + 'px'
@@ -63,7 +57,6 @@
             delimit.oninput = showTime
             preserve.oninput = showTime
             delimitInput.oninput = showTime
-            delimitOutput.oninput = showTime
             delimitLetterNumber.onchange = showTime
             delimitLowerUpper.onchange = showTime
             delimitNumberLetter.onchange = showTime
@@ -85,22 +78,20 @@
         <input id="preserve" type="text" />
         <span>delimitInput</span>
         <select id="delimitInput"><option selected value="">(nothing)</option></select>
-        <span>delimitOutput</span>
-        <select id="delimitOutput"><option value="">(nothing)</option></select>
 
-        <span>delimit transitions</span>
+        <span>delimit transitions <em>(default setting)</em></span>
         <fieldset>
-            <label><input type="checkbox" id="delimitLetterNumber" checked />Letter &rarr; Number (default: on)</label>
-            <label><input type="checkbox" id="delimitLowerUpper" checked />Lower &rarr; Upper (default: on)</label>
-            <label><input type="checkbox" id="delimitNumberLetter" checked />Number &rarr; Letter (default: on)</label>
-            <label><input type="checkbox" id="delimitUpperLower" />Upper &rarr; Lower (default: off)</label>
-            <label><input type="checkbox" id="delimitUpperUpperLower" checked />Upper &rarr; Upper + Lower (def: on)</label>
+            <label><input type="checkbox" id="delimitLetterNumber" checked />Letter &rarr; Number <em>(on)</em></label>
+            <label><input type="checkbox" id="delimitLowerUpper" checked />Lower &rarr; Upper <em>(on)</em></label>
+            <label><input type="checkbox" id="delimitNumberLetter" checked />Number &rarr; Letter <em>(on)</em></label>
+            <label><input type="checkbox" id="delimitUpperLower" />Upper &rarr; Lower <em>(off)</em></label>
+            <label><input type="checkbox" id="delimitUpperUpperLower" checked />Upper &rarr; Upper + Lower <em>(on)</em></label>
         </fieldset>
 
         <span>method</span>
         <select id="method"></select>
         <hr/>
-        <span>exit</span>
-        <div class="output" id="exit"></div>
+        <span>yield</span>
+        <output id="yield"></output>
     </body>
 </html>

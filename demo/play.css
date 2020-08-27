@@ -17,9 +17,10 @@ body {
 h2 {
     color: var(--aside-color);
 }
-textarea, select, .output, input[type="text"], fieldset {
+textarea, select, output, input[type="text"], fieldset {
     display: block;
     font: caption;
+    font-size: 16px;
     vertical-align: top;
     padding: var(--vertical-padding) .5em;
     margin: .5em 0 .5em var(--gutter);
@@ -45,6 +46,8 @@ label {
 }
 input[type="checkbox"] {
     margin: .5em .75em .5em 0;
+    width: 15px;
+    height: 15px;
 }
 input[type="checkbox"]:after {
     content: '';
@@ -66,7 +69,7 @@ input[type="checkbox"]:checked:after {
     box-shadow: none;
 }
 
-#exit:not(:empty) {
+#yield:not(:empty) {
     box-shadow: 0 0 0 1px white;
     word-break: break-word;
     overflow-wrap: break-word;
