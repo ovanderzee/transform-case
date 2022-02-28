@@ -25,7 +25,7 @@ const INTAKE_OPTIONS = {
 }
 
 /*
- * Render model, with do-nothing-functions, to be exchanged by the pattern fimally
+ * Render model, with do-nothing-functions, to be exchanged by the pattern finally
  * @member {Function} preprocess
       do operations in fresh words array, for pure alphaNumeric patterns
  * @member {Function} postProcess
@@ -36,12 +36,12 @@ const INTAKE_OPTIONS = {
  * @member {Function} nextWordsNextChars - transform word parts
  */
 const RENDER_MODEL = {
-    preprocess: words => words,
-    postProcess: line => line,
-    firstWordFirstChar: word => word,
-    firstWordNextChars: word => word,
-    nextWordsFirstChar: word => word,
-    nextWordsNextChars: word => word,
+    preprocess: (words) => words,
+    postProcess: (line) => line,
+    firstWordFirstChar: (word) => word,
+    firstWordNextChars: (word) => word,
+    nextWordsFirstChar: (word) => word,
+    nextWordsNextChars: (word) => word,
 }
 
 const REGEXP_SPECIAL_CHARS = '()*+?[\\'

@@ -63,7 +63,7 @@ describe('humanTitle is a pattern', () => {
         ).humanTitle()
         const wordStartSequence = title
             .match(/\w+/g)
-            .map(word => word.charAt(0))
+            .map((word) => word.charAt(0))
 
         expect(wordStartSequence.join().match(/[a-z]/)).toBeFalsy()
     })

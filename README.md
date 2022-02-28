@@ -1,9 +1,9 @@
-[![Build Status](https://travis-ci.org/ovanderzee/transform-case.svg?branch=master)](https://travis-ci.org/ovanderzee/transform-case)
-[![Coverage Status](https://coveralls.io/repos/github/ovanderzee/transform-case/badge.svg?branch=master)](https://coveralls.io/github/ovanderzee/transform-case?branch=master)
+[![Build Status](https://travis-ci.org/ovanderzee/transform-case.svg?branch=main)](https://travis-ci.org/ovanderzee/transform-case)
+[![Coverage Status](https://coveralls.io/repos/github/ovanderzee/transform-case/badge.svg?branch=main)](https://coveralls.io/github/ovanderzee/transform-case?branch=main)
 
 # TransformCase
 
-Here is the case and seperation transformer that
+Here is the case and separation transformer that
 transliterates diacriticals and ligatures
 when your texts are in any Latin script.
 

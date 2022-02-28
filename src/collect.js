@@ -1,11 +1,5 @@
 import { isAlphaNumeric, isExactMatch } from 'my-lib'
-import {
-    dedupe,
-    tidy,
-    insertDelimiter,
-    delimitWords,
-    delimitChunks,
-} from './functions'
+import { dedupe, tidy, delimitWords, delimitChunks } from './functions'
 import { INTAKE_OPTIONS } from './constants'
 import { patternRendering } from './render'
 
@@ -15,7 +9,7 @@ import { patternRendering } from './render'
  * @param {Object} options
  * @returns {Object} - the 'prototype' / methods and some variables
  */
-const TransformCase = function(line, userOptions) {
+const TransformCase = function (line, userOptions) {
     if (!line) return
     let self = {}
     const options = Object.assign({}, INTAKE_OPTIONS, userOptions)
@@ -56,8 +50,8 @@ const TransformCase = function(line, userOptions) {
         // delimit by case transition
         let parts = revised.split(delimiter)
         self.phrase = parts
-            .map(part =>
-                options.preserve.some(regex => isExactMatch(part, regex))
+            .map((part) =>
+                options.preserve.some((regex) => isExactMatch(part, regex))
                     ? part
                     : delimitWords(part, options),
             )

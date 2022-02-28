@@ -41,7 +41,7 @@ const delimitNumbers = (word, delimitOutput) => {
  * @param {String} line
  * @returns {String} normalised string
  */
-const normaliseQuotes = line => {
+const normaliseQuotes = (line) => {
     return line.replace(/‘’`/g, "'").replace(/“”/g, '"')
 }
 
@@ -87,7 +87,7 @@ const removePunctuation = (line, delimitOutput) => {
  * @param {String} line
  * @returns {String} changed string
  */
-const simplifyVariations = line => {
+const simplifyVariations = (line) => {
     return asciiFolder.foldReplacing(line)
 }
 
@@ -97,21 +97,20 @@ const simplifyVariations = line => {
  * @param {String} word
  * @returns {String} transformed word
  */
-const asIs = word => word
-const toLower = word => word.toLowerCase()
-const toUpper = word => word.toUpperCase()
+const toLower = (word) => word.toLowerCase()
+const toUpper = (word) => word.toUpperCase()
 
-const patternRendering = function(words, options) {
+const patternRendering = function (words, options) {
     /**
      * Iterative transformation
      * @private
      * @param {Object} model
      * @returns {String} transformed words
      */
-    const transform = model => {
+    const transform = (model) => {
         const transformation = words.map((word, index) => {
             word = model.preprocess(word, model.delimitOutput)
-            const toPreserve = options.preserve.some(regex =>
+            const toPreserve = options.preserve.some((regex) =>
                 isExactMatch(word, regex),
             )
             if (index === 0) {
@@ -129,17 +128,17 @@ const patternRendering = function(words, options) {
             }
         })
         const line = transformation.join(model.delimitOutput)
-        return model.postProcess(line, model.delimitOutput)
+        return model.postProcess(line)
     }
 
     const techProcessing = {
-        preprocess: function(word, delimitOutput) {
+        preprocess: function (word, delimitOutput) {
             word = delimitNumbers(word, delimitOutput)
             word = normaliseQuotes(word)
             word = removePunctuation(word, delimitOutput)
             return word
         },
-        postProcess: function(line, delimitOutput) {
+        postProcess: function (line) {
             line = simplifyVariations(line)
             return line
         },
@@ -216,7 +215,7 @@ const patternRendering = function(words, options) {
      * @param {String} delimitOutput
      * @returns {String} delimitedLowerCase transformed words
      */
-    const delimitedLowerCase = delimitOutput => {
+    const delimitedLowerCase = (delimitOutput) => {
         const model = Object.assign({}, RENDER_MODEL, techProcessing, {
             delimitOutput: delimitOutput,
             firstWordFirstChar: toLower,

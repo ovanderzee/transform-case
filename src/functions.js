@@ -28,12 +28,9 @@ const dedupe = (line, char) => {
  * @param {String} line
  * @returns {String} cleaned line
  */
-const tidy = line => {
-    const controlChars = new RegExp('[\u0000-\u001f,\u007f-\u009f]')
-    return line
-        .trim()
-        .replace(/\s+/g, ' ')
-        .replace(controlChars, '')
+const tidy = (line) => {
+    const controlChars = new RegExp('[\u0000-\u001f,\u007f-\u009f]') // eslint-disable-line no-control-regex
+    return line.trim().replace(/\s+/g, ' ').replace(controlChars, '')
 }
 
 /**
@@ -44,7 +41,7 @@ const tidy = line => {
  * @param {Object} options
  * @returns {String} Need to insert a delimiter
  */
-const insertDelimiter = (prev, curr, next, options) => {
+const needToInsertDelimiter = (prev, curr, next, options) => {
     let letNum, lowUp, numLet, upLow, upUpLow
     letNum = options.delimitLetterNumber && isLetter(prev) && isDigit(curr)
     lowUp = options.delimitLowerUpper && isLower(prev) && isUpper(curr)
@@ -70,7 +67,14 @@ const insertDelimiter = (prev, curr, next, options) => {
 const delimitWords = (line, options) => {
     let phrase = line[0]
     for (let i = 1; i < line.length; i++) {
-        if (insertDelimiter(line[i - 1], line[i], line[i + 1] || '', options)) {
+        if (
+            needToInsertDelimiter(
+                line[i - 1],
+                line[i],
+                line[i + 1] || '',
+                options,
+            )
+        ) {
             phrase += options.delimitOutput
         }
         phrase += line[i]
@@ -92,11 +96,11 @@ const delimitChunks = (line, chunks, delimiter) => {
     let mask = new Array(line.length)
     mask.fill(true)
 
-    chunks.forEach(chunk => {
+    chunks.forEach((chunk) => {
         // work reversed to keep the matched indexes useable
         const matches = Array.from(line.matchAll(chunk)).reverse()
 
-        matches.forEach(match => {
+        matches.forEach((match) => {
             const till = match.index + match[0].length
 
             // see if characters were not 'reserved' by other chunks
@@ -132,4 +136,4 @@ const delimitChunks = (line, chunks, delimiter) => {
     return line
 }
 
-export { dedupe, tidy, insertDelimiter, delimitWords, delimitChunks }
+export { dedupe, tidy, needToInsertDelimiter, delimitWords, delimitChunks }
