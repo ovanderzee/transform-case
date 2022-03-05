@@ -4,7 +4,7 @@ import {
     // insertDelimiter,
     // delimitWords,
     delimitChunks,
-} from '../src/functions'
+} from '../src/collect-fn'
 
 describe('delimitChunks extracts new words from delimited text', () => {
     const lineIn = 'A fair weather affair with despair'

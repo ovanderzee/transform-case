@@ -99,7 +99,10 @@ We then have an object with collected data and a number of transform patterns to
         orgin {
             input (string)
             isAlphaNumeric (boolean)
-            standardised (string)
+            normalised (string), previously standardised
+            revised (string)
+        }
+        options {
         }
         phrase (delimited string)
         words (string[])

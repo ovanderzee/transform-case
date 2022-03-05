@@ -1,5 +1,5 @@
 import { isAlphaNumeric, isExactMatch } from 'my-lib'
-import { dedupe, tidy, delimitWords, delimitChunks } from './functions'
+import { dedupe, tidy, delimitWords, delimitChunks } from './collect-fn'
 import { INTAKE_OPTIONS } from './constants'
 import { patternRendering } from './render'
 
@@ -11,44 +11,43 @@ import { patternRendering } from './render'
  */
 const TransformCase = function (line, userOptions) {
     if (!line) return
-    let self = {}
+
     const options = Object.assign({}, INTAKE_OPTIONS, userOptions)
+    const normalised = options.delimitInput
+        ? dedupe(tidy(line), options.delimitInput)
+        : tidy(line)
 
     // prepare
-    self.orgin = {
+    const origin = {
         input: line,
+        normalised: normalised,
+        isAlphaNumeric: isAlphaNumeric(normalised),
     }
-    if (options.delimitInput) {
-        self.orgin.standardised = dedupe(tidy(line), options.delimitInput)
-    } else {
-        self.orgin.standardised = tidy(line)
-    }
-    self.orgin.isAlphaNumeric = isAlphaNumeric(self.orgin.standardised)
-    let revised = self.orgin.standardised
 
-    // distinguish between technical from linguistic transforms
-    let delimiter
-    if (self.orgin.isAlphaNumeric) {
-        // assume technical phrase, or this is one human word
-        // delimit by case transition
-        delimiter = options.delimitOutput
-    } else {
-        // assume human input or technical/coded when input delimiter is given
-        // delimit by specified delimiter, (default: a space)
-        delimiter = options.delimitInput || options.delimitOutput
-    }
+    // different routes for technical (transition-delimited) from
+    // linguistic transforms (character-delimited)
+    // delimitInput defaults to empty string, delimitOutput defaults to a space
+    const delimiter = origin.isAlphaNumeric
+        ? options.delimitOutput
+        : options.delimitInput || options.delimitOutput
 
     // preserve, delimit - these strings must be kept together - should be like a human word
+    origin.revised = origin.normalised
     const chunks = [].concat(options.preserve, options.delimit)
     if (chunks.length) {
-        revised = delimitChunks(revised, chunks, delimiter)
+        origin.revised = delimitChunks(origin.normalised, chunks, delimiter)
+    }
+
+    const self = {
+        origin: origin,
+        options: options,
+        phrase: '',
+        words: [],
     }
 
     // produce an array with words
-    if (self.orgin.isAlphaNumeric) {
-        // assume technical phrase, or this is one human word
-        // delimit by case transition
-        let parts = revised.split(delimiter)
+    if (origin.isAlphaNumeric) {
+        let parts = origin.revised.split(delimiter)
         self.phrase = parts
             .map((part) =>
                 options.preserve.some((regex) => isExactMatch(part, regex))
@@ -58,10 +57,8 @@ const TransformCase = function (line, userOptions) {
             .join(delimiter)
         self.words = self.phrase.split(delimiter)
     } else {
-        // assume human input or technical/coded when input delimiter is given
-        // delimit by specified delimiter, (default: a space)
-        self.phrase = revised
-        self.words = revised.split(delimiter)
+        self.phrase = origin.revised
+        self.words = origin.revised.split(delimiter)
     }
 
     return Object.assign(self, patternRendering(self.words, options))

@@ -46,7 +46,10 @@
             }
 
             const showTime = function () {
-                console.log('standardisation')
+                console.log('normalisation')
+                console.log('origin', transformCase(entryText.value).origin)
+                console.log('options', transformCase(entryText.value).options)
+                console.log('phrase', transformCase(entryText.value).phrase)
                 console.log('words', transformCase(entryText.value).words)
                 yieldText.innerHTML = transformCase(entryText.value, getOptions())[methodSelect.value]()
             }

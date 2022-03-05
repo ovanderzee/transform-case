@@ -15,12 +15,12 @@
 const INTAKE_OPTIONS = {
     delimit: [],
     preserve: [],
-    delimitInput: '',
     delimitLetterNumber: true,
     delimitLowerUpper: true,
     delimitNumberLetter: true,
     delimitUpperLower: false,
     delimitUpperUpperLower: true,
+    delimitInput: '',
     delimitOutput: ' ',
 }
 

@@ -6,7 +6,6 @@ describe('there will be no unexpected characters in the output', () => {
     const output = new TransformCase(input).phrase
 
     test('all whitespace becomes an ordinary space', () => {
-        // about tab and zero-space
         // about tab and escape isn't it?
         expect(input.match(/\s/g).length).toBe(output.match(/ /g).length)
     })
