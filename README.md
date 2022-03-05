@@ -93,7 +93,24 @@ finds a delimiter,
 isolates delimit and preserve options
 and ends with an array of words.
 
-The render step is merely choosing a pattern to treat the array of words.
+We then have an object with collected data and a number of transform patterns to choose from.
+
+    {
+        orgin {
+            input (string)
+            isAlphaNumeric (boolean)
+            standardised (string)
+        }
+        phrase (delimited string)
+        words (string[])
+        camelCase (function)
+        ...
+        humanTitle (function)
+        ...
+        snakeCase (function)
+    }
+
+The render step is merely choosing a pattern to apply to the array of words.
 There are three groups of similar patterns:
 
 * Cap-marked words (camelCase, pascalCase)
