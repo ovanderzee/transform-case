@@ -8,7 +8,7 @@ import asciiFolder from 'fold-to-ascii'
  * @param {String} word
  * @returns {Array} enhanced words
  */
-const delimitNumbers = (word, delimitOutput) => {
+const delimitNumbers = (word: string, delimitOutput: string): string[] => {
     const currentNumericDelimiters = NUMERIC_DELIMITERS.replace(
         delimitOutput,
         '',
@@ -36,7 +36,7 @@ const delimitNumbers = (word, delimitOutput) => {
  * @param {String} line
  * @returns {String} normalised string
  */
-const normaliseQuotes = (line) => {
+const normaliseQuotes = (line: string): string => {
     return line.replace(/‘’`/g, "'").replace(/“”/g, '"')
 }
 
@@ -46,7 +46,7 @@ const normaliseQuotes = (line) => {
  * @param {String} line
  * @returns {String} stripped string
  */
-const removePunctuation = (line, delimitOutput) => {
+const removePunctuation = (line: string, delimitOutput: string) => {
     const currentPunctuation = PUNCTUATION_CHARS.replace(
         '\\' + delimitOutput,
         '',
@@ -82,7 +82,7 @@ const removePunctuation = (line, delimitOutput) => {
  * @param {String} line
  * @returns {String} changed string
  */
-const simplifyVariations = (line) => {
+const simplifyVariations = (line: string): string => {
     return asciiFolder.foldReplacing(line)
 }
 

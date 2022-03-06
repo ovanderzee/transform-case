@@ -1,4 +1,5 @@
 import { isExactMatch } from 'my-lib'
+import { RuntimeOptions } from './types'
 import {
     delimitNumbers,
     normaliseQuotes,
@@ -9,7 +10,7 @@ import {
 } from './render-fn'
 import { RENDER_MODEL } from './constants'
 
-const patternRendering = function (words, options) {
+const patternRendering = function (words: string, options: RuntimeOptions): string {
     /**
      * Iterative transformation
      * @private
@@ -160,7 +161,7 @@ const patternRendering = function (words, options) {
 
     /**
      * constantCase pattern
-     * @param {String} delimimter
+     * @param {String} delimiter
      * @returns {String} constantCase transformed words
      */
     const constantCase = () => {

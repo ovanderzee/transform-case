@@ -1,5 +1,6 @@
 import { isAlphaNumeric, isExactMatch } from 'my-lib'
-import { dedupe, tidy, delimitWords, delimitChunks } from './collect-fn'
+import { dedupe, tidy, delimitWords, delimitChunks } from './functions'
+import { UserOptions, RunData } from './types'
 import { INTAKE_OPTIONS } from './constants'
 import { patternRendering } from './render'
 
@@ -9,7 +10,7 @@ import { patternRendering } from './render'
  * @param {Object} options
  * @returns {Object} - the 'prototype' / methods and some variables
  */
-const TransformCase = function (line, userOptions) {
+const TransformCase = function (line: string, userOptions: UserOptions) {
     if (!line) return
 
     const options = Object.assign({}, INTAKE_OPTIONS, userOptions)

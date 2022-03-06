@@ -1,4 +1,5 @@
 import { isDigit, isLetter, isLower, isUpper } from 'my-lib'
+import { RuntimeOptions } from './types'
 import { REGEXP_SPECIAL_CHARS } from './constants'
 
 /**
@@ -8,7 +9,7 @@ import { REGEXP_SPECIAL_CHARS } from './constants'
  * @param {String} char
  * @returns {String} cleaned line
  */
-const dedupe = (line, char) => {
+const dedupe = (line: string, char: string): string => {
     // escape sensitive chars:
     if (REGEXP_SPECIAL_CHARS.includes(char)) char = '\\' + char
     const leading = new RegExp('^' + char)
@@ -28,7 +29,7 @@ const dedupe = (line, char) => {
  * @param {String} line
  * @returns {String} cleaned line
  */
-const tidy = (line) => {
+const tidy = (line: string): string => {
     const controlChars = new RegExp('[\u0000-\u001f,\u007f-\u009f]') // eslint-disable-line no-control-regex
     return line.trim().replace(/\s+/g, ' ').replace(controlChars, '')
 }
@@ -38,10 +39,11 @@ const tidy = (line) => {
  * @private
  * @param {String} prev - previous character
  * @param {String} curr - current character
+ * @param {String} next - character following current
  * @param {Object} options
  * @returns {String} Need to insert a delimiter
  */
-const needToInsertDelimiter = (prev, curr, next, options) => {
+const needToInsertDelimiter = (prev: string, curr: string, next: string, options: RuntimeOptions): string => {
     let letNum, lowUp, numLet, upLow, upUpLow
     letNum = options.delimitLetterNumber && isLetter(prev) && isDigit(curr)
     lowUp = options.delimitLowerUpper && isLower(prev) && isUpper(curr)
@@ -64,7 +66,7 @@ const needToInsertDelimiter = (prev, curr, next, options) => {
  * @param {Object} options
  * @returns {String} phrase of seperated words
  */
-const delimitWords = (line, options) => {
+const delimitWords = (line: string, options: RuntimeOptions): string => {
     let phrase = line[0]
     for (let i = 1; i < line.length; i++) {
         if (
@@ -87,11 +89,11 @@ const delimitWords = (line, options) => {
  * Do not delimit a string that was delimited before
  * @private
  * @param {String} line
- * @param {Object} options
+ * @param {String[]} chunks
  * @param {String} delimiter
  * @returns {String} phrase of seperated words
  */
-const delimitChunks = (line, chunks, delimiter) => {
+const delimitChunks = (line: string, chunks: string[], delimiter: string) => {
     // mask with unprotected slots
     let mask = new Array(line.length)
     mask.fill(true)
