@@ -1,5 +1,5 @@
 import { isExactMatch } from 'my-lib'
-import { RuntimeOptions } from './types'
+import { TransformOptions, RenderModel, RenderMethods } from './types'
 import {
     delimitNumbers,
     normaliseQuotes,
@@ -10,14 +10,17 @@ import {
 } from './render-fn'
 import { RENDER_MODEL } from './constants'
 
-const patternRendering = function (words: string, options: RuntimeOptions): string {
+const patternRendering = function (
+    words: string[],
+    options: TransformOptions,
+): RenderMethods {
     /**
      * Iterative transformation
      * @private
      * @param {Object} model
      * @returns {String} transformed words
      */
-    const transform = (model) => {
+    const transform = (model: RenderModel): string => {
         const transformation = words.map((word, index) => {
             word = model.preprocess(word, model.delimitOutput)
             const toPreserve = options.preserve.some((regex) =>
@@ -42,13 +45,13 @@ const patternRendering = function (words: string, options: RuntimeOptions): stri
     }
 
     const techProcessing = {
-        preprocess: function (word, delimitOutput) {
+        preprocess: function (word: string, delimitOutput: string): string {
             word = delimitNumbers(word, delimitOutput)
             word = normaliseQuotes(word)
             word = removePunctuation(word, delimitOutput)
             return word
         },
-        postProcess: function (line) {
+        postProcess: function (line: string): string {
             line = simplifyVariations(line)
             return line
         },
@@ -65,7 +68,10 @@ const patternRendering = function (words: string, options: RuntimeOptions): stri
      * @private
      * @returns {String} transformed words
      */
-    const capMarkedWords = (firstWordFirstChar, nextWordsFirstChar) => {
+    const capMarkedWords = (
+        firstWordFirstChar: (word: string) => string,
+        nextWordsFirstChar: (word: string) => string,
+    ): string => {
         const model = Object.assign({}, RENDER_MODEL, techProcessing, {
             delimitOutput: '',
             firstWordFirstChar: firstWordFirstChar,
@@ -76,10 +82,10 @@ const patternRendering = function (words: string, options: RuntimeOptions): stri
         return transform(model)
     }
 
-    const camelCase = () => {
+    const camelCase = (): string => {
         return capMarkedWords(toLower, toUpper)
     }
-    const pascalCase = () => {
+    const pascalCase = (): string => {
         return capMarkedWords(toUpper, toUpper)
     }
 
@@ -91,7 +97,7 @@ const patternRendering = function (words: string, options: RuntimeOptions): stri
      * humanSentence pattern
      * @returns {String} transformed words
      */
-    const humanSentence = () => {
+    const humanSentence = (): string => {
         const model = Object.assign({}, RENDER_MODEL, {
             delimitOutput: ' ',
             firstWordFirstChar: toUpper,
@@ -106,7 +112,7 @@ const patternRendering = function (words: string, options: RuntimeOptions): stri
      * humanTitle pattern
      * @returns {String} transformed words
      */
-    const humanTitle = () => {
+    const humanTitle = (): string => {
         const model = Object.assign({}, RENDER_MODEL, {
             delimitOutput: ' ',
             firstWordFirstChar: toUpper,
@@ -125,7 +131,7 @@ const patternRendering = function (words: string, options: RuntimeOptions): stri
      * @param {String} delimitOutput
      * @returns {String} delimitedLowerCase transformed words
      */
-    const delimitedLowerCase = (delimitOutput) => {
+    const delimitedLowerCase = (delimitOutput: string): string => {
         const model = Object.assign({}, RENDER_MODEL, techProcessing, {
             delimitOutput: delimitOutput,
             firstWordFirstChar: toLower,
@@ -136,22 +142,22 @@ const patternRendering = function (words: string, options: RuntimeOptions): stri
         return transform(model)
     }
 
-    const dotCase = () => {
+    const dotCase = (): string => {
         return delimitedLowerCase('.')
     }
-    const paramCase = () => {
+    const paramCase = (): string => {
         return delimitedLowerCase('-')
     }
-    const pathCase = () => {
+    const pathCase = (): string => {
         return delimitedLowerCase('/')
     }
-    const searchCase = () => {
+    const searchCase = (): string => {
         return delimitedLowerCase('+')
     }
-    const snakeCase = () => {
+    const snakeCase = (): string => {
         return delimitedLowerCase('_')
     }
-    const spaceCase = () => {
+    const spaceCase = (): string => {
         return delimitedLowerCase(' ')
     }
 
@@ -164,7 +170,7 @@ const patternRendering = function (words: string, options: RuntimeOptions): stri
      * @param {String} delimiter
      * @returns {String} constantCase transformed words
      */
-    const constantCase = () => {
+    const constantCase = (): string => {
         const model = Object.assign({}, RENDER_MODEL, techProcessing, {
             delimitOutput: '_',
             firstWordFirstChar: toUpper,
@@ -181,7 +187,7 @@ const patternRendering = function (words: string, options: RuntimeOptions): stri
      * @param {String} delimimter
      * @returns {String} headerCase transformed words
      */
-    const headerCase = () => {
+    const headerCase = (): string => {
         const model = Object.assign({}, RENDER_MODEL, techProcessing, {
             delimitOutput: '-',
             firstWordFirstChar: toUpper,
@@ -192,7 +198,7 @@ const patternRendering = function (words: string, options: RuntimeOptions): stri
         return transform(model)
     }
 
-    return {
+    const renderMethods: RenderMethods = {
         camelCase: camelCase,
         pascalCase: pascalCase,
         humanSentence: humanSentence,
@@ -206,6 +212,8 @@ const patternRendering = function (words: string, options: RuntimeOptions): stri
         constantCase: constantCase,
         headerCase: headerCase,
     }
+
+    return renderMethods
 }
 
 export { patternRendering }

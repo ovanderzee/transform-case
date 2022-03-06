@@ -1,31 +1,30 @@
-export type Chunk = string | Regex
-
-export interface RuntimeOptions {
-    delimit: Chunk[],
-    preserve: Chunk[],
-    delimitLetterNumber: boolean,
-    delimitLowerUpper: boolean,
-    delimitNumberLetter: boolean,
-    delimitUpperLower: boolean,
-    delimitUpperUpperLower: boolean,
-    delimitInput: string,
-    delimitOutput: string,
+export interface TransformOptions {
+    delimit: RegExp[]
+    preserve: RegExp[]
+    delimitLetterNumber: boolean
+    delimitLowerUpper: boolean
+    delimitNumberLetter: boolean
+    delimitUpperLower: boolean
+    delimitUpperUpperLower: boolean
+    delimitInput: string
+    delimitOutput: string
 }
 
 export interface UserOptions {
-    delimit?: Chunk[],
-    preserve?: Chunk[],
-    delimitLetterNumber?: boolean,
-    delimitLowerUpper?: boolean,
-    delimitNumberLetter?: boolean,
-    delimitUpperLower?: boolean,
-    delimitUpperUpperLower?: boolean,
-    delimitInput?: string,
-    delimitOutput?: string,
+    delimit?: (string | RegExp)[]
+    preserve?: (string | RegExp)[]
+    delimitLetterNumber?: boolean
+    delimitLowerUpper?: boolean
+    delimitNumberLetter?: boolean
+    delimitUpperLower?: boolean
+    delimitUpperUpperLower?: boolean
+    delimitInput?: string
+    delimitOutput?: string
 }
 
 export interface RenderModel {
-    preprocess: (words: string[]) => string[]
+    delimitOutput: string
+    preprocess: (line: string, delimiter: string) => string
     postProcess: (line: string) => string
     firstWordFirstChar: (word: string) => string
     firstWordNextChars: (word: string) => string
@@ -33,8 +32,17 @@ export interface RenderModel {
     nextWordsNextChars: (word: string) => string
 }
 
-export interface RunData {
-    input: string,
-    standardised: string[],
-    isAlphaNumeric: boolean,
+export interface RenderMethods {
+    camelCase: () => string
+    pascalCase: () => string
+    humanSentence: () => string
+    humanTitle: () => string
+    dotCase: () => string
+    paramCase: () => string
+    pathCase: () => string
+    searchCase: () => string
+    snakeCase: () => string
+    spaceCase: () => string
+    constantCase: () => string
+    headerCase: () => string
 }

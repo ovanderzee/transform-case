@@ -1,6 +1,12 @@
 import { isAlphaNumeric, isExactMatch } from 'my-lib'
-import { dedupe, tidy, delimitWords, delimitChunks } from './functions'
-import { UserOptions, RunData } from './types'
+import {
+    dedupe,
+    tidy,
+    delimitWords,
+    delimitChunks,
+    normaliseProtections,
+} from './collect-fn'
+import { TransformOptions, UserOptions } from './types'
 import { INTAKE_OPTIONS } from './constants'
 import { patternRendering } from './render'
 
@@ -13,28 +19,44 @@ import { patternRendering } from './render'
 const TransformCase = function (line: string, userOptions: UserOptions) {
     if (!line) return
 
-    const options = Object.assign({}, INTAKE_OPTIONS, userOptions)
-    const normalised = options.delimitInput
+    const emptyProtection: RegExp[] = []
+    const normalisedProtections = {
+        delimit: userOptions.delimit
+            ? normaliseProtections(userOptions.delimit)
+            : emptyProtection,
+        preserve: userOptions.preserve
+            ? normaliseProtections(userOptions.preserve)
+            : emptyProtection,
+    }
+
+    const options: TransformOptions = Object.assign(
+        {},
+        INTAKE_OPTIONS,
+        userOptions,
+        normalisedProtections,
+    )
+
+    const normalisedLine = options.delimitInput
         ? dedupe(tidy(line), options.delimitInput)
         : tidy(line)
 
     // prepare
     const origin = {
         input: line,
-        normalised: normalised,
-        isAlphaNumeric: isAlphaNumeric(normalised),
+        normalised: normalisedLine,
+        revised: normalisedLine,
+        isAlphaNumeric: isAlphaNumeric(normalisedLine),
     }
 
     // different routes for technical (transition-delimited) from
-    // linguistic transforms (character-delimited)
-    // delimitInput defaults to empty string, delimitOutput defaults to a space
+    //     linguistic transforms (character-delimited)
     const delimiter = origin.isAlphaNumeric
         ? options.delimitOutput
         : options.delimitInput || options.delimitOutput
 
-    // preserve, delimit - these strings must be kept together - should be like a human word
-    origin.revised = origin.normalised
-    const chunks = [].concat(options.preserve, options.delimit)
+    // preserve, delimit - these strings must be kept together
+    const chunks: RegExp[] = []
+    chunks.concat(options.preserve, options.delimit)
     if (chunks.length) {
         origin.revised = delimitChunks(origin.normalised, chunks, delimiter)
     }
@@ -43,7 +65,7 @@ const TransformCase = function (line: string, userOptions: UserOptions) {
         origin: origin,
         options: options,
         phrase: '',
-        words: [],
+        words: [] as string[],
     }
 
     // produce an array with words

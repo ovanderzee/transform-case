@@ -1,4 +1,4 @@
-import { RuntimeOptions, RenderModel } from './types'
+import { TransformOptions, RenderModel } from './types'
 
 /*
  * Intake options
@@ -14,7 +14,7 @@ import { RuntimeOptions, RenderModel } from './types'
  * @member {Boolean} delimitUpperUpperLower - insert delimiter in this transition in pure alphaNumeric patterns
  * @member {String} delimitOutput - character to delimit output
  */
-const INTAKE_OPTIONS: RuntimeOptions = {
+const INTAKE_OPTIONS: TransformOptions = {
     delimit: [],
     preserve: [],
     delimitLetterNumber: true,
@@ -38,7 +38,8 @@ const INTAKE_OPTIONS: RuntimeOptions = {
  * @member {Function} nextWordsNextChars - transform word parts
  */
 const RENDER_MODEL: RenderModel = {
-    preprocess: (words) => words,
+    delimitOutput: '',
+    preprocess: (line, delimiter) => line,
     postProcess: (line) => line,
     firstWordFirstChar: (word) => word,
     firstWordNextChars: (word) => word,

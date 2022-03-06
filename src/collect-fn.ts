@@ -1,5 +1,5 @@
 import { isDigit, isLetter, isLower, isUpper } from 'my-lib'
-import { RuntimeOptions } from './types'
+import { TransformOptions, UserOptions } from './types'
 import { REGEXP_SPECIAL_CHARS } from './constants'
 
 /**
@@ -43,7 +43,12 @@ const tidy = (line: string): string => {
  * @param {Object} options
  * @returns {String} Need to insert a delimiter
  */
-const needToInsertDelimiter = (prev: string, curr: string, next: string, options: RuntimeOptions): string => {
+const needToInsertDelimiter = (
+    prev: string,
+    curr: string,
+    next: string,
+    options: TransformOptions,
+): boolean => {
     let letNum, lowUp, numLet, upLow, upUpLow
     letNum = options.delimitLetterNumber && isLetter(prev) && isDigit(curr)
     lowUp = options.delimitLowerUpper && isLower(prev) && isUpper(curr)
@@ -66,7 +71,7 @@ const needToInsertDelimiter = (prev: string, curr: string, next: string, options
  * @param {Object} options
  * @returns {String} phrase of seperated words
  */
-const delimitWords = (line: string, options: RuntimeOptions): string => {
+const delimitWords = (line: string, options: TransformOptions): string => {
     let phrase = line[0]
     for (let i = 1; i < line.length; i++) {
         if (
@@ -86,23 +91,23 @@ const delimitWords = (line: string, options: RuntimeOptions): string => {
 
 /**
  * Find optional delimit and preserved chunks and delimit these,
- * Do not delimit a string that was delimited before
  * @private
  * @param {String} line
  * @param {String[]} chunks
  * @param {String} delimiter
  * @returns {String} phrase of seperated words
  */
-const delimitChunks = (line: string, chunks: string[], delimiter: string) => {
+const delimitChunks = (line: string, chunks: RegExp[], delimiter: string) => {
     // mask with unprotected slots
     let mask = new Array(line.length)
     mask.fill(true)
 
     chunks.forEach((chunk) => {
-        // work reversed to keep the matched indexes useable
+        // work reversed to keep the matched indexes usable
         const matches = Array.from(line.matchAll(chunk)).reverse()
 
         matches.forEach((match) => {
+            if (match.index === undefined || !match[0]) return
             const till = match.index + match[0].length
 
             // see if characters were not 'reserved' by other chunks
@@ -138,4 +143,19 @@ const delimitChunks = (line: string, chunks: string[], delimiter: string) => {
     return line
 }
 
-export { dedupe, tidy, needToInsertDelimiter, delimitWords, delimitChunks }
+/**
+ * Convert protected strings to regular expressions
+ * @param {String[] | RegExp[]} protections
+ * @returns {RegExp[]} - normalised array
+ */
+const normaliseProtections = (protections: (string | RegExp)[]): RegExp[] =>
+    protections.map((pt) => (typeof pt === 'string' ? new RegExp(pt, 'g') : pt))
+
+export {
+    dedupe,
+    tidy,
+    needToInsertDelimiter,
+    delimitWords,
+    delimitChunks,
+    normaliseProtections,
+}
