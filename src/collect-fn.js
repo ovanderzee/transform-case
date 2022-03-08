@@ -29,7 +29,7 @@ const dedupe = (line, char) => {
  * @returns {String} cleaned line
  */
 const tidy = (line) => {
-    const controlChars = new RegExp('[\u0000-\u001f,\u007f-\u009f]') // eslint-disable-line no-control-regex
+    const controlChars = new RegExp('[\u0000-\u001f\u007f-\u009f]') // eslint-disable-line no-control-regex
     return line.trim().replace(/\s+/g, ' ').replace(controlChars, '')
 }
 
