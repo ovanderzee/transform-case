@@ -3,7 +3,7 @@ import { TransformCase } from '../src/collect'
 describe('there will be no unexpected characters in the output', () => {
     //               null   tab    esc   0space  bom
     const input = 'A\u0000B\u0009C\u001bD\u200bE\ufeffF'
-    const output = new TransformCase(input).phrase
+    const output = new TransformCase(input)._phrase
 
     test('all whitespace becomes an ordinary space', () => {
         // about tab and escape isn't it?
@@ -16,7 +16,7 @@ describe('there will be no unexpected characters in the output', () => {
 
     const untrimmed = `  X
       Y    `
-    const trimmed = new TransformCase(untrimmed).phrase
+    const trimmed = new TransformCase(untrimmed)._phrase
     test('leading and trailing spaces are trimmed', () => {
         expect(trimmed).toBe('X Y')
     })
@@ -24,12 +24,12 @@ describe('there will be no unexpected characters in the output', () => {
 
 describe(`delimit option keeps a lettercombination as a word
         and processes it according to the pattern`, () => {
-    const phrase = 'Forever thinking'
-    const normal = new TransformCase(phrase)
+    const line = 'Forever thinking'
+    const normal = new TransformCase(line)
     test('outcome without options', () => {
         expect(normal.humanTitle()).toBe('Forever Thinking')
     })
-    const delimit = new TransformCase(phrase, { delimit: ['thin'] })
+    const delimit = new TransformCase(line, { delimit: ['thin'] })
     test('to create a new word', () => {
         expect(delimit.humanTitle()).toBe('Forever Thin King')
         expect(delimit.camelCase()).toBe('foreverThinKing')
@@ -45,8 +45,8 @@ describe(`delimit option keeps a lettercombination as a word
 
 describe(`preserve option keeps a lettercombination as a word
         and protects it's case`, () => {
-    const phrase = 'DOMRectangle'
-    const normal = new TransformCase(phrase)
+    const line = 'DOMRectangle'
+    const normal = new TransformCase(line)
     test('outcome without options', () => {
         expect(normal.humanTitle()).toBe('DOM Rectangle')
         expect(normal.pascalCase()).toBe('DomRectangle')

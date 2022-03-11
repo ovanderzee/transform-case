@@ -1,9 +1,9 @@
-import { TransformCase } from './collect'
-import { UserOptions } from './types'
+import { wordCollector } from './collect'
+import { UserOptions, TransformCase } from './types'
 
-const index = function (input: string, options: UserOptions) {
+const index = function (input: string, options?: UserOptions): TransformCase {
     if (!options) options = {}
-    return TransformCase(input, options)
+    return wordCollector(input, options)
 }
 
 export default index

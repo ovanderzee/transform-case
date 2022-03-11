@@ -34,17 +34,13 @@ interface RenderMethods {
     constantCase: () => string;
     headerCase: () => string;
 }
-
-declare const index: (input: string, options: UserOptions) => ({
-    origin: {
-        input: string;
-        normalised: string;
-        revised: string;
-        isAlphaNumeric: any;
-    };
+interface TransformCase extends RenderMethods {
+    _origin: any;
+    _phrase: any;
     options: TransformOptions;
-    phrase: string;
     words: string[];
-} & RenderMethods) | undefined;
+}
+
+declare const index: (input: string, options?: UserOptions | undefined) => TransformCase;
 
 export { index as default };

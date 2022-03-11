@@ -6,7 +6,7 @@ import {
     delimitChunks,
     normaliseProtections,
 } from './collect-fn'
-import { TransformOptions, UserOptions } from './types'
+import { TransformOptions, UserOptions, TransformCase } from './types'
 import { INTAKE_OPTIONS } from './constants'
 import { patternRendering } from './render'
 
@@ -16,9 +16,10 @@ import { patternRendering } from './render'
  * @param {Object} options
  * @returns {Object} - the 'prototype' / methods and some variables
  */
-const TransformCase = function (line: string, userOptions: UserOptions) {
-    if (!line) return
-
+const wordCollector = function (
+    line: string,
+    userOptions: UserOptions,
+): TransformCase {
     const emptyProtection: RegExp[] = []
     const normalisedProtections = {
         delimit: userOptions.delimit
@@ -41,7 +42,7 @@ const TransformCase = function (line: string, userOptions: UserOptions) {
         : tidy(line)
 
     // prepare
-    const origin = {
+    const _origin = {
         input: line,
         normalised: normalisedLine,
         revised: normalisedLine,
@@ -50,7 +51,7 @@ const TransformCase = function (line: string, userOptions: UserOptions) {
 
     // different routes for technical (transition-delimited) from
     //     linguistic transforms (character-delimited)
-    const delimiter = origin.isAlphaNumeric
+    const delimiter = _origin.isAlphaNumeric
         ? options.delimitOutput
         : options.delimitInput || options.delimitOutput
 
@@ -58,33 +59,33 @@ const TransformCase = function (line: string, userOptions: UserOptions) {
     const chunks: RegExp[] = []
     chunks.concat(options.preserve, options.delimit)
     if (chunks.length) {
-        origin.revised = delimitChunks(origin.normalised, chunks, delimiter)
+        _origin.revised = delimitChunks(_origin.normalised, chunks, delimiter)
     }
 
     const self = {
-        origin: origin,
+        _origin: _origin,
         options: options,
-        phrase: '',
+        _phrase: '',
         words: [] as string[],
     }
 
     // produce an array with words
-    if (origin.isAlphaNumeric) {
-        let parts = origin.revised.split(delimiter)
-        self.phrase = parts
+    if (_origin.isAlphaNumeric) {
+        let parts = _origin.revised.split(delimiter)
+        self._phrase = parts
             .map((part) =>
                 options.preserve.some((regex) => isExactMatch(part, regex))
                     ? part
                     : delimitWords(part, options),
             )
             .join(delimiter)
-        self.words = self.phrase.split(delimiter)
+        self.words = self._phrase.split(delimiter)
     } else {
-        self.phrase = origin.revised
-        self.words = origin.revised.split(delimiter)
+        self._phrase = _origin.revised
+        self.words = _origin.revised.split(delimiter)
     }
 
     return Object.assign(self, patternRendering(self.words, options))
 }
 
-export { TransformCase }
+export { wordCollector }

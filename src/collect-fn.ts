@@ -97,7 +97,11 @@ const delimitWords = (line: string, options: TransformOptions): string => {
  * @param {String} delimiter
  * @returns {String} phrase of seperated words
  */
-const delimitChunks = (line: string, chunks: RegExp[], delimiter: string) => {
+const delimitChunks = (
+    line: string,
+    chunks: RegExp[],
+    delimiter: string,
+): string => {
     // mask with unprotected slots
     let mask = new Array(line.length)
     mask.fill(true)

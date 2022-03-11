@@ -46,3 +46,10 @@ export interface RenderMethods {
     constantCase: () => string
     headerCase: () => string
 }
+
+export interface TransformCase extends RenderMethods {
+    _origin: any
+    _phrase: any
+    options: TransformOptions
+    words: string[]
+}
