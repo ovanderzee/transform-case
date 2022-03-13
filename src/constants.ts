@@ -39,7 +39,7 @@ const INTAKE_OPTIONS: TransformOptions = {
  */
 const RENDER_MODEL: RenderModel = {
     delimitOutput: '',
-    preprocess: (line, delimiter) => line,
+    preprocess: (line, delimiter) => line.replace(' ', delimiter),
     postProcess: (line) => line,
     firstWordFirstChar: (word) => word,
     firstWordNextChars: (word) => word,

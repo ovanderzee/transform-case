@@ -1,5 +1,5 @@
 import { isDigit, isLetter, isLower, isUpper } from 'my-lib'
-import { TransformOptions, UserOptions } from './types'
+import { TransformOptions } from './types'
 import { REGEXP_SPECIAL_CHARS } from './constants'
 
 /**
@@ -49,19 +49,20 @@ const needToInsertDelimiter = (
     next: string,
     options: TransformOptions,
 ): boolean => {
-    let letNum, lowUp, numLet, upLow, upUpLow
-    letNum = options.delimitLetterNumber && isLetter(prev) && isDigit(curr)
-    lowUp = options.delimitLowerUpper && isLower(prev) && isUpper(curr)
-    numLet = options.delimitNumberLetter && isDigit(prev) && isLetter(curr)
-    upLow = options.delimitUpperLower && isUpper(prev) && isLower(curr)
-    upUpLow =
+    const letNum =
+        options.delimitLetterNumber && isLetter(prev) && isDigit(curr)
+    const lowUp = options.delimitLowerUpper && isLower(prev) && isUpper(curr)
+    const numLet =
+        options.delimitNumberLetter && isDigit(prev) && isLetter(curr)
+    const upLow = options.delimitUpperLower && isUpper(prev) && isLower(curr)
+    const upUpLow =
         options.delimitUpperUpperLower &&
         isUpper(prev) &&
         isUpper(curr) &&
         isLower(next)
 
-    let delimit = letNum || lowUp || numLet || upLow || upUpLow
-    return delimit
+    const needToDelimit = letNum || lowUp || numLet || upLow || upUpLow
+    return needToDelimit
 }
 
 /**
@@ -103,7 +104,7 @@ const delimitChunks = (
     delimiter: string,
 ): string => {
     // mask with unprotected slots
-    let mask = new Array(line.length)
+    const mask = new Array(line.length)
     mask.fill(true)
 
     chunks.forEach((chunk) => {

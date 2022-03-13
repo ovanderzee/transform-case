@@ -71,7 +71,7 @@ const wordCollector = function (
 
     // produce an array with words
     if (_origin.isAlphaNumeric) {
-        let parts = _origin.revised.split(delimiter)
+        const parts = _origin.revised.split(delimiter)
         self._phrase = parts
             .map((part) =>
                 options.preserve.some((regex) => isExactMatch(part, regex))
