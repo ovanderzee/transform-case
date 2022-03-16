@@ -10,13 +10,13 @@ describe('delimitChunks extracts new words from delimited text', () => {
     const lineIn = 'A fair weather affair with despair'
 
     test('without delimitable chunk', () => {
-        const chunks = []
+        const chunks: RegExp[] = []
 
         expect(delimitChunks(lineIn, chunks, ' ')).toBe(lineIn)
     })
 
     test('with a null-string all character are delimited', () => {
-        const chunks = ['']
+        const chunks = [new RegExp('', 'g')]
 
         expect(delimitChunks(lineIn, chunks, ' ')).toBe(
             'A f a i r w e a t h e r a f f a i r w i t h d e s p a i r',
@@ -24,7 +24,7 @@ describe('delimitChunks extracts new words from delimited text', () => {
     })
 
     test('with one delimitable chunk', () => {
-        const chunks = ['air']
+        const chunks = [/air/g]
 
         expect(delimitChunks(lineIn, chunks, ' ')).toBe(
             'A f air weather aff air with desp air',
@@ -40,7 +40,7 @@ describe('delimitChunks extracts new words from delimited text', () => {
     })
 
     test('with multiple chunks', () => {
-        const chunks = ['air', /w[aeiou]+th/g]
+        const chunks = [/air/g, /w[aeiou]+th/g]
 
         expect(delimitChunks(lineIn, chunks, ' ')).toBe(
             'A f air weath er aff air with desp air',
@@ -48,7 +48,7 @@ describe('delimitChunks extracts new words from delimited text', () => {
     })
 
     test('with overlapping chunk first', () => {
-        const chunks = ['fair', 'air']
+        const chunks = [/fair/g, /air/g]
 
         expect(delimitChunks(lineIn, chunks, ' ')).toBe(
             'A fair weather af fair with desp air',
@@ -56,7 +56,7 @@ describe('delimitChunks extracts new words from delimited text', () => {
     })
 
     test('with overlapping chunk last', () => {
-        const chunks = ['air', 'fair']
+        const chunks = [/air/g, /fair/g]
 
         expect(delimitChunks(lineIn, chunks, ' ')).toBe(
             'A f air weather aff air with desp air',
