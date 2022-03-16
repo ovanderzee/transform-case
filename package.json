@@ -9,7 +9,7 @@
     },
     "types": "types/index.d.ts",
     "scripts": {
-        "prebuild": "cf dist module && prettier './src/*.ts' --write",
+        "prebuild": "cf dist module types && prettier './src/*.ts' --write",
         "build": "rollup --config",
         "coverage": "cf coverage && jest --coverage",
         "once": "npm run test && npm run build",
