@@ -7,7 +7,10 @@ describe('there will be no unexpected characters in the output', () => {
 
     test('all whitespace becomes an ordinary space', () => {
         // about tab and escape isn't it?
-        expect(input.match(/\s/g).length).toBe(output.match(/ /g).length)
+        const outputMatch = output.match(/ /g)
+        const inputMatch = input.match(/\s/g)
+
+        expect(outputMatch && outputMatch.length).toBe(inputMatch && inputMatch.length)
     })
     test('control characters are filtered', () => {
         // about null, zero-space and byte-order-mark
@@ -35,11 +38,11 @@ describe(`delimit option keeps a lettercombination as a word
         expect(delimit.camelCase()).toBe('foreverThinKing')
     })
     test('works with RegExp', () => {
-        const delimit = wordCollector('fastfistfust', {
-            delimit: [/f\w{1}st/gi],
+        const delimit = wordCollector('pingpongpang', {
+            delimit: [/p\w{1}ng/gi],
         })
 
-        expect(delimit.humanTitle()).toBe('Fast Fist Fust')
+        expect(delimit.humanTitle()).toBe('Ping Pong Pang')
     })
 })
 

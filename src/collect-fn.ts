@@ -10,11 +10,12 @@ import { REGEXP_SPECIAL_CHARS } from './constants'
  * @returns {String} cleaned line
  */
 const dedupe = (line: string, char: string): string => {
+    if (char.length !== 1) return line
     // escape sensitive chars:
-    if (REGEXP_SPECIAL_CHARS.includes(char)) char = '\\' + char
-    const leading = new RegExp('^' + char)
-    const trailing = new RegExp(char + '$')
-    const doubling = new RegExp(char + char, 'g')
+    if (REGEXP_SPECIAL_CHARS.includes(char)) char = `\\${char}`
+    const leading = new RegExp(`^${char}`)
+    const trailing = new RegExp(`${char}$`)
+    const doubling = new RegExp(`${char}${char}`, 'g')
     return line
         .replace(doubling, char)
         .replace(doubling, char)
@@ -66,7 +67,7 @@ const needToInsertDelimiter = (
 }
 
 /**
- * Put seperator before each concatenated word, in pureAlphaNumeric input
+ * Put separator before each concatenated word, in pureAlphaNumeric input
  * @private
  * @param {String} line
  * @param {Object} options
@@ -94,54 +95,31 @@ const delimitWords = (line: string, options: TransformOptions): string => {
  * Find optional delimit and preserved chunks and delimit these,
  * @private
  * @param {String} line
- * @param {String[]} chunks
+ * @param {String[]} rules
  * @param {String} delimiter
- * @returns {String} phrase of seperated words
+ * @returns {String} phrase of separated words
  */
 const delimitChunks = (
     line: string,
-    chunks: RegExp[],
+    rules: RegExp[],
     delimiter: string,
 ): string => {
-    // mask with unprotected slots
-    const mask = new Array(line.length)
-    mask.fill(true)
-
-    chunks.forEach((chunk) => {
-        // work reversed to keep the matched indexes usable
-        const matches = Array.from(line.matchAll(chunk)).reverse()
-
-        matches.forEach((match) => {
-            if (match.index === undefined || !match[0]) return
-            const till = match.index + match[0].length
-
-            // see if characters were not 'reserved' by other chunks
-            let isCleared = true
-            for (let i = match.index; i < till; i++) {
-                isCleared = isCleared && mask[i]
-            }
-
-            if (isCleared) {
-                // on spot replace
-                const leading = line.substr(0, match.index)
-                const trailing = line.substr(till)
-                line = leading + delimiter + match[0] + delimiter + trailing
-
-                // mark changed characters
-                for (let i = match.index; i < till; i++) {
-                    mask[i] = false
-                }
-                // mark space for delimiters of any length
-                for (let i = 0; i < delimiter.length * 2; i++) {
-                    mask.splice(till, 0, false)
-                }
-                console.assert(
-                    mask.length === line.length,
-                    `mask (${mask.length}) updated according line (${line},
-                    ${line.length})`,
-                )
-            }
-        })
+    const usedMatches = new Set()
+    rules.forEach((rule) => {
+        const words = line.split(delimiter)
+        const foundMatches = new Set()
+        line = words
+            .map((word) => {
+                const treated = word.replace(rule, (match) => {
+                    foundMatches.add(match)
+                    const used = usedMatches.has(word)
+                    return used ? match : delimiter + match + delimiter
+                })
+                return treated
+            })
+            .join(delimiter)
+        // store found matches
+        foundMatches.forEach((match) => usedMatches.add(match))
     })
 
     line = dedupe(line, delimiter)

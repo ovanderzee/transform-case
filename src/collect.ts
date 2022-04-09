@@ -56,8 +56,10 @@ const wordCollector = function (
         : options.delimitInput || options.delimitOutput
 
     // preserve, delimit - these strings must be kept together
-    const chunks: RegExp[] = []
-    chunks.concat(options.preserve, options.delimit)
+    const chunks = [
+        ...normalisedProtections.preserve,
+        ...normalisedProtections.delimit,
+    ]
     if (chunks.length) {
         _origin.revised = delimitChunks(_origin.normalised, chunks, delimiter)
     }

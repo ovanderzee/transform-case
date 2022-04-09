@@ -9,11 +9,11 @@
     },
     "types": "types/index.d.ts",
     "scripts": {
-        "prebuild": "cf dist module types && prettier './{src,test}/*.ts' --write",
+        "prebuild": "cf dist module types && prettier './src/*.ts' --write",
         "build": "rollup --config",
         "coverage": "cf coverage && jest --coverage",
         "once": "npm run test && npm run build",
-        "pretest": "cf temp && eslint {src,test}/*.ts",
+        "pretest": "cf temp && eslint src/*.test.ts",
         "test": "tsc && jest",
         "watch": "onchange --initial \"{src,test}/*.ts\" -- npm run once --silent"
     },

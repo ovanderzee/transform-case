@@ -2,15 +2,12 @@ import { wordCollector } from '../src/collect'
 
 describe('camelCase is a capMarkedRegexpWord pattern', () => {
     test('with only common letters', () => {
-        const camel = wordCollector(
-            'A sentence, text for humans.',
-            {},
-        ).camelCase()
+        const camel = wordCollector('A sentence, text for humans.', {}).camelCase()
         const nonWordMatch = camel.match(/\W/g)
         const wordMatch = camel.match(/[a-zA-Z0-9]/g)
 
         expect(nonWordMatch).toBeFalsy()
-        expect(wordMatch.length).toBe(camel.length)
+        expect(wordMatch && wordMatch.length).toBe(camel.length)
     })
     test('the first word is all lowercase', () => {
         const camelTest = wordCollector('This sentence, text for humans.', {})
@@ -51,70 +48,46 @@ describe('conversion of capMarkedRegexpWord patterns', () => {
 })
 
 describe('humanTitle is a pattern', () => {
-    test('with punctuation', () => {
-        const title = wordCollector(
-            'A sentence, text for humans.',
-            {},
-        ).humanTitle()
+    const title = wordCollector('A sentence, text for humans.', {}).humanTitle()
 
+    test('with punctuation', () => {
         expect(title.includes('.')).toBeTruthy()
     })
     test('where all words start with capitals', () => {
-        const title = wordCollector(
-            'A sentence, text for humans.',
-            {},
-        ).humanTitle()
         const wordStartMatch = title.match(/\w+/g)
-        const wordStartSequence =
-            (wordStartMatch && wordStartMatch.map((word) => word.charAt(0))) ||
-            []
+        const wordStartSequence = (wordStartMatch && wordStartMatch.map((word) => word.charAt(0))) || []
 
         expect(wordStartSequence.join().match(/[a-z]/)).toBeFalsy()
     })
 })
 
 describe('humanSentence is a pattern', () => {
+    const sentence = wordCollector('A sentence, text for humans.', {}).humanSentence()
     test('with punctuation', () => {
-        const sentence = wordCollector(
-            'A sentence, text for humans.',
-            {},
-        ).humanSentence()
-
         expect(sentence.includes('.')).toBeTruthy()
     })
     test('where only the first word starts with a capital', () => {
-        const sentence = wordCollector(
-            'A sentence, text for humans.',
-            {},
-        ).humanSentence()
-
         expect(sentence.match(/^[A-Z][a-z ,;:.]+/)).toBeTruthy()
     })
 })
 
 describe('snakeCase is a delimitedLowerCase pattern', () => {
+    const snakeTest = wordCollector('This sentence, text for humans.', {})
+    const snakeCase = snakeTest.snakeCase()
     test('with only regexp-word letters', () => {
-        const snake = wordCollector(
-            'A sentence, text for humans.',
-            {},
-        ).snakeCase()
-        const nonWordMatch = snake.match(/\W/g)
-        const wordMatch = snake.match(/[a-zA-Z0-9_]/g)
+        const nonWordMatch = snakeCase.match(/\W/g)
+        const wordMatch = snakeCase.match(/[a-zA-Z0-9_]/g)
 
         expect(nonWordMatch).toBeFalsy()
-        expect(wordMatch.length).toBe(snake.length)
+        expect(wordMatch && wordMatch.length).toBe(snakeCase.length)
     })
     test('the first word is all lowercase', () => {
-        const snakeTest = wordCollector('This sentence, text for humans.', {})
-        const snakeCase = snakeTest.snakeCase()
         const len1 = snakeTest.words[0].length
         const firstWord = snakeCase.substr(0, len1)
 
         expect(firstWord).toBe(firstWord.toLowerCase())
     })
     test('the next words are all lowercase', () => {
-        const snakeTest = wordCollector('A sentence, text for humans.', {})
-        const snakeCase = snakeTest.snakeCase()
         const len1 = snakeTest.words[0].length
         const len2 = snakeTest.words[1].length
 
@@ -126,15 +99,10 @@ describe('snakeCase is a delimitedLowerCase pattern', () => {
         expect(secondWordN).toBe(secondWordN.toLowerCase())
     })
     test('remove diacritics', () => {
-        const diacriticals = wordCollector(
-            'Cañón, coöperation, exposé, façade, résumé, all have diacritics',
-            {},
-        )
+        const diacriticals = wordCollector('Cañón, coöperation, exposé, façade, résumé, all have diacritics', {})
         const aidIda = diacriticals.snakeCase()
 
-        expect(aidIda).toBe(
-            'canon_cooperation_expose_facade_resume_all_have_diacritics',
-        )
+        expect(aidIda).toBe('canon_cooperation_expose_facade_resume_all_have_diacritics')
     })
     test('decompose ligatures and dighraphs, replace lettervariations with their baseletter', () => {
         const compositions = wordCollector(
