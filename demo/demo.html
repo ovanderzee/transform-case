@@ -60,9 +60,9 @@ window.onload = function () {
         let options = readable(value[0])
         let transform = value[1]
         console.log(transform)
-        trs[0].appendChild(addCell('th', transform.origin.input))
+        trs[0].appendChild(addCell('th', transform._origin.input))
         trs[1].appendChild(addCell('td', JSON.stringify(options).replace(/[{[:;]/g, '$& ').replace(/[}\]]/g, ' $&')))
-        trs[2].appendChild(addCell('td', transform.phrase))
+        trs[2].appendChild(addCell('td', transform._phrase))
         trs[3].appendChild(addCell('td', transform.camelCase()))
         trs[4].appendChild(addCell('td', transform.pascalCase()))
         trs[5].appendChild(addCell('td', transform.humanTitle()))
@@ -103,7 +103,7 @@ window.onload = function () {
     <thead>
         <tr><th>input</th></tr>
         <tr><th>options</th></tr>
-        <tr><th>standardised</th></tr>
+        <tr><th>phrase</th></tr>
     </thead>
     <tbody>
         <tr><th method-type="cap-marked regexp word">camelCase()</th></tr>

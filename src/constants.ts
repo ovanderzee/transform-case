@@ -1,3 +1,5 @@
+import { TransformOptions, RenderModel } from './types'
+
 /*
  * Intake options
  * @member {Array} delimit - units to be kept together - should be like a human word
@@ -12,7 +14,7 @@
  * @member {Boolean} delimitUpperUpperLower - insert delimiter in this transition in pure alphaNumeric patterns
  * @member {String} delimitOutput - character to delimit output
  */
-const INTAKE_OPTIONS = {
+const INTAKE_OPTIONS: TransformOptions = {
     delimit: [],
     preserve: [],
     delimitLetterNumber: true,
@@ -35,8 +37,9 @@ const INTAKE_OPTIONS = {
  * @member {Function} nextWordsFirstChar - transform word parts
  * @member {Function} nextWordsNextChars - transform word parts
  */
-const RENDER_MODEL = {
-    preprocess: (words) => words,
+const RENDER_MODEL: RenderModel = {
+    delimitOutput: '',
+    preprocess: (line, delimiter) => line.replace(' ', delimiter),
     postProcess: (line) => line,
     firstWordFirstChar: (word) => word,
     firstWordNextChars: (word) => word,

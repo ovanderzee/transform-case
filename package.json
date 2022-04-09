@@ -1,20 +1,21 @@
 {
     "name": "transform-case",
-    "version": "0.3.0",
+    "version": "1.0.0",
     "description": "Transforms casing and spacing of a string",
     "main": "dist/transformCase.js",
     "module": "module/transformCase.js",
     "directories": {
         "test": "test"
     },
+    "types": "types/index.d.ts",
     "scripts": {
-        "prebuild": "cf dist module && prettier './{src,test}/*.js' --write",
+        "prebuild": "cf dist module types && prettier './src/*.ts' --write",
         "build": "rollup --config",
         "coverage": "cf coverage && jest --coverage",
         "once": "npm run test && npm run build",
-        "pretest": "eslint {src,test}/*.js",
-        "test": "jest",
-        "watch": "onchange --initial \"{src,test}/*.js\" -- npm run once --silent"
+        "pretest": "cf temp && eslint src/*.test.ts",
+        "test": "tsc && jest",
+        "watch": "onchange --initial \"{src,test}/*.ts\" -- npm run once --silent"
     },
     "keywords": [
         "convert",
@@ -54,17 +55,29 @@
     "devDependencies": {
         "@babel/core": "^7.17.5",
         "@babel/preset-env": "^7.16.11",
+        "@babel/preset-typescript": "^7.16.7",
         "@rollup/plugin-commonjs": "^21.0.2",
         "@rollup/plugin-node-resolve": "^13.1.3",
+        "@rollup/plugin-typescript": "^8.3.1",
+        "@types/fold-to-ascii": "^5.0.0",
+        "@types/jest": "^27.4.1",
+        "@typescript-eslint/eslint-plugin": "^5.14.0",
+        "@typescript-eslint/parser": "^5.14.0",
         "clear-folder": "^4.0.0",
         "coveralls": "^3.1.1",
-        "eslint": "^8.10.0",
+        "eslint": "^8.11.0",
+        "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-jasmine": "^4.1.3",
         "eslint-plugin-jest": "^26.1.1",
+        "eslint-plugin-prettier": "^4.0.0",
         "jest": "^27.5.1",
         "onchange": "^7.1.0",
         "prettier": "^2.5.1",
         "rollup": "^2.68.0",
-        "rollup-plugin-terser": "^7.0.2"
+        "rollup-plugin-dts": "^4.1.0",
+        "rollup-plugin-terser": "^7.0.2",
+        "ts-jest": "^27.1.3",
+        "ts-node": "^10.7.0",
+        "typescript": "^4.5.5"
     }
 }
