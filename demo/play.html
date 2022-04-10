@@ -8,29 +8,43 @@
     </head>
     <body>
         <h2>Transform case &ndash; playGround</h2>
-        <span>entry</span>
-        <textarea id="entry">try out page</textarea>
+        <section>
+            <span>entry
+                <button id="store-button" type=""button">store</button>
+            </span>
+            <textarea id="entry">try out page</textarea>
 
-        <span>delimit</span>
-        <input id="delimit" type="text" />
-        <span>preserve</span>
-        <input id="preserve" type="text" />
-        <span>delimitInput</span>
-        <select id="delimitInput"><option selected value="">(nothing)</option></select>
+            <span>delimit</span>
+            <input id="delimit" type="text" />
+            <span>preserve</span>
+            <input id="preserve" type="text" />
+            <span>delimitInput</span>
+            <select id="delimitInput"><option selected value="">(nothing)</option></select>
 
-        <span>delimit transitions <em>(default setting)</em></span>
-        <fieldset>
-            <label><input type="checkbox" id="delimitLetterNumber" checked />Letter &rarr; Number <em>(on)</em></label>
-            <label><input type="checkbox" id="delimitLowerUpper" checked />Lower &rarr; Upper <em>(on)</em></label>
-            <label><input type="checkbox" id="delimitNumberLetter" checked />Number &rarr; Letter <em>(on)</em></label>
-            <label><input type="checkbox" id="delimitUpperLower" />Upper &rarr; Lower <em>(off)</em></label>
-            <label><input type="checkbox" id="delimitUpperUpperLower" checked />Upper &rarr; Upper + Lower <em>(on)</em></label>
-        </fieldset>
+            <span>delimit transitions <em>(default setting)</em></span>
+            <fieldset>
+                <label><input type="checkbox" id="delimitLetterNumber" checked />Letter &rarr; Number <em>(on)</em></label>
+                <label><input type="checkbox" id="delimitLowerUpper" checked />Lower &rarr; Upper <em>(on)</em></label>
+                <label><input type="checkbox" id="delimitNumberLetter" checked />Number &rarr; Letter <em>(on)</em></label>
+                <label><input type="checkbox" id="delimitUpperLower" />Upper &rarr; Lower <em>(off)</em></label>
+                <label><input type="checkbox" id="delimitUpperUpperLower" checked />Upper &rarr; Upper + Lower <em>(on)</em></label>
+            </fieldset>
 
-        <span>method</span>
-        <select id="method"></select>
-        <hr/>
-        <span>yield</span>
-        <output id="yield"></output>
+            <span>method</span>
+            <select id="method"></select>
+            <hr/>
+            <span>yield</span>
+            <output id="yield"></output>
+        </section>
+        <section>
+            <span>local store
+                <button id="clear-button" type=""button">clear</button>
+            </span>
+            <fieldset id="local-store"></fieldset>
+            <hr/>
+            <span>words</span>
+            <ol id="words"></ol>
+        </section>
+
     </body>
 </html>

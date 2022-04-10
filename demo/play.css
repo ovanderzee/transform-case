@@ -11,13 +11,20 @@
 body {
     background: #ccc;
     color: #333;
-    max-width: 24em;
+    max-width: 48em;
     margin: 1em auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
 }
-h2 {
+body > h2 {
     color: var(--aside-color);
+    flex: 1 0 100%;
 }
-textarea, select, output, input[type="text"], fieldset {
+body > section {
+    flex: 0 1 48%;
+}
+textarea, select, output, input[type="text"], fieldset, ol {
     display: block;
     font: caption;
     font-size: 16px;
@@ -37,15 +44,25 @@ span {
     color: var(--aside-color);
     font-style: italic;
 }
-
+span button {
+    text-transform: uppercase;
+    font-size: 12px;
+    margin: .25em .25em .25em 0;
+}
+#entry,
+#local-store {
+    min-height: 4em;
+}
 fieldset {
     box-shadow: 0 0 0 1px var(--line-color);
 }
 label {
     display: block;
+    cursor: pointer;
+    padding: 0.25em 0;
 }
 input[type="checkbox"] {
-    margin: .5em .75em .5em 0;
+    margin: 0.25em .75em 0 0;
     width: 15px;
     height: 15px;
 }
@@ -74,9 +91,26 @@ input[type="checkbox"]:checked:after {
     word-break: break-word;
     overflow-wrap: break-word;
 }
+
+@counter-style colon-numeric {
+    system: extends decimal;
+    suffix: ': ';
+}
+ol {
+    list-style: colon-numeric;
+    padding: 2px 0;
+}
+li {
+    list-style-position: inside;
+}
+li::marker {
+    color: var(--aside-color);
+    font-size: 12px;
+}
+
 hr {
-  height: 4px;
-  border-color: var(--line-color) transparent;
-  border-style: solid none;
-  border-width: 1px 0;
+    height: 4px;
+    border-color: var(--line-color) transparent;
+    border-style: solid none;
+    border-width: 1px 0;
 }
