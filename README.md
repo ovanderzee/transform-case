@@ -95,23 +95,22 @@ and ends with an array of words.
 
 We then have an object with collected data and a number of transform patterns to choose from.
 
-    {
-        orgin {
-            input (string)
-            isAlphaNumeric (boolean)
-            normalised (string), previously standardised
-            revised (string)
-        }
-        options {
-        }
-        phrase (delimited string)
-        words (string[])
-        camelCase (function)
-        ...
-        humanTitle (function)
-        ...
-        snakeCase (function)
+```js
+{
+    _orgin {
+        input (string),
+        isAlphaNumeric (boolean),
+        normalised (string),
+        revised (string)
     }
+    options {
+        (see above)
+    }
+    _phrase (delimited string),
+    words (string[]),
+    ...the transformation functions
+}
+```
 
 The render step is merely choosing a pattern to apply to the array of words.
 There are three groups of similar patterns:

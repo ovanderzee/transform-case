@@ -20,12 +20,6 @@
         /* Advanced Options */
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-
-        /* https://swizec.com/blog/how-to-configure-jest-with-typescript/ */
-//        "allowSyntheticDefaultImports": true,
-//        "resolveJsonModule": true,
-//        "baseUrl": ".",
-//        "noFallthroughCasesInSwitch": true
     }
 }
 
