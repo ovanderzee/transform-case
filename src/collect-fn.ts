@@ -1,6 +1,6 @@
 import { isDigit, isLetter, isLower, isUpper } from 'my-lib'
 import { TransformOptions } from './types'
-import { REGEXP_SPECIAL_CHARS } from './constants'
+import { REGEXP_SPECIAL_CHARS, SPACE_REGEX, CONTROL_REGEX } from './constants'
 
 /**
  * remove extraneous and doubled characters
@@ -13,12 +13,12 @@ const dedupe = (line: string, char: string): string => {
     if (char.length !== 1) return line
     // escape sensitive chars:
     if (REGEXP_SPECIAL_CHARS.includes(char)) char = `\\${char}`
-    const leading = new RegExp(`^${char}`)
-    const trailing = new RegExp(`${char}$`)
-    const doubling = new RegExp(`${char}${char}`, 'g')
+    const leading = new RegExp(`^[${char}]+`)
+    const trailing = new RegExp(`[${char}]+$`)
+    const doubling = new RegExp(`[${char}]+`, 'g')
+
+    if (char.length > 1) char = char.substr(-1)
     return line
-        .replace(doubling, char)
-        .replace(doubling, char)
         .replace(doubling, char)
         .replace(leading, '')
         .replace(trailing, '')
@@ -31,8 +31,7 @@ const dedupe = (line: string, char: string): string => {
  * @returns {String} cleaned line
  */
 const tidy = (line: string): string => {
-    const controlChars = new RegExp('[\u0000-\u001f,\u007f-\u009f]') // eslint-disable-line no-control-regex
-    return line.trim().replace(/\s+/g, ' ').replace(controlChars, '')
+    return line.replace(SPACE_REGEX, ' ').trim().replace(CONTROL_REGEX, '')
 }
 
 /**
@@ -134,11 +133,4 @@ const delimitChunks = (
 const normaliseProtections = (protections: (string | RegExp)[]): RegExp[] =>
     protections.map((pt) => (typeof pt === 'string' ? new RegExp(pt, 'g') : pt))
 
-export {
-    dedupe,
-    tidy,
-    needToInsertDelimiter,
-    delimitWords,
-    delimitChunks,
-    normaliseProtections,
-}
+export { dedupe, tidy, delimitWords, delimitChunks, normaliseProtections }

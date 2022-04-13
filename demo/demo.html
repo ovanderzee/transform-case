@@ -19,7 +19,10 @@ var options = new Object()
 window.transforms.push( [options, transformCase(`CUSTOMCaseAuto`, options)] )
 var options = {delimit: ['CUSTOM'],}
 window.transforms.push( [options, transformCase(`CUSTOMCaseDelimiting`, options)] )
-
+var options = {delimit: ['CUSTOM'], delimitInput: '+'}
+window.transforms.push( [options, transformCase(`CUSTOMCase+Delimiting`, options)] )
+var options = {delimit: ['CUSTOM', 'Case'], delimitInput: '\\'}
+window.transforms.push( [options, transformCase(`CUSTOMCase\\Delimiting`, options)] )
 var options = {preserve: ['CUSTOM'],}
 window.transforms.push( [options, transformCase(`CUSTOMCasePreserving`, options)] )
 

@@ -50,6 +50,10 @@ const RENDER_MODEL: RenderModel = {
 const REGEXP_SPECIAL_CHARS = '()*+?[\\'
 const NUMERIC_DELIMITERS = '-:,./'
 const PUNCTUATION_CHARS = '…,:;[\\](){}\\-‐–—\'".!?'
+const SPACE_REGEX =
+    /[\u0009-\u000D \u00A0\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]+/g
+const CONTROL_REGEX =
+    /[\u0000-\u0008\u000E-\u001F\u007F-\u009F\u200B-\u200F\u202A-\u202E\u2060-\u206F]+/g // eslint-disable-line no-control-regex
 
 export {
     INTAKE_OPTIONS,
@@ -57,4 +61,6 @@ export {
     REGEXP_SPECIAL_CHARS,
     NUMERIC_DELIMITERS,
     PUNCTUATION_CHARS,
+    SPACE_REGEX,
+    CONTROL_REGEX,
 }

@@ -53,4 +53,24 @@ describe('delimitChunks extracts new words from delimited text', () => {
 
         expect(revised).toBe(expected)
     })
+
+    test('with delimiters that need to be escaped (plus)', () => {
+        const chunks = [/pl[aeiouy]+s/gi]
+        const line = 'Plus+plastic+plays'
+        delimiter = '+'
+        const revised = delimitChunks(line, chunks, delimiter)
+        const expected = 'Plus+plas+tic+plays'
+
+        expect(revised).toBe(expected)
+    })
+
+    test('with delimiters that need to be escaped (backslash)', () => {
+        const chunks = [/pl[aeiouy]+s/gi]
+        const line = 'Plus\\plastic\\plays'
+        delimiter = '\\'
+        const revised = delimitChunks(line, chunks, delimiter)
+        const expected = 'Plus\\plas\\tic\\plays'
+
+        expect(revised).toBe(expected)
+    })
 })

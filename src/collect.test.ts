@@ -1,20 +1,23 @@
 import { wordCollector } from '../src/collect'
+import * as char from './characters'
 
 describe('there will be no unexpected characters in the output', () => {
-    //               null   tab    esc   0space  bom
-    const input = 'A\u0000B\u0009C\u001bD\u200bE\ufeffF'
+    //                     null             tab           punctuation sp           esc          bom
+    const input = 'A' + char.nill + 'B' + char.tab + 'C' + char.puncsp + 'D' + char.esc + 'E' + char.bom + 'F'
     const output = wordCollector(input, {})._phrase
 
-    test('all whitespace becomes an ordinary space', () => {
-        // about tab and escape isn't it?
-        const outputMatch = output.match(/ /g)
-        const inputMatch = input.match(/\s/g)
-
-        expect(outputMatch && outputMatch.length).toBe(inputMatch && inputMatch.length)
+    test('two whitespace characters become ordinary space', () => {
+        expect(output.indexOf(char.tab)).toBe(-1)
+        expect(output.indexOf(char.puncsp)).toBe(-1)
+        expect(output.match(/[ ]/g).length).toBe(2)
     })
-    test('control characters are filtered', () => {
-        // about null, zero-space and byte-order-mark
-        expect(input.length).toBeGreaterThan(output.length)
+    test('two control characters are filtered', () => {
+        expect(output.indexOf(char.nill)).toBe(-1)
+        expect(output.indexOf(char.esc)).toBe(-1)
+        expect(input.length - output.length).toBe(2)
+    })
+    test('marker characters stay there', () => {
+        expect(output.includes(char.bom)).toBeTruthy()
     })
 
     const untrimmed = `  X
