@@ -1,4 +1,4 @@
-import { wordCollector } from '../src/collect'
+import { wordCollector } from './collect'
 
 describe('camelCase is a capMarkedRegexpWord pattern', () => {
     test('with only common letters', () => {

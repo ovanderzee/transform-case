@@ -34,6 +34,7 @@ window.onload = function () {
     const retrieveEntry = function (event) {
         if (event.target.parentNode === this) {
             entryText.value = event.target.innerText
+            entryText.dispatchEvent(new Event('input'));
         }
     }
     const updateStorage = function () {
@@ -72,23 +73,28 @@ window.onload = function () {
 
     const showTime = function () {
         console.log('normalisation')
-        console.log('origin', transformCase(entryText.value)._origin)
-        console.log('options', transformCase(entryText.value).options)
-        console.log('phrase', transformCase(entryText.value)._phrase)
-        console.log('words', transformCase(entryText.value).words)
+        const dataCollection = transformCase(entryText.value, getOptions())
+        console.log('origin', dataCollection._origin)
+        console.log('options', dataCollection.options)
+        console.log('phrase', dataCollection._phrase)
+        console.log('words', dataCollection.words)
         console.log('method', methodSelect.value)
-        yieldText.innerHTML = transformCase(entryText.value, getOptions())[methodSelect.value]()
+        yieldText.innerHTML = dataCollection[methodSelect.value]()
 
-        wordList.innerHTML = transformCase(entryText.value)
+        wordList.innerHTML = dataCollection
             .words
             .map(word => `<li>${word}</li>`)
             .join('')
     }
-    entryText.oninput = function () {
+
+    const entryTextChange = function () {
         this.style.height = ''
         this.style.height = this.scrollHeight + 4 + 'px'
         showTime()
     }
+
+    entryText.oninput = entryTextChange
+    entryText.onpaste = entryTextChange
     delimit.oninput = showTime
     preserve.oninput = showTime
     delimitInput.oninput = showTime

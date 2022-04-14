@@ -1,5 +1,5 @@
-import { delimitWords } from '../src/collect-fn'
-import { INTAKE_OPTIONS } from '../src/constants'
+import { delimitWords } from './collect-fn'
+import { INTAKE_OPTIONS } from './constants'
 
 describe('delimitWords extracts new words from alpha-numeric ](case-delimited) text', () => {
     const lineIn = '2BrothersONThe4thFloor'

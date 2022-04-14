@@ -1,4 +1,4 @@
-import { wordCollector } from '../src/collect'
+import { wordCollector } from './collect'
 import * as char from './characters'
 
 describe('there will be no unexpected characters in the output', () => {

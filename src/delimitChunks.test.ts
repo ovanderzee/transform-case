@@ -1,4 +1,4 @@
-import { delimitChunks } from '../src/collect-fn'
+import { delimitChunks } from './collect-fn'
 
 describe('delimitChunks extracts new words from delimited text', () => {
     const lineIn = 'A fair weather affair with despair'
