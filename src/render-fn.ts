@@ -16,7 +16,7 @@ const delimitNumbers = (word: string, delimitOutput: string): string => {
 
     // replace all numeric delimiters between digits
     const currentNumericDelimiterRegex = new RegExp(
-        '(\\d)[' + currentNumericDelimiters + '](\\d)',
+        '(\\d)[' + currentNumericDelimiters + ']+(\\d)',
         'g',
     )
 
