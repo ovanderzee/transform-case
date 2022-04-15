@@ -37,7 +37,7 @@ const delimitNumbers = (word: string, delimitOutput: string): string => {
  * @returns {String} normalised string
  */
 const normaliseQuotes = (line: string): string => {
-    return line.replace(/‘’`/g, "'").replace(/“”/g, '"')
+    return line.replace(/[‘’`]/g, "'").replace(/[“”]/g, '"')
 }
 
 /**
