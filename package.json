@@ -13,7 +13,7 @@
         "build": "rollup --config",
         "coverage": "cf coverage && jest --coverage",
         "once": "npm run test && npm run build",
-        "pretest": "cf temp && eslint src/*.test.ts",
+        "pretest": "cf temp && eslint src/*.test.ts --fix",
         "test": "tsc && jest",
         "watch": "onchange --initial \"{src,test}/*.ts\" -- npm run once --silent"
     },

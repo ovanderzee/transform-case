@@ -47,7 +47,6 @@ const RENDER_MODEL: RenderModel = {
     nextWordsNextChars: (word) => word,
 }
 
-const REGEXP_SPECIAL_CHARS = '()*+?[\\'
 const NUMERIC_DELIMITERS = '-:,./'
 const PUNCTUATION_CHARS = '…,:;[\\](){}\\-‐–—\'".!?'
 const SPACE_REGEX =
@@ -58,7 +57,6 @@ const CONTROL_REGEX =
 export {
     INTAKE_OPTIONS,
     RENDER_MODEL,
-    REGEXP_SPECIAL_CHARS,
     NUMERIC_DELIMITERS,
     PUNCTUATION_CHARS,
     SPACE_REGEX,

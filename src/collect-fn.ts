@@ -1,6 +1,6 @@
 import { isDigit, isLetter, isLower, isUpper } from 'my-lib'
 import { TransformOptions } from './types'
-import { REGEXP_SPECIAL_CHARS, SPACE_REGEX, CONTROL_REGEX } from './constants'
+import { SPACE_REGEX, CONTROL_REGEX } from './constants'
 
 /**
  * remove extraneous and doubled characters
@@ -12,7 +12,7 @@ import { REGEXP_SPECIAL_CHARS, SPACE_REGEX, CONTROL_REGEX } from './constants'
 const dedupe = (line: string, char: string): string => {
     if (char.length !== 1) return line
     // escape sensitive chars:
-    if (REGEXP_SPECIAL_CHARS.includes(char)) char = `\\${char}`
+    char = '\\' + char
     const leading = new RegExp(`^[${char}]+`)
     const trailing = new RegExp(`[${char}]+$`)
     const doubling = new RegExp(`[${char}]+`, 'g')
