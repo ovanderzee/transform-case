@@ -33,21 +33,21 @@ const delimitNumbers = (word: string, delimitOutput: string): string => {
  * Convert curly single quotes and backticks to straight single quotes,
  * convert curly double quotes to straight double quotes
  * @private
- * @param {String} line
+ * @param {String} word
  * @returns {String} normalised string
  */
-const normaliseQuotes = (line: string): string => {
-    return line.replace(/[‘’`]/g, "'").replace(/[“”]/g, '"')
+const normaliseQuotes = (word: string): string => {
+    return word.replace(/[‘’`]/g, "'").replace(/[“”]/g, '"')
 }
 
 /**
  * Remove all punctuation from a string
  * @private
- * @param {String} line
+ * @param {String} word
  * @returns {String} stripped string
  */
-const removePunctuation = (line: string, delimitOutput: string): string => {
-    const currentPunctuation = PUNCTUATION_CHARS.replace(delimitOutput, '')
+const removePunctuation = (word: string, replacement: string): string => {
+    const currentPunctuation = PUNCTUATION_CHARS.replace(replacement, '')
 
     // remove all punctuation between alphabetic characters
     const AAPunctRegex = new RegExp(
@@ -69,23 +69,32 @@ const removePunctuation = (line: string, delimitOutput: string): string => {
         '(\\d)[' + currentPunctuation + ']+(\\d)',
         'g',
     )
+
+    word = word.replace(AAPunctRegex, '$1$2')
+    word = word.replace(AAPunctRegex, '$1$2')
+    word = word.replace(ADPunctRegex, '$1$2')
+    word = word.replace(DAPunctRegex, '$1$2')
+
+    // when the output-delimiter is not a numeric delimiter,
+    // remove the punctuation or contain punctuation
+    if (!NUMERIC_DELIMITERS.includes(replacement)) {
+        word = word.replace(DDPunctRegex, '$1$2')
+        word = word.replace(DDPunctRegex, '$1$2')
+        /*
+    } else {
+        word = word.replace(DDPunctRegex, `$1${replacement}$2`)
+        word = word.replace(DDPunctRegex, `$1${replacement}$2`)
+    */
+    }
+
     // remove all leading punctuation
     const leadPunctRegex = new RegExp('^[' + PUNCTUATION_CHARS + ']+', '')
     // remove all trailing punctuation
     const trailPunctRegex = new RegExp('[' + PUNCTUATION_CHARS + ']+$', '')
+    word = word.replace(leadPunctRegex, '')
+    word = word.replace(trailPunctRegex, '')
 
-    line = line.replace(AAPunctRegex, '$1$2')
-    line = line.replace(AAPunctRegex, '$1$2')
-    line = line.replace(ADPunctRegex, '$1$2')
-    line = line.replace(DAPunctRegex, '$1$2')
-    if (!NUMERIC_DELIMITERS.includes(delimitOutput)) {
-        line = line.replace(DDPunctRegex, '$1$2')
-        line = line.replace(DDPunctRegex, '$1$2')
-    }
-    line = line.replace(leadPunctRegex, '')
-    line = line.replace(trailPunctRegex, '')
-
-    return line
+    return word
 }
 
 /**

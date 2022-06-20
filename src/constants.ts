@@ -39,7 +39,7 @@ const INTAKE_OPTIONS: TransformOptions = {
  */
 const RENDER_MODEL: RenderModel = {
     delimitOutput: '',
-    preprocess: (line, delimiter) => line.replace(' ', delimiter),
+    preprocess: (word, delimiter) => word.replace(' ', delimiter),
     postProcess: (line) => line,
     firstWordFirstChar: (word) => word,
     firstWordNextChars: (word) => word,
@@ -47,6 +47,7 @@ const RENDER_MODEL: RenderModel = {
     nextWordsNextChars: (word) => word,
 }
 
+const SEPERATION_CHARS = "_'+-*×/÷=<>.,"
 const NUMERIC_DELIMITERS = '-:,./'
 const PUNCTUATION_CHARS = '…,:;[\\](){}\\-‐–—\'".!?'
 const SPACE_REGEX =

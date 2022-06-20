@@ -2,21 +2,21 @@ import { normaliseQuotes, simplifyVariations, toUpper, toLower } from './render-
 
 describe('normaliseQuotes converts curly quotes and backtics', () => {
     test('in case of backticks', () => {
-        const specials = 'these `special` quotes'
+        const specials = '`special`'
 
-        expect(normaliseQuotes(specials)).toBe("these 'special' quotes")
+        expect(normaliseQuotes(specials)).toBe("'special'")
     })
 
     test('in case of curly single quotes', () => {
-        const curlies = 'single ‘curly’ quotes'
+        const singles = '‘curly’'
 
-        expect(normaliseQuotes(curlies)).toBe("single 'curly' quotes")
+        expect(normaliseQuotes(singles)).toBe("'curly'")
     })
 
     test('in case of curly double quotes', () => {
-        const curlies = 'double “curly” quotes'
+        const doubles = '“curly”'
 
-        expect(normaliseQuotes(curlies)).toBe('double "curly" quotes')
+        expect(normaliseQuotes(doubles)).toBe('"curly"')
     })
 })
 
