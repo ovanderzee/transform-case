@@ -1,91 +1,72 @@
 import { removePunctuation } from './render-fn'
-import { NUMERIC_DELIMITERS, PUNCTUATION_CHARS } from './constants'
 
-const NUMERIC_PUNCTUATION_COMMON = '.'
-const NUMERIC_PUNCTUATION_FOREIGN = '>'
-//const NUMERIC_UNIQUE = '/'
-const PUNCTUATION_UNIQUE = '!'
+describe('purpose of removePunctuation', () => {
+    test(`Leading punctuation is removed`, () => {
+        const word = '...dots'
 
-describe('removePunctuation testing requires a sanity check', () => {
-    test(`Both NUMERIC_DELIMITERS and PUNCTUATION_CHARS need to include a "${NUMERIC_PUNCTUATION_COMMON}"`, () => {
-        const isCommon =
-            NUMERIC_DELIMITERS.includes(NUMERIC_PUNCTUATION_COMMON) &&
-            PUNCTUATION_CHARS.includes(NUMERIC_PUNCTUATION_COMMON)
-
-        expect(isCommon).toBeTruthy()
+        expect(removePunctuation(word, ' ')).toBe('dots')
     })
 
-    test(`Both NUMERIC_DELIMITERS and PUNCTUATION_CHARS need to lack a "${NUMERIC_PUNCTUATION_FOREIGN}"`, () => {
-        const isForeign =
-            !NUMERIC_DELIMITERS.includes(NUMERIC_PUNCTUATION_FOREIGN) &&
-            !PUNCTUATION_CHARS.includes(NUMERIC_PUNCTUATION_FOREIGN)
+    test(`Trailing punctuation is removed`, () => {
+        const word = 'semicolon;'
 
-        expect(isForeign).toBeTruthy()
+        expect(removePunctuation(word, ' ')).toBe('semicolon')
     })
 
-    test(`PUNCTUATION_CHARS, but not NUMERIC_DELIMITERS includes a "${PUNCTUATION_UNIQUE}"`, () => {
-        const isUnique =
-            !NUMERIC_DELIMITERS.includes(PUNCTUATION_UNIQUE) && PUNCTUATION_CHARS.includes(PUNCTUATION_UNIQUE)
+    test(`Punctuation between letters is removed`, () => {
+        const word = "l'europe"
 
-        expect(isUnique).toBeTruthy()
+        // when replacement is in PUNCTUATION_CHARS
+        expect(removePunctuation(word, '-')).toBe('leurope')
+        // when replacement is found character
+        expect(removePunctuation(word, "'")).toBe('leurope')
+        // when replacement is in SEPERATION_CHARS
+        expect(removePunctuation(word, '_')).toBe('leurope')
+        // when replacement is in NUMERIC_DELIMITERS
+        expect(removePunctuation(word, '/')).toBe('leurope')
+    })
+
+    test(`Punctuation between a letter and a cypher is removed`, () => {
+        const word = 'super-70s'
+
+        expect(removePunctuation(word, ' ')).toBe('super70s')
+    })
+
+    test(`Punctuation between a cypher and a letter is removed`, () => {
+        const word = '99-luftballons'
+
+        expect(removePunctuation(word, '-')).toBe('99luftballons')
+    })
+
+    test(`Repetitive punctuation between letters is removed`, () => {
+        const word = 'word-a-word'
+
+        expect(removePunctuation(word, '/')).toBe('wordaword')
     })
 })
 
-// alle combinaties tegen elkara
-// ook word_separator erbij betrekken
-// PUNCTUATION_UNIQUE em NUMERIC_PUNCTUATION_FOREIGN moetn niet blijven staan ?
-// als het camel of pascal is : _
-// als het anders is : de delimitOut
+describe('removePunctuation works different between digits', () => {
+    test(`Punctuation between numbers is removed when replacement is punctuation`, () => {
+        const word = '2.71'
 
-describe('removePunctuation removes all punctuation - except the given one - from a string', () => {
-    test('in normal use', () => {
-        const word =
-            "That means: When you use a semicolon, you use it instead of the ands, buts, and ors; you don't need both."
-
-        expect(removePunctuation(word, ' ')).toBe(
-            'That means When you use a semicolon you use it instead of the ands buts and ors you dont need both',
-        )
+        expect(removePunctuation(word, ';')).toBe('271')
     })
 
-    test('using a NUMERIC_PUNCTUATION_COMMON character', () => {
-        const word = 'a.2.c.4.5.6.g.h.i'
+    test(`Punctuation between numbers is removed when replacement is a seperator`, () => {
+        const word = '2.71'
 
-        expect(removePunctuation(word, NUMERIC_PUNCTUATION_COMMON)).toBe('a2c4.5.6ghi')
+        expect(removePunctuation(word, '=')).toBe('271')
     })
 
-    test('using a NUMERIC_PUNCTUATION_FOREIGN character', () => {
-        const word = 'a>2>c>4>5>6>g>h>i'
+    test(`Punctuation between numbers stays when replacement is the found character`, () => {
+        const word = '2.71'
 
-        expect(removePunctuation(word, NUMERIC_PUNCTUATION_FOREIGN)).toBe('a>2>c>4>5>6>g>h>i')
+        expect(removePunctuation(word, '.')).toBe('2.71')
     })
 
-    test('using a PUNCTUATION_UNIQUE character', () => {
-        const word = 'a!2!c!4!5!6!g!h!i'
+    test(`Punctuation between numbers stays when replacement is a numeric delimiter`, () => {
+        const word = '2.71'
 
-        expect(removePunctuation(word, PUNCTUATION_UNIQUE)).toBe('a2c4!5!6ghi')
+        expect(removePunctuation(word, '/')).toBe('2.71')
     })
-
-    //     test('replacing a NUMERIC_PUNCTUATION_COMMON character', () => {
-    //         const word = 'a.2.c.4.5.6.g.h.i'
-    //
-    //         expect(removePunctuation(word, NUMERIC_PUNCTUATION_FOREIGN)).toBe('a2c456ghi')
-    //     })
-    //
-    //     test('replacing a PUNCTUATION_UNIQUE character', () => {
-    //         const word = 'a!2!c!4!5!6!g!h!i'
-    //
-    //         expect(removePunctuation(word, NUMERIC_PUNCTUATION_FOREIGN)).toBe('a2c456ghi')
-    //     })
-    //
-    //     test('replacing by a NUMERIC_PUNCTUATION_COMMON character', () => {
-    //         const word = 'a>2>c>4>5>6>g>h>i'
-    //
-    //         expect(removePunctuation(word, NUMERIC_PUNCTUATION_COMMON)).toBe('a>2>c>4>5>6>g>h>i')
-    //     })
-    //
-    //     test('replacing by a PUNCTUATION_UNIQUE character', () => {
-    //         const word = 'a>2>c>4>5>6>g>h>i'
-    //
-    //         expect(removePunctuation(word, PUNCTUATION_UNIQUE)).toBe('a>2>c>4>5>6>g>h>i')
-    //     })
 })
