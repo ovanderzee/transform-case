@@ -10,7 +10,6 @@ import { SPACE_REGEX, CONTROL_REGEX } from './constants'
  * @returns {String} cleaned line
  */
 const dedupe = (line: string, char: string): string => {
-    if (char.length !== 1) return line
     // escape sensitive chars:
     char = '\\' + char
     const leading = new RegExp(`^[${char}]+`)

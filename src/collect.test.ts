@@ -109,3 +109,38 @@ describe('delimiting a puts up an array of words', () => {
         expect(delimitCase.words[1]).toBe('Spy')
     })
 })
+
+describe('the normalised line is composed depending on the entry of a delimiter', () => {
+    const lineIn = '____Message___in__a___bottle____'
+    const lineOut = 'Message_in_a_bottle'
+
+    test('with the correct delimiter the line is deduped', () => {
+        const delimiter = '_'
+        const collection = wordCollector(lineIn, { delimitInput: delimiter })
+        const delimitInput = collection.options.delimitInput
+        const normalised = collection._origin.normalised
+
+        expect(delimitInput).toBe(delimiter)
+        expect(normalised).toBe(lineOut)
+    })
+
+    test('with a useless delimiter the line is not deduped', () => {
+        const delimiter = '+'
+        const collection = wordCollector(lineIn, { delimitInput: delimiter })
+        const delimitInput = collection.options.delimitInput
+        const normalised = collection._origin.normalised
+
+        expect(delimitInput).toBe(delimiter)
+        expect(normalised).toBe(lineIn)
+    })
+
+    test('without a delimiter the line is not deduped', () => {
+        const delimiter = ''
+        const collection = wordCollector(lineIn, { delimitInput: delimiter })
+        const delimitInput = collection.options.delimitInput
+        const normalised = collection._origin.normalised
+
+        expect(delimitInput).toBe(delimiter)
+        expect(normalised).toBe(lineIn)
+    })
+})
