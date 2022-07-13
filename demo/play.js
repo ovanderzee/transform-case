@@ -50,30 +50,37 @@ window.onload = function () {
         localStore.innerHTML = ''
     }
 
-    const wordList = document.getElementById('words')
     const localStore = document.getElementById('local-store')
     localStore.addEventListener('click', retrieveEntry)
     const clearButton = document.getElementById('clear-button')
     clearButton.addEventListener('click', resetStorage)
     const storeButton = document.getElementById('store-button')
     storeButton.addEventListener('click', updateStorage)
+    const wordList = document.getElementById('words')
+    const callClause = document.getElementById('call')
 
     const getOptions = function () {
         const options = {}
-        options.delimit = delimit.value ? [delimit.value] : []
-        options.preserve = preserve.value ? [preserve.value] : []
-        options.delimitInput = delimitInput.value
-        options.delimitLetterNumber = delimitLetterNumber.checked
-        options.delimitLowerUpper = delimitLowerUpper.checked
-        options.delimitNumberLetter = delimitNumberLetter.checked
-        options.delimitUpperLower = delimitUpperLower.checked
-        options.delimitUpperUpperLower = delimitUpperUpperLower.checked
+        // differing from defaults
+        if (delimit.value) options.delimit = [delimit.value]
+        if (preserve.value) options.preserve = [preserve.value]
+        if (delimitInput.value) options.delimitInput = delimitInput.value
+        if (!delimitLetterNumber.checked) options.delimitLetterNumber = delimitLetterNumber.checked
+        if (!delimitLowerUpper.checked) options.delimitLowerUpper = delimitLowerUpper.checked
+        if (!delimitNumberLetter.checked) options.delimitNumberLetter = delimitNumberLetter.checked
+        if (delimitUpperLower.checked) options.delimitUpperLower = delimitUpperLower.checked
+        if (!delimitUpperUpperLower.checked) options.delimitUpperUpperLower = delimitUpperUpperLower.checked
         return options
     }
 
     const showTime = function () {
         console.log('normalisation')
         const dataCollection = transformCase(entryText.value, getOptions())
+        const optionsText = JSON.stringify(getOptions())
+            .replace(/^{"/, `{\n\t\t"`)
+            .replace(/":(".+?"|\w+?),"/g, `":$1,\n\t\t"`)
+            .replace(/}$/, `\n\t}`)
+        callClause.innerHTML = `transformCase(\n\t'${entryText.value}', \n\t${optionsText}\n).${methodSelect.value}()`
         console.log('origin', dataCollection._origin)
         console.log('options', dataCollection.options)
         console.log('phrase', dataCollection._phrase)
