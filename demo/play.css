@@ -3,48 +3,65 @@
     --vertical-padding: .1667em;
     --aside-color: #33c;
     --line-color: #339;
+    --column-width: 24em;
+    --body-background: #ccc;
 }
 :focus {
     outline-color: var(--aside-color);
 }
 
 body {
-    background: #ccc;
+    background: var(--body-background);
     color: #333;
-    max-width: 48em;
+    max-width: calc(var(--column-width) * 2);
     margin: 1em auto;
+    padding: 0 1em;
+}
+form, .item {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-between;
+}
+form {
+    gap: 1em;
+    margin: 0 auto;
 }
 body > h2 {
     color: var(--aside-color);
-    flex: 1 0 100%;
+    text-align: center;
 }
-body > section {
-    flex: 0 1 48%;
+form > section {
+    flex: 1 0 48%;
+    max-width: var(--column-width);
 }
-textarea, select, output, input[type="text"], fieldset, ol, code {
+.item {
+    gap: 1ex;
+    margin: .5em 0;
+}
+.field {
     display: block;
     font: caption;
     font-size: 16px;
     vertical-align: top;
     padding: var(--vertical-padding) .5em;
-    margin: .5em 0 .5em var(--gutter);
+    margin: 0;
     border-radius: .25em;
     border: 0 none;
     box-sizing: border-box;
-    width: calc(100% - var(--gutter));
+    flex: 1 1 auto;
 }
-span {
-    position: absolute;
-    padding: var(--vertical-padding) 0;
-    width: calc(.86 * var(--gutter));
+h6 {
+    flex: 0 0 var(--gutter);
     display: inline-block;
+    margin: var(--vertical-padding) 0;
+
     color: var(--aside-color);
     font-style: italic;
+    font-size: inherit;
+    font-weight: normal;
 }
-span button {
+h6 button {
+    display: block;
     background: white;
     padding: 3px 6px;
     border: 0 none;
@@ -56,10 +73,13 @@ span button {
     margin: .25em .25em .25em 0;
 }
 
+/* textareas */
 #entry,
 #local-store {
     min-height: 4em;
 }
+
+/* checkboxes */
 fieldset {
     box-shadow: 0 0 0 1px var(--line-color);
 }
@@ -67,6 +87,9 @@ label {
     display: block;
     cursor: pointer;
     padding: 0.25em 0;
+}
+label:hover {
+    color: var(--aside-color);
 }
 input[type="checkbox"] {
     margin: 0.25em .75em 0 0;
@@ -99,6 +122,7 @@ input[type="checkbox"]:checked:after {
     overflow-wrap: break-word;
 }
 
+/* lists */
 @counter-style colon-numeric {
     system: extends decimal;
     suffix: ': ';
@@ -115,13 +139,18 @@ li::marker {
     font-size: 12px;
 }
 
+ol.field,
+code.field {
+    padding: 0;
+}
+
+/* needs width */
+#call-item {
+    display: initial;
+}
 #call {
     font: revert;
     white-space: pre-wrap;
-    width: 100%;
-    padding: 0.5em 0;
-    margin-left: 0;
-    margin-top: 2em;
 }
 
 hr {
@@ -129,4 +158,28 @@ hr {
     border-color: var(--line-color) transparent;
     border-style: solid none;
     border-width: 1px 0;
+}
+
+
+@media screen and (max-width: 49em) {
+    body {
+        max-width: var(--column-width);
+    }
+    form {
+        display: block;
+    }
+    section {
+        margin-bottom: 3em;
+        padding-bottom: 3em;
+        border-bottom: 3px dotted var(--aside-color);
+    }
+}
+
+@media screen and (max-width: 26em) {
+    .item {
+        display: block;
+    }
+    h6, .field {
+        width: 100%
+    }
 }
