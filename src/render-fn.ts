@@ -1,33 +1,5 @@
-import { NUMERIC_DELIMITERS, PUNCTUATION_CHARS } from './constants'
 import asciiFolder from 'fold-to-ascii'
-
-/**
- * Solve the problem that concatenated numbers loose meaning:
- * delimit the numbers with the output delimiter or the delimiter that matches /\w/
- * @private
- * @param {String} word
- * @returns {Array} enhanced words
- */
-const delimitNumbers = (word: string, delimitOutput: string): string => {
-    const currentNumericDelimiters = NUMERIC_DELIMITERS.replace(
-        delimitOutput,
-        '',
-    )
-
-    // replace all numeric delimiters between digits
-    const currentNumericDelimiterRegex = new RegExp(
-        '(\\d)[' + currentNumericDelimiters + ']+(\\d)',
-        'g',
-    )
-
-    // delimit numbers with an underscore, even in capMarkedWords
-    const delimiter = delimitOutput || '_'
-    return word.match(currentNumericDelimiterRegex)
-        ? word
-              .replace(currentNumericDelimiterRegex, `$1${delimiter}$2`)
-              .replace(currentNumericDelimiterRegex, `$1${delimiter}$2`)
-        : word
-}
+import { isDigit, isLetter } from 'my-lib'
 
 /**
  * Convert curly single quotes and backticks to straight single quotes,
@@ -41,63 +13,6 @@ const normaliseQuotes = (word: string): string => {
 }
 
 /**
- * Remove all punctuation from a string
- * @private
- * @param {String} word
- * @returns {String} stripped string
- */
-const removePunctuation = (word: string, replacement: string): string => {
-    const currentPunctuation = PUNCTUATION_CHARS.replace(replacement, '')
-
-    // remove all punctuation between alphabetic characters
-    const AAPunctRegex = new RegExp(
-        '(\\D)[' + PUNCTUATION_CHARS + ']+(\\D)',
-        'g',
-    )
-    // - between alphabetic characters and digits
-    const ADPunctRegex = new RegExp(
-        '(\\D)[' + PUNCTUATION_CHARS + ']+(\\d)',
-        'g',
-    )
-    // - between digits and alphabetic characters
-    const DAPunctRegex = new RegExp(
-        '(\\d)[' + PUNCTUATION_CHARS + ']+(\\D)',
-        'g',
-    )
-    // remove all punctuation but the delimiter between digits
-    const DDPunctRegex = new RegExp(
-        '(\\d)[' + currentPunctuation + ']+(\\d)',
-        'g',
-    )
-
-    word = word.replace(AAPunctRegex, '$1$2')
-    word = word.replace(AAPunctRegex, '$1$2')
-    word = word.replace(ADPunctRegex, '$1$2')
-    word = word.replace(DAPunctRegex, '$1$2')
-
-    // when the output-delimiter is not a numeric delimiter,
-    // remove the punctuation or contain punctuation
-    if (!NUMERIC_DELIMITERS.includes(replacement)) {
-        word = word.replace(DDPunctRegex, '$1$2')
-        word = word.replace(DDPunctRegex, '$1$2')
-        /*
-    } else {
-        word = word.replace(DDPunctRegex, `$1${replacement}$2`)
-        word = word.replace(DDPunctRegex, `$1${replacement}$2`)
-    */
-    }
-
-    // remove all leading punctuation
-    const leadPunctRegex = new RegExp('^[' + PUNCTUATION_CHARS + ']+', '')
-    // remove all trailing punctuation
-    const trailPunctRegex = new RegExp('[' + PUNCTUATION_CHARS + ']+$', '')
-    word = word.replace(leadPunctRegex, '')
-    word = word.replace(trailPunctRegex, '')
-
-    return word
-}
-
-/**
  * Remove all diacritics and decompose ligatures
  * @private
  * @param {String} line
@@ -105,6 +20,24 @@ const removePunctuation = (word: string, replacement: string): string => {
  */
 const simplifyVariations = (line: string): string => {
     return asciiFolder.foldReplacing(line)
+}
+
+/**
+ * Remove control chars, punctuation, symbols etc. from a string
+ * @private
+ * @param {String} word
+ * @param {String} separator
+ * @returns {String} stripped string
+ */
+const stripSigns = (word: string, separator: string): string => {
+    const chars = word.match(/./g) || []
+    const space = ' '
+    const stripped = chars.map((char) => {
+        const isUseful =
+            char.match(/[A-Za-z0-9]/) || isLetter(char) || isDigit(char)
+        return isUseful ? char : space
+    })
+    return stripped.join('').trim().replace(/\s+/g, separator)
 }
 
 /**
@@ -116,11 +49,4 @@ const simplifyVariations = (line: string): string => {
 const toLower = (word: string): string => word.toLowerCase()
 const toUpper = (word: string): string => word.toUpperCase()
 
-export {
-    delimitNumbers,
-    normaliseQuotes,
-    removePunctuation,
-    simplifyVariations,
-    toLower,
-    toUpper,
-}
+export { normaliseQuotes, simplifyVariations, stripSigns, toLower, toUpper }

@@ -41,6 +41,6 @@ interface TransformCase extends RenderMethods {
     words: string[];
 }
 
-declare const index: (input: string, options?: UserOptions | undefined) => TransformCase;
+declare const index: (input: string, options?: UserOptions) => TransformCase;
 
 export { index as default };

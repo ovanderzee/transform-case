@@ -1,4 +1,4 @@
-import { normaliseQuotes, simplifyVariations, toUpper, toLower } from './render-fn'
+import { normaliseQuotes, simplifyVariations, stripSigns, toUpper, toLower } from './render-fn'
 
 describe('normaliseQuotes converts curly quotes and backtics', () => {
     test('in case of backticks', () => {
@@ -31,6 +31,40 @@ describe('simplifyVariations breaks down combined characters', () => {
         const withLigatures = 'Een \u0133sje kostte \ufb020,75'
 
         expect(simplifyVariations(withLigatures)).toBe('Een ijsje kostte fl0,75')
+    })
+})
+
+describe('stripSigns strips remaining characters like punctuation and symbols', () => {
+    test('in case of replacement (delimited lowercase)', () => {
+        const sep = '+'
+
+        expect(stripSigns('_draak_', sep)).toBe('draak')
+        expect(stripSigns('__draak__', sep)).toBe('draak')
+        expect(stripSigns('_d_raak', sep)).toBe('d+raak')
+        expect(stripSigns('__d__raak__', sep)).toBe('d+raak')
+    })
+
+    test('in case of removal (cap-marked words)', () => {
+        const sep = ''
+
+        expect(stripSigns('_draak_', sep)).toBe('draak')
+        expect(stripSigns('__draak__', sep)).toBe('draak')
+        expect(stripSigns('_d_raak', sep)).toBe('draak')
+        expect(stripSigns('__d__raak__', sep)).toBe('draak')
+    })
+
+    test('use cases', () => {
+        const sep = '/'
+
+        expect(stripSigns("nine'o'clock", sep)).toBe('nine/o/clock')
+        expect(stripSigns('semicolon;', sep)).toBe('semicolon')
+    })
+
+    test('hence decimal separators are lost for cap-marked-word transformations', () => {
+        const sep = ''
+
+        expect(stripSigns('3.1415926535', sep)).toBe('31415926535')
+        expect(stripSigns('1,23e+45', sep)).toBe('123e45')
     })
 })
 

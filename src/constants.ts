@@ -47,19 +47,10 @@ const RENDER_MODEL: RenderModel = {
     nextWordsNextChars: (word) => word,
 }
 
-const SEPERATION_CHARS = "_'+-*×/÷=<>.,"
-const NUMERIC_DELIMITERS = '-:,./'
-const PUNCTUATION_CHARS = '…,:;[\\](){}\\-‐–—\'".!?'
 const SPACE_REGEX =
     /[\u0009-\u000D \u00A0\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]+/g
 const CONTROL_REGEX =
     /[\u0000-\u0008\u000E-\u001F\u007F-\u009F\u200B-\u200F\u202A-\u202E\u2060-\u206F]+/g // eslint-disable-line no-control-regex
+//     const controlChars = new RegExp('[\u0000-\u001f,\u007f-\u009f]')
 
-export {
-    INTAKE_OPTIONS,
-    RENDER_MODEL,
-    NUMERIC_DELIMITERS,
-    PUNCTUATION_CHARS,
-    SPACE_REGEX,
-    CONTROL_REGEX,
-}
+export { INTAKE_OPTIONS, RENDER_MODEL, SPACE_REGEX, CONTROL_REGEX }

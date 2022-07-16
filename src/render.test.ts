@@ -30,11 +30,11 @@ describe('camelCase is a capMarkedRegexpWord pattern', () => {
         expect(secondWord1).toBe(secondWord1.toUpperCase())
         expect(secondWordN).toBe(secondWordN.toLowerCase())
     })
-    test('replace delimiter between numbers with an underscore to help seperate them', () => {
+    test('remove delimiter between numbers', () => {
         const camelTest = wordCollector('By the way, use version 11.7.2.', {})
         const camelCase = camelTest.camelCase()
 
-        expect(camelCase).toBe('byTheWayUseVersion11_7_2')
+        expect(camelCase).toBe('byTheWayUseVersion1172')
     })
 })
 
@@ -42,8 +42,8 @@ describe('conversion of capMarkedRegexpWord patterns', () => {
     test('example matches', () => {
         const cmrwTest = wordCollector('By the way, use version 11.7.2.', {})
 
-        expect(cmrwTest.camelCase()).toBe('byTheWayUseVersion11_7_2')
-        expect(cmrwTest.pascalCase()).toBe('ByTheWayUseVersion11_7_2')
+        expect(cmrwTest.camelCase()).toBe('byTheWayUseVersion1172')
+        expect(cmrwTest.pascalCase()).toBe('ByTheWayUseVersion1172')
     })
 })
 

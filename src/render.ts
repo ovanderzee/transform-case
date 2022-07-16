@@ -1,10 +1,9 @@
 import { isExactMatch } from 'my-lib'
 import { TransformOptions, RenderModel, RenderMethods } from './types'
 import {
-    delimitNumbers,
     normaliseQuotes,
-    removePunctuation,
     simplifyVariations,
+    stripSigns,
     toLower,
     toUpper,
 } from './render-fn'
@@ -46,14 +45,10 @@ const patternRendering = function (
 
     const techProcessing = {
         preprocess: function (word: string, delimitOutput: string): string {
-            word = delimitNumbers(word, delimitOutput)
+            word = simplifyVariations(word)
             word = normaliseQuotes(word)
-            word = removePunctuation(word, delimitOutput)
+            word = stripSigns(word, delimitOutput)
             return word
-        },
-        postProcess: function (line: string): string {
-            line = simplifyVariations(line)
-            return line
         },
     }
 
