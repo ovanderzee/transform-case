@@ -51,7 +51,8 @@ describe('humanTitle is a pattern', () => {
     const title = wordCollector('A sentence, text for humans.', {}).humanTitle()
 
     test('with punctuation', () => {
-        expect(title.includes('.')).toBeTruthy()
+        expect(title.includes('Sentence,')).toBeTruthy()
+        expect(title.includes('Humans.')).toBeTruthy()
     })
     test('where all words start with capitals', () => {
         const wordStartMatch = title.match(/\w+/g)
@@ -64,7 +65,8 @@ describe('humanTitle is a pattern', () => {
 describe('humanSentence is a pattern', () => {
     const sentence = wordCollector('A sentence, text for humans.', {}).humanSentence()
     test('with punctuation', () => {
-        expect(sentence.includes('.')).toBeTruthy()
+        expect(sentence.includes('sentence,')).toBeTruthy()
+        expect(sentence.includes('humans.')).toBeTruthy()
     })
     test('where only the first word starts with a capital', () => {
         expect(sentence.match(/^[A-Z][a-z ,;:.]+/)).toBeTruthy()

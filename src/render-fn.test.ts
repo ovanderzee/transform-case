@@ -1,4 +1,4 @@
-import { normaliseQuotes, simplifyVariations, stripSigns, toUpper, toLower } from './render-fn'
+import { normaliseQuotes, simplifyVariations, stripHtmlEntities, stripSigns, toUpper, toLower } from './render-fn'
 
 describe('normaliseQuotes converts curly quotes and backtics', () => {
     test('in case of backticks', () => {
@@ -34,6 +34,19 @@ describe('simplifyVariations breaks down combined characters', () => {
     })
 })
 
+describe('stripHtmlEntities strips remaining characters like punctuation and symbols', () => {
+    test('treat html entities as symbols, these will be unreadable anyway', () => {
+        const sep = '.'
+
+        expect(stripHtmlEntities('LEGO&reg;-stores', sep)).toBe('LEGO.-stores')
+        expect(stripHtmlEntities('LEGO&#174;', sep)).toBe('LEGO')
+        expect(stripHtmlEntities('LEGO&#xae;', sep)).toBe('LEGO')
+        // bleh... but appears to be granted more often
+        expect(stripHtmlEntities('LEGO&REG;-stores', sep)).toBe('LEGO.-stores')
+        expect(stripHtmlEntities('LEGO&#xAE;', sep)).toBe('LEGO')
+    })
+})
+
 describe('stripSigns strips remaining characters like punctuation and symbols', () => {
     test('in case of replacement (delimited lowercase)', () => {
         const sep = '+'
@@ -55,12 +68,15 @@ describe('stripSigns strips remaining characters like punctuation and symbols', 
 
     test('use cases', () => {
         const sep = '/'
+        const legoRStores = stripHtmlEntities('LEGO&reg;-stores', sep)
 
         expect(stripSigns("nine'o'clock", sep)).toBe('nine/o/clock')
         expect(stripSigns('semicolon;', sep)).toBe('semicolon')
+        expect(stripSigns('LEGO®', sep)).toBe('LEGO')
+        expect(stripSigns(legoRStores, sep)).toBe('LEGO/stores')
     })
 
-    test('hence decimal separators are lost for cap-marked-word transformations', () => {
+    test('hence decimal separators are lost for cap-marked-word transformations, use preserve option otherwise', () => {
         const sep = ''
 
         expect(stripSigns('3.1415926535', sep)).toBe('31415926535')

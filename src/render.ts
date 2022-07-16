@@ -3,6 +3,7 @@ import { TransformOptions, RenderModel, RenderMethods } from './types'
 import {
     normaliseQuotes,
     simplifyVariations,
+    stripHtmlEntities,
     stripSigns,
     toLower,
     toUpper,
@@ -47,6 +48,7 @@ const patternRendering = function (
         preprocess: function (word: string, delimitOutput: string): string {
             word = simplifyVariations(word)
             word = normaliseQuotes(word)
+            word = stripHtmlEntities(word, delimitOutput)
             word = stripSigns(word, delimitOutput)
             return word
         },
