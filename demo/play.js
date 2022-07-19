@@ -1,10 +1,12 @@
-const methods = Object.values(transformCase('example'))
+const METHODS = Object.values(transformCase('example'))
     .filter(value => typeof value === 'function')
-const delimiters = ' .:;,-+_/|\\&'.split('')
+const DELIMITERS = ' .:;,-+_/|\\&'.split('')
 
 window.onload = function () {
+    const form = document.getElementsByTagName('FORM')[0]
+
     const methodSelect = document.getElementById('method')
-    methodSelect.innerHTML = methods
+    methodSelect.innerHTML = METHODS
         .map(method => `<option>${method.name}</option>`)
         .join('')
     const entryText = document.getElementById('entry')
@@ -13,7 +15,7 @@ window.onload = function () {
     const delimit = document.getElementById('delimit')
     const preserve = document.getElementById('preserve')
     const delimitInput = document.getElementById('delimitInput')
-    delimitInput.innerHTML += delimiters
+    delimitInput.innerHTML += DELIMITERS
         .map(delimiter => `<option value="${delimiter}"
             ${delimiter === ' ' ? ' selected ' : ''}>
             ${delimiter === ' ' ? '(space)' : delimiter}</option>`)
@@ -26,23 +28,39 @@ window.onload = function () {
 
     const displayStorage = function () {
         const localStored = localStorage.getItem('transform-case-entries') || '[]'
-        const localStoredPhrases = JSON.parse(localStored)
-        localStore.innerHTML = localStoredPhrases.map(phrase => {
-            return `<label>${phrase}</label>`
+        const localStoredSearches = JSON.parse(localStored)
+        localStore.innerHTML = localStoredSearches.map(search => {
+            const content = decodeURIComponent(search)
+                .replace(/=(.*?)(&|$)/g, ': "$1", ')
+            return `<ins data-search="${search}">${content}</ins>`
         }).join('')
     }
     const retrieveEntry = function (event) {
         if (event.target.parentNode === this) {
-            entryText.value = event.target.innerText
+            const pairs = event.target.dataset.search.split('&')
+            pairs.forEach(pair => {
+                const data = pair.split('=')
+                document.getElementById(data[0]).value = decodeURIComponent(data[1])
+            })
             entryText.dispatchEvent(new Event('input'));
         }
     }
     const updateStorage = function () {
+        const options = Array.from(form.elements)
+            .map(ctrl => {
+                const banned = ctrl instanceof HTMLButtonElement ||
+                    ctrl instanceof HTMLOutputElement ||
+                    ctrl instanceof HTMLFieldSetElement
+                return banned ? '' : `${ctrl.id}=${encodeURIComponent(ctrl.value)}`
+            })
+            .filter(pair => pair.length)
+
         const localStored = localStorage.getItem('transform-case-entries') || '[]'
         const localStoredSet = new Set(JSON.parse(localStored))
-        localStoredSet.add(entryText.value.trim())
+        localStoredSet.add(options.join('&'))
         const currentPhrases = JSON.stringify(Array.from(localStoredSet))
         localStorage.setItem('transform-case-entries', currentPhrases)
+        location.href.search = '?' + options.join('&')
         displayStorage()
     }
     const resetStorage = function () {

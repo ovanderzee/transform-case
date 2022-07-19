@@ -17,12 +17,12 @@ body {
     margin: 1em auto;
     padding: 0 1em;
 }
-form, .item {
+section, .item {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
 }
-form {
+section {
     gap: 1em;
     margin: 0 auto;
 }
@@ -30,9 +30,10 @@ body > h2 {
     color: var(--aside-color);
     text-align: center;
 }
-form > section {
+form, aside {
     flex: 1 0 48%;
     max-width: var(--column-width);
+    min-width: 0;
 }
 .item {
     gap: 1ex;
@@ -80,7 +81,7 @@ h6 button {
 }
 
 /* checkboxes */
-fieldset {
+div.field {
     box-shadow: 0 0 0 1px var(--line-color);
 }
 label {
@@ -139,6 +140,27 @@ li::marker {
     font-size: 12px;
 }
 
+/* store */
+nav.field {
+    box-shadow: 0 0 0 1px var(--line-color);
+    white-space: nowrap;
+    overflow: hidden;
+    min-width: 0;
+}
+nav.field #local-store {
+}
+nav.field ins {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+nav.field ins:hover {
+    white-space: normal;
+    color: var(--aside-color);
+}
+
+/* no box or background */
 ol.field,
 code.field {
     padding: 0;
@@ -165,10 +187,10 @@ hr {
     body {
         max-width: var(--column-width);
     }
-    form {
+    section {
         display: block;
     }
-    section {
+    form, aside {
         margin-bottom: 3em;
         padding-bottom: 3em;
         border-bottom: 3px dotted var(--aside-color);

@@ -8,12 +8,12 @@
     </head>
     <body>
         <h2>Transform case &ndash; playGround</h2>
-        <form>
-            <section>
+        <section>
+            <form action="play.html" method="GET">
                 <div class="item">
                     <h6>
                         entry
-                        <button id="store-button" type=""button">store</button>
+                        <button id="store-button" type="submit">store</button>
                     </h6>
                     <textarea id="entry" class="field">try out page</textarea>
                 </div>
@@ -31,13 +31,13 @@
                 </div>
                 <div class="item">
                     <h6>delimit transitions <em>(default setting)</em></h6>
-                    <fieldset class="field">
+                    <div class="field" id="fieldset">
                         <label><input type="checkbox" id="delimitLetterNumber" checked />Letter &rarr; Number <em>(on)</em></label>
                         <label><input type="checkbox" id="delimitLowerUpper" checked />Lower &rarr; Upper <em>(on)</em></label>
                         <label><input type="checkbox" id="delimitNumberLetter" checked />Number &rarr; Letter <em>(on)</em></label>
                         <label><input type="checkbox" id="delimitUpperLower" />Upper &rarr; Lower <em>(off)</em></label>
                         <label><input type="checkbox" id="delimitUpperUpperLower" checked />Upper &rarr; Upper + Lower <em>(on)</em></label>
-                    </fieldset>
+                    </div>
                 </div>
                 <div class="item">
                     <h6>method</h6>
@@ -48,14 +48,16 @@
                     <h6>yield</h6>
                     <output id="yield" class="field"></output>
                 </div>
-            </section>
-            <section>
+            </form>
+            <aside>
                 <div class="item">
                     <h6>
                         local store
-                        <button id="clear-button" type=""button">clear</button>
+                        <button id="clear-button" type=button">clear</button>
                     </h6>
-                    <fieldset id="local-store" class="field"></fieldset>
+                    <nav class="field">
+                        <div id="local-store"></div>
+                    </nav>
                 </div>
                 <hr/>
                 <div class="item">
@@ -67,7 +69,7 @@
                     <h6>call</h6>
                     <code id="call" class="field"></code>
                 </div>
-            </section>
-        </form>
+            </aside>
+        </section>
     </body>
 </html>
