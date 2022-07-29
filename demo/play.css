@@ -167,12 +167,11 @@ code.field {
 }
 
 /* needs width */
-#call-item {
-    display: initial;
-}
 #call {
     font: revert;
     white-space: pre-wrap;
+    tab-size: 4;
+    flex: 1 0 100%;
 }
 
 hr {

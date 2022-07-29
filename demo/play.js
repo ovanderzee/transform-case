@@ -99,11 +99,28 @@ window.onload = function () {
     clearButton.addEventListener('click', storage.reset)
     storeButton.addEventListener('click', storage.update)
 
+    const stringOrRegexp = function (str) {
+        const strSplit = str.split('/')
+        let rv
+        try {
+            if (strSplit.length < 3) {
+                throw('not enough members')
+            }
+            rv = new RegExp(strSplit[1], strSplit[2])
+            console.log('regexp', strSplit, rv)
+        } catch(e) {
+            rv = str
+            console.log('string', strSplit, rv)
+        }
+        console.log(rv)
+        return rv
+    }
+
     const getOptions = function () {
         const options = {}
         // differing from defaults
-        if (delimit.value) options.delimit = [delimit.value]
-        if (preserve.value) options.preserve = [preserve.value]
+        if (delimit.value) options.delimit = [stringOrRegexp(delimit.value)]
+        if (preserve.value) options.preserve = [stringOrRegexp(preserve.value)]
         if (delimitInput.value) options.delimitInput = delimitInput.value
         if (!delimitLetterNumber.checked) options.delimitLetterNumber = delimitLetterNumber.checked
         if (!delimitLowerUpper.checked) options.delimitLowerUpper = delimitLowerUpper.checked
@@ -114,13 +131,21 @@ window.onload = function () {
     }
 
     const showTime = function () {
-        console.log('normalisation')
+        console.log('==============')
         const dataCollection = transformCase(entryText.value, getOptions())
-        const optionsText = JSON.stringify(getOptions())
+        const options = getOptions()
+        const delimit0 = options.delimit ? options.delimit[0].toString() : ''
+        const preserve0 = options.preserve ? options.preserve[0].toString() : ''
+        const optionsText = JSON.stringify(options)
             .replace(/^{"/, `{\n\t\t"`)
-            .replace(/":(".+?"|\w+?),"/g, `":$1,\n\t\t"`)
+            .replace('"\\\\"', '"\\"') // special delimitInput case
+            .replace(/"delimit":\[{}\],"/, `"delimit":[${delimit0}],\n\t\t"`) // RegExp in array
+            .replace(/"preserve":\[{}\],"/, `"preserve":[${preserve0}],\n\t\t"`) // RegExp in array
+            .replace(/":(\[.+?\]),"/g, `":$1,\n\t\t"`) // string in array
+            .replace(/":(".+?"),"/g, `":$1,\n\t\t"`) // string
+            .replace(/":(\w+),"/g, `":$1,\n\t\t"`) // false, true
             .replace(/}$/, `\n\t}`)
-        callClause.innerHTML = `transformCase(\n\t'${entryText.value}', \n\t${optionsText}\n).${methodSelect.value}()`
+        callClause.innerHTML = `transformCase(\n\t"${entryText.value}", \n\t${optionsText}\n).${methodSelect.value}()`
         console.log('origin', dataCollection._origin)
         console.log('options', dataCollection.options)
         console.log('phrase', dataCollection._phrase)
