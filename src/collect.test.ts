@@ -40,12 +40,12 @@ describe(`delimit option keeps a lettercombination as a word
         expect(delimit.humanTitle()).toBe('Forever Thin King')
         expect(delimit.camelCase()).toBe('foreverThinKing')
     })
-    test('works with RegExp', () => {
-        const delimit = wordCollector('pingpongpang', {
-            delimit: [/p\w{1}ng/gi],
+    test('works with RegExp, overriding the alphanumeric delimiting', () => {
+        const delimit = wordCollector('tRexFace', {
+            delimit: [/trex/gi],
         })
 
-        expect(delimit.humanTitle()).toBe('Ping Pong Pang')
+        expect(delimit.words).toStrictEqual(['tRex', 'Face'])
     })
 })
 
@@ -65,11 +65,11 @@ describe(`preserve option keeps a lettercombination as a word
         expect(preserve.pascalCase()).toBe('DomRectangle')
     })
     test('works with RegExp', () => {
-        const preserve = wordCollector('fastfistfust', {
+        const preserve = wordCollector('fastend fusts', {
             preserve: [/f\w{1}st/gi],
         })
 
-        expect(preserve.humanTitle()).toBe('fast fist fust')
+        expect(preserve.humanTitle()).toBe('fast End fust S')
     })
 })
 

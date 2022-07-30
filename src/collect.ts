@@ -76,16 +76,15 @@ const wordCollector = function (
         const parts = _origin.revised.split(delimiter)
         self._phrase = parts
             .map((part) =>
-                options.preserve.some((regex) => isExactMatch(part, regex))
+                chunks.some((regex) => isExactMatch(part, regex))
                     ? part
                     : delimitWords(part, options),
             )
             .join(delimiter)
-        self.words = self._phrase.split(delimiter)
     } else {
         self._phrase = _origin.revised
-        self.words = _origin.revised.split(delimiter)
     }
+    self.words = self._phrase.split(delimiter)
 
     return Object.assign(self, patternRendering(self.words, options))
 }
