@@ -1,9 +1,10 @@
 .DS_Store
 node_modules
 src
+temp
 test
 coverage
-.travis.yml
+tsconfig.json
 *.map
 *.config.js
 .*
