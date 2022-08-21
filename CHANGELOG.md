@@ -1,6 +1,15 @@
 # Changelog
 
-## [1.0.0] 2022-07-25
+## [Todo]
+
+- Deal with entities:
+  show entity code or number, or look up a concise description
+- Reinstate build-succes and coverage buttons on readme
+- Evaluate demo page
+- Evaluate readme, use feature list?
+
+
+## [1.0.0] 2022-08-21
 
 Introduction of typescript
 
