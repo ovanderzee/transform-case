@@ -6,7 +6,12 @@ import {
     delimitChunks,
     normaliseProtections,
 } from './collect-fn'
-import { TransformOptions, UserOptions, TransformCase } from './types'
+import {
+    ModuleCache,
+    TransformOptions,
+    UserOptions,
+    TransformCase,
+} from './types'
 import { INTAKE_OPTIONS } from './constants'
 import { patternRendering } from './render'
 
@@ -42,7 +47,7 @@ const wordCollector = function (
         : tidy(line)
 
     // prepare
-    const _origin = {
+    const _origin: ModuleCache = {
         input: line,
         normalised: normalisedLine,
         revised: normalisedLine,
