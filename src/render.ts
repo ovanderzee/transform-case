@@ -66,8 +66,8 @@ const patternRendering = function (
      * @returns {String} transformed words
      */
     const capMarkedWords = (
-        firstWordFirstChar: (word: string) => string,
-        nextWordsFirstChar: (word: string) => string,
+        firstWordFirstChar: (word: string) => string, // eslint-disable-line no-unused-vars
+        nextWordsFirstChar: (word: string) => string, // eslint-disable-line no-unused-vars
     ): string => {
         const model = Object.assign({}, RENDER_MODEL, techProcessing, {
             delimitOutput: '',

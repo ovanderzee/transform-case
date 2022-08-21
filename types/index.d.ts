@@ -1,3 +1,9 @@
+interface ModuleCache {
+    input: string;
+    normalised: string;
+    revised: string;
+    isAlphaNumeric: boolean;
+}
 interface TransformOptions {
     delimit: RegExp[];
     preserve: RegExp[];
@@ -35,8 +41,8 @@ interface RenderMethods {
     headerCase: () => string;
 }
 interface TransformCase extends RenderMethods {
-    _origin: any;
-    _phrase: any;
+    _origin: ModuleCache;
+    _phrase: string;
     options: TransformOptions;
     words: string[];
 }

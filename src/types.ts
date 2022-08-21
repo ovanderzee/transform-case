@@ -1,3 +1,10 @@
+export interface ModuleCache {
+    input: string
+    normalised: string
+    revised: string
+    isAlphaNumeric: boolean
+}
+
 export interface TransformOptions {
     delimit: RegExp[]
     preserve: RegExp[]
@@ -22,6 +29,7 @@ export interface UserOptions {
     delimitOutput?: string
 }
 
+/* eslint-disable no-unused-vars */
 export interface RenderModel {
     delimitOutput: string
     preprocess: (line: string, delimiter: string) => string
@@ -31,6 +39,7 @@ export interface RenderModel {
     nextWordsFirstChar: (word: string) => string
     nextWordsNextChars: (word: string) => string
 }
+/* eslint-enable no-unused-vars */
 
 export interface RenderMethods {
     camelCase: () => string
@@ -48,8 +57,8 @@ export interface RenderMethods {
 }
 
 export interface TransformCase extends RenderMethods {
-    _origin: any
-    _phrase: any
+    _origin: ModuleCache
+    _phrase: string
     options: TransformOptions
     words: string[]
 }

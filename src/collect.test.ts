@@ -2,22 +2,22 @@ import { wordCollector } from './collect'
 import * as char from './characters'
 
 describe('there will be no unexpected characters in the output', () => {
-    //                     null             tab           punctuation sp           esc          bom
+    //                  null (ctrl)       tab (spc)    punctuation spc (spc)   esc (ctrl)       bom (ctrl)
     const input = 'A' + char.nill + 'B' + char.tab + 'C' + char.puncsp + 'D' + char.esc + 'E' + char.bom + 'F'
     const output = wordCollector(input, {})._phrase
 
-    test('two whitespace characters become ordinary space', () => {
-        expect(output.indexOf(char.tab)).toBe(-1)
-        expect(output.indexOf(char.puncsp)).toBe(-1)
-        expect(output.match(/[ ]/g).length).toBe(2)
+    test('three control characters are filtered', () => {
+        expect(output).toBe('AB C DEF')
+        expect(input.length - output.length).toBe(3)
     })
-    test('two control characters are filtered', () => {
-        expect(output.indexOf(char.nill)).toBe(-1)
-        expect(output.indexOf(char.esc)).toBe(-1)
-        expect(input.length - output.length).toBe(2)
-    })
-    test('marker characters stay there', () => {
-        expect(output.includes(char.bom)).toBeTruthy()
+
+    // \u0009-\u000D === HTAB              LF              VT             FF               CR
+    const tabsAndEndings = '1' + char.tab + '2' + char.lf + '3' + char.vt + '4' + char.ff + '5' + char.cr + '6'
+    const spaced = wordCollector(tabsAndEndings, {})._phrase
+
+    test('tabs and endings may occur accidental but needed to separate words', () => {
+        expect(spaced).toBe('1 2 3 4 5 6')
+        expect(tabsAndEndings.length).toBe(spaced.length)
     })
 
     const untrimmed = `  X

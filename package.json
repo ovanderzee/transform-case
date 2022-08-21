@@ -13,9 +13,9 @@
         "build": "rollup --config",
         "coverage": "cf coverage && jest --coverage",
         "once": "npm run test && npm run build",
-        "pretest": "cf temp && eslint src/*.test.ts --fix",
+        "pretest": "cf temp && eslint src/*.ts --fix",
         "test": "tsc && jest",
-        "watch": "onchange --initial \"{src,test}/*.ts\" -- npm run once --silent"
+        "watch": "onchange --initial \"src/*.ts\" -- npm run once --silent"
     },
     "keywords": [
         "convert",
