@@ -4,7 +4,6 @@
 
 - Deal with entities:
   show entity code or number, or look up a concise description
-- Reinstate build-succes and coverage buttons on readme
 - Evaluate demo page
 - Evaluate readme, use feature list?
 

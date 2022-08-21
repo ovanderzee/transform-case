@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ovanderzee/transform-case.svg?branch=main)](https://travis-ci.org/ovanderzee/transform-case)
+[![CircleCI](https://circleci.com/gh/ovanderzee/transform-case/tree/main.svg?style=svg)](https://circleci.com/gh/ovanderzee/transform-case/?branch=main)
 [![Coverage Status](https://coveralls.io/repos/github/ovanderzee/transform-case/badge.svg?branch=main)](https://coveralls.io/github/ovanderzee/transform-case?branch=main)
 
 # TransformCase
