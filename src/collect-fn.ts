@@ -1,4 +1,5 @@
 import { isDigit, isLetter, isLower, isUpper } from 'my-lib'
+import { decodeHTML } from 'entities'
 import { TransformOptions } from './types'
 import { SPACE_REGEX, CONTROL_REGEX } from './constants'
 
@@ -21,6 +22,19 @@ const dedupe = (line: string, char: string): string => {
         .replace(doubling, char)
         .replace(leading, '')
         .replace(trailing, '')
+}
+
+/**
+ * Get rid of html entities
+ * @private
+ * @param {String} word
+ * @param {String} separator
+ * @returns {String} stripped string
+ */
+export const decodeHtmlEntities = (word: string): string => {
+    const allEntities = /&([A-Za-z]+|#[0-9]+|#x[A-Fa-f0-9]+);/g
+    const decoder = (entity: string): string => decodeHTML(entity)
+    return word.replace(allEntities, decoder)
 }
 
 /**

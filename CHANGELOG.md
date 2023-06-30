@@ -4,8 +4,10 @@
 
 - Deal with entities:
   show entity code or number, or look up a concise description
+  resolve to letter, to description
 - Evaluate demo page
 - Evaluate readme, use feature list?
+- Integration tests for preprocessing the render
 
 
 ## [1.0.0] 2022-08-21

@@ -1,4 +1,4 @@
-import { dedupe, tidy } from './collect-fn'
+import { decodeHtmlEntities, dedupe, tidy } from './collect-fn'
 import * as char from './characters'
 
 describe('dedupe removes extraneous and doubled characters', () => {
@@ -27,6 +27,26 @@ describe('dedupe removes extraneous and doubled characters', () => {
         delimiter = '+'
 
         expect(dedupe(lineIn, delimiter)).toBe(lineOut)
+    })
+})
+
+describe('decodeHtmlEntities strips remaining characters like punctuation and symbols', () => {
+    test('treat html entities as symbols, these will be unreadable anyway', () => {
+        expect(decodeHtmlEntities('LEGO&reg;-stores')).toBe('LEGO®-stores')
+        expect(decodeHtmlEntities('LEGO&#174;')).toBe('LEGO®')
+        expect(decodeHtmlEntities('LEGO&#xae;')).toBe('LEGO®')
+        // and in capitals ...
+        // bleh... but appears to be granted more often
+        expect(decodeHtmlEntities('LEGO&REG;-stores')).toBe('LEGO®-stores')
+        expect(decodeHtmlEntities('LEGO&#xAE;')).toBe('LEGO®')
+    })
+
+    test('convert entities of accented letters to their base letter', () => {
+        // a capital O with umlaut
+        expect(decodeHtmlEntities('LEG&Ouml;-stores')).toBe('LEGÖ-stores')
+
+        // not a letter
+        expect(decodeHtmlEntities('LEG&dagger;-stores')).toBe('LEG†-stores')
     })
 })
 

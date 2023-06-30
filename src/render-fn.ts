@@ -23,19 +23,6 @@ const simplifyVariations = (line: string): string => {
 }
 
 /**
- * Get rid of html entities
- * @private
- * @param {String} word
- * @param {String} separator
- * @returns {String} stripped string
- */
-const stripHtmlEntities = (word: string, separator: string): string => {
-    const space = ' '
-    word = word.replace(/&([A-Za-z]+|#[A-Za-z0-9]+);/g, space)
-    return word.trim().replace(/\s+/g, separator)
-}
-
-/**
  * Remove control chars, punctuation, symbols etc. from a string
  * @private
  * @param {String} word
@@ -62,11 +49,4 @@ const stripSigns = (word: string, separator: string): string => {
 const toLower = (word: string): string => word.toLowerCase()
 const toUpper = (word: string): string => word.toUpperCase()
 
-export {
-    normaliseQuotes,
-    simplifyVariations,
-    stripHtmlEntities,
-    stripSigns,
-    toLower,
-    toUpper,
-}
+export { normaliseQuotes, simplifyVariations, stripSigns, toLower, toUpper }
