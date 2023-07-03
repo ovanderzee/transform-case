@@ -21,25 +21,31 @@ const transform = (
     model: RenderModel,
     options: TransformOptions,
 ): string => {
-    const transformation = words.map((word, index) => {
-        word = model.preprocess(word, model.delimitOutput)
-        const toPreserve = options.preserve.some((regex) =>
-            isExactMatch(word, regex),
-        )
-        if (index === 0) {
-            // first word
-            return toPreserve
-                ? word
-                : model.firstWordFirstChar(word.substr(0, 1)) +
-                      model.firstWordNextChars(word.substr(1))
-        } else {
-            // successive words
-            return toPreserve
-                ? word
-                : model.nextWordsFirstChar(word.substr(0, 1)) +
-                      model.nextWordsNextChars(word.substr(1))
-        }
-    })
+    const transformation = words
+        .map((word) => {
+            // ex symbol word can become undefined
+            word = model.preprocess(word, model.delimitOutput)
+            return word
+        })
+        .filter((word) => word)
+        .map((word, index) => {
+            const toPreserve = options.preserve.some((regex) =>
+                isExactMatch(word, regex),
+            )
+            if (index === 0) {
+                // first word
+                return toPreserve
+                    ? word
+                    : model.firstWordFirstChar(word.substr(0, 1)) +
+                          model.firstWordNextChars(word.substr(1))
+            } else {
+                // successive words
+                return toPreserve
+                    ? word
+                    : model.nextWordsFirstChar(word.substr(0, 1)) +
+                          model.nextWordsNextChars(word.substr(1))
+            }
+        })
     const line = transformation.join(model.delimitOutput)
     return model.postProcess(line)
 }
