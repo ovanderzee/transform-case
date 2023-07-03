@@ -8,7 +8,7 @@ import { isDigit, isLetter } from 'my-lib'
  * @param {String} word
  * @returns {String} normalised string
  */
-const normaliseQuotes = (word: string): string => {
+export const normaliseQuotes = (word: string): string => {
     return word.replace(/[‘’`]/g, "'").replace(/[“”]/g, '"')
 }
 
@@ -18,7 +18,7 @@ const normaliseQuotes = (word: string): string => {
  * @param {String} line
  * @returns {String} changed string
  */
-const simplifyVariations = (line: string): string => {
+export const simplifyVariations = (line: string): string => {
     return asciiFolder.foldReplacing(line)
 }
 
@@ -29,7 +29,7 @@ const simplifyVariations = (line: string): string => {
  * @param {String} separator
  * @returns {String} stripped string
  */
-const stripSigns = (word: string, separator: string): string => {
+export const stripSigns = (word: string, separator: string): string => {
     const chars = word.match(/./g) || []
     const space = ' '
     const stripped = chars.map((char) => {
@@ -46,7 +46,5 @@ const stripSigns = (word: string, separator: string): string => {
  * @param {String} word
  * @returns {String} transformed word
  */
-const toLower = (word: string): string => word.toLowerCase()
-const toUpper = (word: string): string => word.toUpperCase()
-
-export { normaliseQuotes, simplifyVariations, stripSigns, toLower, toUpper }
+export const toLower = (word: string): string => word.toLowerCase()
+export const toUpper = (word: string): string => word.toUpperCase()

@@ -21,7 +21,7 @@ import { patternRendering } from './render'
  * @param {Object} options
  * @returns {Object} - the 'prototype' / methods and some variables
  */
-const wordCollector = function (
+export const wordCollector = function (
     line: string,
     userOptions: UserOptions,
 ): TransformCase {
@@ -93,5 +93,3 @@ const wordCollector = function (
 
     return Object.assign(self, patternRendering(self.words, options))
 }
-
-export { wordCollector }

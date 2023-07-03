@@ -9,40 +9,45 @@ import {
 } from './render-fn'
 import { RENDER_MODEL } from './constants'
 
-const patternRendering = function (
+/**
+ * Iterative transformation
+ * @private
+ * @param {String[]} words
+ * @param {Object} model
+ * @returns {String} transformed words
+ */
+const transform = (
+    words: string[],
+    model: RenderModel,
+    options: TransformOptions,
+): string => {
+    const transformation = words.map((word, index) => {
+        word = model.preprocess(word, model.delimitOutput)
+        const toPreserve = options.preserve.some((regex) =>
+            isExactMatch(word, regex),
+        )
+        if (index === 0) {
+            // first word
+            return toPreserve
+                ? word
+                : model.firstWordFirstChar(word.substr(0, 1)) +
+                      model.firstWordNextChars(word.substr(1))
+        } else {
+            // successive words
+            return toPreserve
+                ? word
+                : model.nextWordsFirstChar(word.substr(0, 1)) +
+                      model.nextWordsNextChars(word.substr(1))
+        }
+    })
+    const line = transformation.join(model.delimitOutput)
+    return model.postProcess(line)
+}
+
+export const patternRendering = function (
     words: string[],
     options: TransformOptions,
 ): RenderMethods {
-    /**
-     * Iterative transformation
-     * @private
-     * @param {Object} model
-     * @returns {String} transformed words
-     */
-    const transform = (model: RenderModel): string => {
-        const transformation = words.map((word, index) => {
-            word = model.preprocess(word, model.delimitOutput)
-            const toPreserve = options.preserve.some((regex) =>
-                isExactMatch(word, regex),
-            )
-            if (index === 0) {
-                // first word
-                return toPreserve
-                    ? word
-                    : model.firstWordFirstChar(word.substr(0, 1)) +
-                          model.firstWordNextChars(word.substr(1))
-            } else {
-                // successive words
-                return toPreserve
-                    ? word
-                    : model.nextWordsFirstChar(word.substr(0, 1)) +
-                          model.nextWordsNextChars(word.substr(1))
-            }
-        })
-        const line = transformation.join(model.delimitOutput)
-        return model.postProcess(line)
-    }
-
     const techProcessing = {
         preprocess: function (word: string, delimitOutput: string): string {
             word = simplifyVariations(word)
@@ -74,7 +79,7 @@ const patternRendering = function (
             nextWordsFirstChar: nextWordsFirstChar,
             nextWordsNextChars: toLower,
         })
-        return transform(model)
+        return transform(words, model, options)
     }
 
     const camelCase = (): string => {
@@ -100,7 +105,7 @@ const patternRendering = function (
             nextWordsFirstChar: toLower,
             nextWordsNextChars: toLower,
         })
-        return transform(model)
+        return transform(words, model, options)
     }
 
     /**
@@ -113,7 +118,7 @@ const patternRendering = function (
             firstWordFirstChar: toUpper,
             nextWordsFirstChar: toUpper,
         })
-        return transform(model)
+        return transform(words, model, options)
     }
 
     /****************************************
@@ -134,7 +139,7 @@ const patternRendering = function (
             nextWordsFirstChar: toLower,
             nextWordsNextChars: toLower,
         })
-        return transform(model)
+        return transform(words, model, options)
     }
 
     const dotCase = (): string => {
@@ -173,7 +178,7 @@ const patternRendering = function (
             nextWordsFirstChar: toUpper,
             nextWordsNextChars: toUpper,
         })
-        return transform(model)
+        return transform(words, model, options)
     }
 
     /**
@@ -190,7 +195,7 @@ const patternRendering = function (
             nextWordsFirstChar: toUpper,
             nextWordsNextChars: toLower,
         })
-        return transform(model)
+        return transform(words, model, options)
     }
 
     const renderMethods: RenderMethods = {
@@ -210,5 +215,3 @@ const patternRendering = function (
 
     return renderMethods
 }
-
-export { patternRendering }

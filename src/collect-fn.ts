@@ -10,7 +10,7 @@ import { SPACE_REGEX, CONTROL_REGEX } from './constants'
  * @param {String} char
  * @returns {String} cleaned line
  */
-const dedupe = (line: string, char: string): string => {
+export const dedupe = (line: string, char: string): string => {
     // escape sensitive chars:
     char = '\\' + char
     const leading = new RegExp(`^[${char}]+`)
@@ -43,7 +43,8 @@ export const decodeHtmlEntities = (word: string): string => {
  * @param {String} line
  * @returns {String} cleaned line
  */
-const tidy = (line: string): string => {
+export const tidy = (line: string): string => {
+    line = decodeHtmlEntities(line)
     return line.replace(SPACE_REGEX, ' ').trim().replace(CONTROL_REGEX, '')
 }
 
@@ -85,7 +86,10 @@ const needToInsertDelimiter = (
  * @param {Object} options
  * @returns {String} phrase of seperated words
  */
-const delimitWords = (line: string, options: TransformOptions): string => {
+export const delimitWords = (
+    line: string,
+    options: TransformOptions,
+): string => {
     let phrase = line[0]
     for (let i = 1; i < line.length; i++) {
         if (
@@ -111,7 +115,7 @@ const delimitWords = (line: string, options: TransformOptions): string => {
  * @param {String} delimiter
  * @returns {String} phrase of separated words
  */
-const delimitChunks = (
+export const delimitChunks = (
     line: string,
     rules: RegExp[],
     delimiter: string,
@@ -143,7 +147,7 @@ const delimitChunks = (
  * @param {String[] | RegExp[]} protections
  * @returns {RegExp[]} - normalised array
  */
-const normaliseProtections = (protections: (string | RegExp)[]): RegExp[] =>
+export const normaliseProtections = (
+    protections: (string | RegExp)[],
+): RegExp[] =>
     protections.map((pt) => (typeof pt === 'string' ? new RegExp(pt, 'g') : pt))
-
-export { dedupe, tidy, delimitWords, delimitChunks, normaliseProtections }

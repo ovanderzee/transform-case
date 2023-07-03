@@ -14,7 +14,7 @@ import { TransformOptions, RenderModel } from './types'
  * @member {Boolean} delimitUpperUpperLower - insert delimiter in this transition in pure alphaNumeric patterns
  * @member {String} delimitOutput - character to delimit output
  */
-const INTAKE_OPTIONS: TransformOptions = {
+export const INTAKE_OPTIONS: TransformOptions = {
     delimit: [],
     preserve: [],
     delimitLetterNumber: true,
@@ -37,7 +37,7 @@ const INTAKE_OPTIONS: TransformOptions = {
  * @member {Function} nextWordsFirstChar - transform word parts
  * @member {Function} nextWordsNextChars - transform word parts
  */
-const RENDER_MODEL: RenderModel = {
+export const RENDER_MODEL: RenderModel = {
     delimitOutput: '',
     preprocess: (word, delimiter) => word.replace(' ', delimiter),
     postProcess: (line) => line,
@@ -48,10 +48,8 @@ const RENDER_MODEL: RenderModel = {
 }
 
 /* eslint-disable no-control-regex */
-const SPACE_REGEX =
+export const SPACE_REGEX =
     /[\u0009-\u000D \u00A0\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]+/g
-const CONTROL_REGEX =
+export const CONTROL_REGEX =
     /[\u0000-\u0008\u000E-\u001F\u007F-\u009F\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]+/g
 /* eslint-enable no-control-regex */
-
-export { INTAKE_OPTIONS, RENDER_MODEL, SPACE_REGEX, CONTROL_REGEX }
