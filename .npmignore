@@ -6,5 +6,5 @@ test
 coverage
 tsconfig.json
 *.map
-*.config.js
+*.config.cjs
 .*
