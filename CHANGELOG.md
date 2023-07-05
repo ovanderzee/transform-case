@@ -2,12 +2,19 @@
 
 ## [Todo]
 
-- Deal with entities:
-  show entity code or number, or look up a concise description
-  resolve to letter, to description
 - Evaluate demo page
 - Evaluate readme, use feature list?
-- Integration tests for preprocessing the render
+
+
+## [1.1.0] 2023-07-05
+
+Deal with entities
+
+### Changed
+- HTML-entities are now always decoded to their corresponding characters
+
+## Fixed
+- In technical patterns, removing a symbol will no longer lead to double seperators
 
 
 ## [1.0.0] 2022-08-21

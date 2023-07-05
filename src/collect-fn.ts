@@ -27,14 +27,14 @@ export const dedupe = (line: string, char: string): string => {
 /**
  * Get rid of html entities
  * @private
- * @param {String} word
+ * @param {String} line
  * @param {String} separator
  * @returns {String} stripped string
  */
-export const decodeHtmlEntities = (word: string): string => {
+export const decodeHtmlEntities = (line: string): string => {
     const allEntities = /&([A-Za-z]+|#[0-9]+|#x[A-Fa-f0-9]+);/g
     const decoder = (entity: string): string => decodeHTML(entity)
-    return word.replace(allEntities, decoder)
+    return line.replace(allEntities, decoder)
 }
 
 /**
