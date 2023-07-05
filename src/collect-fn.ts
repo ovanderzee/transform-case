@@ -1,4 +1,5 @@
 import { isDigit, isLetter, isLower, isUpper } from 'my-lib'
+import { decodeHTML } from 'entities'
 import { TransformOptions } from './types'
 import { SPACE_REGEX, CONTROL_REGEX } from './constants'
 
@@ -9,7 +10,7 @@ import { SPACE_REGEX, CONTROL_REGEX } from './constants'
  * @param {String} char
  * @returns {String} cleaned line
  */
-const dedupe = (line: string, char: string): string => {
+export const dedupe = (line: string, char: string): string => {
     // escape sensitive chars:
     char = '\\' + char
     const leading = new RegExp(`^[${char}]+`)
@@ -24,12 +25,26 @@ const dedupe = (line: string, char: string): string => {
 }
 
 /**
+ * Get rid of html entities
+ * @private
+ * @param {String} line
+ * @param {String} separator
+ * @returns {String} stripped string
+ */
+export const decodeHtmlEntities = (line: string): string => {
+    const allEntities = /&([A-Za-z]+|#[0-9]+|#x[A-Fa-f0-9]+);/g
+    const decoder = (entity: string): string => decodeHTML(entity)
+    return line.replace(allEntities, decoder)
+}
+
+/**
  * Transform whitespace to spaces, then clear all control characters
  * @private
  * @param {String} line
  * @returns {String} cleaned line
  */
-const tidy = (line: string): string => {
+export const tidy = (line: string): string => {
+    line = decodeHtmlEntities(line)
     return line.replace(SPACE_REGEX, ' ').trim().replace(CONTROL_REGEX, '')
 }
 
@@ -71,7 +86,10 @@ const needToInsertDelimiter = (
  * @param {Object} options
  * @returns {String} phrase of seperated words
  */
-const delimitWords = (line: string, options: TransformOptions): string => {
+export const delimitWords = (
+    line: string,
+    options: TransformOptions,
+): string => {
     let phrase = line[0]
     for (let i = 1; i < line.length; i++) {
         if (
@@ -97,7 +115,7 @@ const delimitWords = (line: string, options: TransformOptions): string => {
  * @param {String} delimiter
  * @returns {String} phrase of separated words
  */
-const delimitChunks = (
+export const delimitChunks = (
     line: string,
     rules: RegExp[],
     delimiter: string,
@@ -129,7 +147,7 @@ const delimitChunks = (
  * @param {String[] | RegExp[]} protections
  * @returns {RegExp[]} - normalised array
  */
-const normaliseProtections = (protections: (string | RegExp)[]): RegExp[] =>
+export const normaliseProtections = (
+    protections: (string | RegExp)[],
+): RegExp[] =>
     protections.map((pt) => (typeof pt === 'string' ? new RegExp(pt, 'g') : pt))
-
-export { dedupe, tidy, delimitWords, delimitChunks, normaliseProtections }

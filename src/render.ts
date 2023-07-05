@@ -3,26 +3,32 @@ import { TransformOptions, RenderModel, RenderMethods } from './types'
 import {
     normaliseQuotes,
     simplifyVariations,
-    stripHtmlEntities,
     stripSigns,
     toLower,
     toUpper,
 } from './render-fn'
 import { RENDER_MODEL } from './constants'
 
-const patternRendering = function (
+/**
+ * Iterative transformation
+ * @private
+ * @param {String[]} words
+ * @param {Object} model
+ * @returns {String} transformed words
+ */
+const transform = (
     words: string[],
+    model: RenderModel,
     options: TransformOptions,
-): RenderMethods {
-    /**
-     * Iterative transformation
-     * @private
-     * @param {Object} model
-     * @returns {String} transformed words
-     */
-    const transform = (model: RenderModel): string => {
-        const transformation = words.map((word, index) => {
+): string => {
+    const transformation = words
+        .map((word) => {
+            // ex symbol word can become undefined
             word = model.preprocess(word, model.delimitOutput)
+            return word
+        })
+        .filter((word) => word)
+        .map((word, index) => {
             const toPreserve = options.preserve.some((regex) =>
                 isExactMatch(word, regex),
             )
@@ -40,15 +46,18 @@ const patternRendering = function (
                           model.nextWordsNextChars(word.substr(1))
             }
         })
-        const line = transformation.join(model.delimitOutput)
-        return model.postProcess(line)
-    }
+    const line = transformation.join(model.delimitOutput)
+    return model.postProcess(line)
+}
 
+export const patternRendering = function (
+    words: string[],
+    options: TransformOptions,
+): RenderMethods {
     const techProcessing = {
         preprocess: function (word: string, delimitOutput: string): string {
             word = simplifyVariations(word)
             word = normaliseQuotes(word)
-            word = stripHtmlEntities(word, delimitOutput)
             word = stripSigns(word, delimitOutput)
             return word
         },
@@ -76,7 +85,7 @@ const patternRendering = function (
             nextWordsFirstChar: nextWordsFirstChar,
             nextWordsNextChars: toLower,
         })
-        return transform(model)
+        return transform(words, model, options)
     }
 
     const camelCase = (): string => {
@@ -102,7 +111,7 @@ const patternRendering = function (
             nextWordsFirstChar: toLower,
             nextWordsNextChars: toLower,
         })
-        return transform(model)
+        return transform(words, model, options)
     }
 
     /**
@@ -115,7 +124,7 @@ const patternRendering = function (
             firstWordFirstChar: toUpper,
             nextWordsFirstChar: toUpper,
         })
-        return transform(model)
+        return transform(words, model, options)
     }
 
     /****************************************
@@ -136,7 +145,7 @@ const patternRendering = function (
             nextWordsFirstChar: toLower,
             nextWordsNextChars: toLower,
         })
-        return transform(model)
+        return transform(words, model, options)
     }
 
     const dotCase = (): string => {
@@ -175,7 +184,7 @@ const patternRendering = function (
             nextWordsFirstChar: toUpper,
             nextWordsNextChars: toUpper,
         })
-        return transform(model)
+        return transform(words, model, options)
     }
 
     /**
@@ -192,7 +201,7 @@ const patternRendering = function (
             nextWordsFirstChar: toUpper,
             nextWordsNextChars: toLower,
         })
-        return transform(model)
+        return transform(words, model, options)
     }
 
     const renderMethods: RenderMethods = {
@@ -212,5 +221,3 @@ const patternRendering = function (
 
     return renderMethods
 }
-
-export { patternRendering }

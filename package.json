@@ -50,6 +50,7 @@
     },
     "homepage": "https://github.com/ovanderzee/transform-case#readme",
     "dependencies": {
+        "entities": "^4.5.0",
         "fold-to-ascii": "^5.0.1",
         "my-lib": "^2.1.0"
     },

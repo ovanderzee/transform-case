@@ -138,4 +138,11 @@ describe('conversion of other technical patterns', () => {
         expect(otherTest.constantCase()).toBe('BY_THE_WAY_USE_VERSION_11_7_2')
         expect(otherTest.headerCase()).toBe('By-The-Way-Use-Version-11-7-2')
     })
+
+    test('should not lead to double seperators', () => {
+        const testText = wordCollector('the man &dagger; above', {})
+
+        expect(testText.pathCase()).toBe('the/man/above')
+        expect(testText.pathCase()).not.toBe('the/man//above')
+    })
 })

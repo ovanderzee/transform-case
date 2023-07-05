@@ -8,7 +8,7 @@ import { isDigit, isLetter } from 'my-lib'
  * @param {String} word
  * @returns {String} normalised string
  */
-const normaliseQuotes = (word: string): string => {
+export const normaliseQuotes = (word: string): string => {
     return word.replace(/[‘’`]/g, "'").replace(/[“”]/g, '"')
 }
 
@@ -18,21 +18,8 @@ const normaliseQuotes = (word: string): string => {
  * @param {String} line
  * @returns {String} changed string
  */
-const simplifyVariations = (line: string): string => {
+export const simplifyVariations = (line: string): string => {
     return asciiFolder.foldReplacing(line)
-}
-
-/**
- * Get rid of html entities
- * @private
- * @param {String} word
- * @param {String} separator
- * @returns {String} stripped string
- */
-const stripHtmlEntities = (word: string, separator: string): string => {
-    const space = ' '
-    word = word.replace(/&([A-Za-z]+|#[A-Za-z0-9]+);/g, space)
-    return word.trim().replace(/\s+/g, separator)
 }
 
 /**
@@ -42,7 +29,7 @@ const stripHtmlEntities = (word: string, separator: string): string => {
  * @param {String} separator
  * @returns {String} stripped string
  */
-const stripSigns = (word: string, separator: string): string => {
+export const stripSigns = (word: string, separator: string): string => {
     const chars = word.match(/./g) || []
     const space = ' '
     const stripped = chars.map((char) => {
@@ -59,14 +46,5 @@ const stripSigns = (word: string, separator: string): string => {
  * @param {String} word
  * @returns {String} transformed word
  */
-const toLower = (word: string): string => word.toLowerCase()
-const toUpper = (word: string): string => word.toUpperCase()
-
-export {
-    normaliseQuotes,
-    simplifyVariations,
-    stripHtmlEntities,
-    stripSigns,
-    toLower,
-    toUpper,
-}
+export const toLower = (word: string): string => word.toLowerCase()
+export const toUpper = (word: string): string => word.toUpperCase()
